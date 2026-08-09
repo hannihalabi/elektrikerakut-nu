@@ -21,6 +21,11 @@ test("keeps the Elektrikerakut customer journey and area guard", async () => {
   assert.match(page, /matchCardRef\.current\?\.scrollIntoView/);
   assert.match(page, /requestAnimationFrame/);
   assert.match(page, /prefers-reduced-motion|aria-live/);
+  const matchRoute = await readFile(new URL("../app/api/match/route.ts", import.meta.url), "utf8");
+  assert.match(matchRoute, /eq\(partners\.status, "ACTIVE"\)/);
+  assert.match(matchRoute, /ISSUE_CAPABILITIES/);
+  assert.match(page, /fetch\("\/api\/match"/);
+  assert.match(page, /matchedPartner\?\.legalName/);
 });
 
 test("keeps the partner application", async () => {

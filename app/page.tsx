@@ -44,6 +44,14 @@ const loadingSteps = [
 ];
 
 type ViewState = "form" | "loading" | "result" | "unavailable";
+type MatchedPartner = {
+  publicId: string;
+  legalName: string;
+  phone: string;
+  website: string | null;
+  serviceAreas: string;
+  availability: string;
+};
 
 function isStockholmPostcode(postcode: string) {
   const value = Number(postcode);
@@ -57,6 +65,7 @@ export default function Home() {
   const [view, setView] = useState<ViewState>("form");
   const [loadingStep, setLoadingStep] = useState(0);
   const [progress, setProgress] = useState(0);
+  const [matchedPartner, setMatchedPartner] = useState<MatchedPartner | null>(null);
   const [errors, setErrors] = useState<{ issue?: string; postcode?: string; phone?: string }>({});
   const matchCardRef = useRef<HTMLDivElement>(null);
   const resultRef = useRef<HTMLDivElement>(null);
@@ -121,7 +130,20 @@ export default function Home() {
 
     setProgress(0);
     setLoadingStep(0);
+    setMatchedPartner(null);
     setView("loading");
+    void fetch("/api/match", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ issue: selectedIssue, postcode }),
+    })
+      .then(async (response) => {
+        if (!response.ok) return null;
+        const data = await response.json() as { match?: MatchedPartner | null };
+        return data.match ?? null;
+      })
+      .then((match) => setMatchedPartner(match))
+      .catch(() => setMatchedPartner(null));
   }
 
   function resetSearch() {
@@ -130,6 +152,7 @@ export default function Home() {
     setPhone("");
     setProgress(0);
     setLoadingStep(0);
+    setMatchedPartner(null);
     setErrors({});
     setView("form");
   }
@@ -298,19 +321,20 @@ export default function Home() {
             <div className="result-panel" ref={resultRef} tabIndex={-1} aria-live="polite">
               <div className="result-check"><Check size={30} strokeWidth={2.5} /></div>
               <p className="loading-kicker">Matchningsflödet är klart</p>
-              <h2>Din förfrågan är redo</h2>
-              <p>I skarp drift visas det verifierade företag som accepterat här, tillsammans med kontaktväg, ankomsttid och prisuppgifter.</p>
+              <h2>{matchedPartner ? "Vi hittade rätt hjälp" : "Din förfrågan är redo"}</h2>
+              <p>{matchedPartner ? "En aktiv partner matchar ditt område och den typ av elproblem du valt." : "Vi hittade ingen aktiv partner som matchar både område och kompetens just nu."}</p>
               <div className="result-preview">
                 <span className="partner-avatar"><Zap size={22} /></span>
-                <span><small>Vald leverantör</small><strong>Verifierad partner visas här</strong></span>
-                <BadgeCheck size={22} className="verified-icon" />
+                <span><small>{matchedPartner ? "Vald leverantör" : "Matchningsstatus"}</small><strong>{matchedPartner?.legalName ?? "Ingen aktiv partner hittades"}</strong></span>
+                {matchedPartner && <BadgeCheck size={22} className="verified-icon" />}
               </div>
               <div className="result-details">
-                <span><Clock3 size={17} /><small>Återkoppling</small><strong>Bekräftas av partner</strong></span>
-                <span><MapPin size={17} /><small>Område</small><strong>{postcode.slice(0, 3)} **</strong></span>
+                <span><Clock3 size={17} /><small>{matchedPartner ? "Tillgänglighet" : "Återkoppling"}</small><strong>{matchedPartner?.availability ?? "Ingen bekräftad match"}</strong></span>
+                <span><MapPin size={17} /><small>Område</small><strong>{matchedPartner?.serviceAreas ?? `${postcode.slice(0, 3)} **`}</strong></span>
               </div>
+              {matchedPartner && <a className="submit-button" href={`tel:${matchedPartner.phone}`}><PhoneCall size={18} /> Ring {matchedPartner.legalName}</a>}
               <button className="submit-button" type="button" onClick={resetSearch}><RotateCcw size={18} /> Starta ny sökning</button>
-              <p className="privacy-line">Demovisning – ingen riktig bokning har skapats.</p>
+              <p className="privacy-line">{matchedPartner ? "Partnern utför och fakturerar arbetet direkt." : "Försök igen senare när fler partners är aktiva i området."}</p>
             </div>
           )}
 
