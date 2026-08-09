@@ -40,7 +40,12 @@ const loadingSteps = [
   "Förbereder ditt resultat",
 ];
 
-type ViewState = "form" | "loading" | "result";
+type ViewState = "form" | "loading" | "result" | "unavailable";
+
+function isStockholmPostcode(postcode: string) {
+  const value = Number(postcode);
+  return Number.isInteger(value) && value >= 10000 && value <= 19999;
+}
 
 export default function Home() {
   const [selectedIssue, setSelectedIssue] = useState("");
@@ -72,7 +77,7 @@ export default function Home() {
   }, [view]);
 
   useEffect(() => {
-    if (view === "result") resultRef.current?.focus();
+    if (view === "result" || view === "unavailable") resultRef.current?.focus();
   }, [view]);
 
   function normalizePostcode(value: string) {
@@ -90,6 +95,11 @@ export default function Home() {
 
     setErrors(nextErrors);
     if (Object.keys(nextErrors).length) return;
+
+    if (!isStockholmPostcode(postcode)) {
+      setView("unavailable");
+      return;
+    }
 
     setProgress(0);
     setLoadingStep(0);
@@ -264,6 +274,17 @@ export default function Home() {
               </div>
               <button className="submit-button" type="button" onClick={resetSearch}><RotateCcw size={18} /> Starta ny sökning</button>
               <p className="privacy-line">Demovisning – ingen riktig bokning har skapats.</p>
+            </div>
+          )}
+
+          {view === "unavailable" && (
+            <div className="result-panel unavailable-panel" ref={resultRef} tabIndex={-1} role="status" aria-live="polite">
+              <div className="result-check unavailable-check"><MapPin size={30} strokeWidth={2.3} /></div>
+              <p className="loading-kicker">Området saknar täckning</p>
+              <h2>Ops! Vi har just nu inga partners utanför Stockholm</h2>
+              <p>Vi bygger ut nätverket löpande. För närvarande kan vi bara matcha förfrågningar inom Stockholm.</p>
+              <div className="unavailable-postcode"><small>Ditt postnummer</small><strong>{postcode.slice(0, 3)} **</strong></div>
+              <button className="submit-button" type="button" onClick={resetSearch}><RotateCcw size={18} /> Prova ett annat postnummer</button>
             </div>
           )}
         </div>

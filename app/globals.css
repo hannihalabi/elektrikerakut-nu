@@ -120,6 +120,12 @@ fieldset { padding: 0; margin: 0; border: 0; }
 .loading-checklist .done { color: var(--ink); }
 .loading-checklist .done > span { background: #e5f7f0; border-color: #c6ebdd; color: var(--success); }
 .result-check { width: 70px; height: 70px; display: grid; place-items: center; border-radius: 23px; background: #dff5ec; color: var(--success); margin-bottom: 22px; }
+.unavailable-check { background: #fff0d7; color: var(--warning); }
+.unavailable-panel h2 { max-width: 390px; }
+.unavailable-postcode { width: 100%; margin-top: 18px; padding: 15px; border: 1px solid #eadfcf; border-radius: 14px; background: #fffbf4; }
+.unavailable-postcode small, .unavailable-postcode strong { display: block; }
+.unavailable-postcode small { color: #8b755d; font-size: 9px; text-transform: uppercase; letter-spacing: .08em; }
+.unavailable-postcode strong { margin-top: 5px; font-size: 14px; }
 .result-preview { width: 100%; display: grid; grid-template-columns: 48px 1fr 24px; align-items: center; gap: 12px; margin-top: 18px; padding: 14px; border: 1px solid #dfe6ef; border-radius: 14px; text-align: left; background: #fbfcfe; }
 .partner-avatar { width: 48px; height: 48px; display: grid; place-items: center; border-radius: 13px; color: white; background: var(--ink); }
 .result-preview small, .result-preview strong { display: block; }

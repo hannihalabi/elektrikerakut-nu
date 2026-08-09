@@ -40,6 +40,8 @@ test("removes the disposable starter and wires product metadata", async () => {
   assert.doesNotMatch(packageJson, /react-loading-skeleton/);
   assert.match(layout, /images: \[\{ url: "\/og\.png"/);
   assert.match(page, /elapsed >= 4000/);
+  assert.match(page, /value >= 10000 && value <= 19999/);
+  assert.match(page, /Ops! Vi har just nu inga partners utanför Stockholm/);
   assert.match(page, /prefers-reduced-motion|aria-live/);
 });
 
