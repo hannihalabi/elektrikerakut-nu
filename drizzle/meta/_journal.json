@@ -8,6 +8,13 @@
       "when": 1786281161370,
       "tag": "0000_cooing_mercury",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1786289294063,
+      "tag": "0001_normal_switch",
+      "breakpoints": true
     }
   ]
 }

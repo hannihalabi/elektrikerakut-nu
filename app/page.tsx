@@ -111,6 +111,15 @@ export default function Home() {
     return value.replace(/\D/g, "").slice(0, 5);
   }
 
+  function recordEvent(eventType: "MATCH_STARTED" | "MATCH_FOUND") {
+    void fetch("/api/events", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ eventType, path: window.location.pathname }),
+      keepalive: true,
+    });
+  }
+
   function submitRequest(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const digits = phone.replace(/\D/g, "");
@@ -132,6 +141,7 @@ export default function Home() {
     setLoadingStep(0);
     setMatchedPartner(null);
     setView("loading");
+    recordEvent("MATCH_STARTED");
     void fetch("/api/match", {
       method: "POST",
       headers: { "content-type": "application/json" },
@@ -142,7 +152,10 @@ export default function Home() {
         const data = await response.json() as { match?: MatchedPartner | null };
         return data.match ?? null;
       })
-      .then((match) => setMatchedPartner(match))
+      .then((match) => {
+        if (match) recordEvent("MATCH_FOUND");
+        setMatchedPartner(match);
+      })
       .catch(() => setMatchedPartner(null));
   }
 

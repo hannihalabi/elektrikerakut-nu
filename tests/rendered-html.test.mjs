@@ -49,6 +49,10 @@ test("protects admin with a signed Vercel-compatible session", async () => {
   assert.match(auth, /ADMIN_SESSION_SECRET/);
   assert.match(auth, /SESSION_DURATION_SECONDS = 60 \* 5/);
   assert.match(login, /\/api\/admin\/session/);
+  const analyticsRoute = await readFile(new URL("../app/api/admin/analytics/route.ts", import.meta.url), "utf8");
+  const analyticsPage = await readFile(new URL("../app/admin/statistik/analytics-dashboard.tsx", import.meta.url), "utf8");
+  assert.match(analyticsRoute, /siteEvents/);
+  assert.match(analyticsPage, /Besök senaste 30 dagar/);
 });
 
 test("uses Next.js and Postgres without Cloudflare runtime files", async () => {
@@ -64,6 +68,7 @@ test("uses Next.js and Postgres without Cloudflare runtime files", async () => {
   assert.match(schema, /pgTable/);
   assert.match(schema, /jsonb\("capabilities"\)/);
   assert.match(migration, /CREATE TABLE "partners"/);
+  assert.match(schema, /pgTable\(\s*"site_events"/);
 
   await assert.rejects(access(new URL("../.openai/hosting.json", import.meta.url)));
   await assert.rejects(access(new URL("../vite.config.ts", import.meta.url)));

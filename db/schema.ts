@@ -29,5 +29,20 @@ export const partners = pgTable(
   ],
 );
 
+export const siteEvents = pgTable(
+  "site_events",
+  {
+    id: serial("id").primaryKey(),
+    eventType: text("event_type", { enum: ["PAGE_VIEW", "MATCH_STARTED", "MATCH_FOUND"] }).notNull(),
+    path: text("path").notNull().default("/"),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  },
+  (table) => [
+    index("idx_site_events_type_created_at").on(table.eventType, table.createdAt),
+    index("idx_site_events_created_at").on(table.createdAt),
+  ],
+);
+
 export type Partner = typeof partners.$inferSelect;
 export type NewPartner = typeof partners.$inferInsert;
+export type SiteEvent = typeof siteEvents.$inferSelect;
