@@ -121,7 +121,7 @@ export function PartnersAdmin({ displayName }: { displayName: string }) {
       <aside className="admin-sidebar">
         <Link className="brand admin-brand" href="/"><span className="brand-mark"><Zap size={18} /></span><span>Elektrikerakut<span>.nu</span></span></Link>
         <nav aria-label="Adminnavigering">
-          <Link className="active" href="/admin/partners"><Building2 size={18} /> Partners</Link>
+          <Link className="active" href="/admin"><Building2 size={18} /> Partners</Link>
           <Link href="/"><ArrowLeft size={18} /> Kundsidan</Link>
         </nav>
         <div className="admin-user"><span><UserRound size={17} /></span><div><small>Inloggad som</small><strong>{displayName}</strong></div></div>

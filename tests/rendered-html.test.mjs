@@ -60,9 +60,9 @@ test("server-renders the partner application", async () => {
 });
 
 test("protects the partner register behind sign-in", async () => {
-  const response = await render("/admin/partners");
+  const response = await render("/admin");
   assert.equal(response.status, 307);
-  assert.match(response.headers.get("location") ?? "", /^\/signin-with-chatgpt\?return_to=%2Fadmin%2Fpartners$/);
+  assert.match(response.headers.get("location") ?? "", /^\/signin-with-chatgpt\?return_to=%2Fadmin$/);
 });
 
 test("ships the partner schema and migration", async () => {

@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { LockKeyhole, Zap } from "lucide-react";
-import { requireChatGPTUser } from "../../chatgpt-auth";
-import { isPartnerAdmin } from "../../partner-admin-auth";
+import { requireChatGPTUser } from "../chatgpt-auth";
+import { isPartnerAdmin } from "../partner-admin-auth";
 import { PartnersAdmin } from "./partners-admin";
 
 export const dynamic = "force-dynamic";
@@ -17,7 +17,7 @@ export default function PartnersAdminPage() {
 }
 
 async function AdminGate() {
-  const user = await requireChatGPTUser("/admin/partners");
+  const user = await requireChatGPTUser("/admin");
   if (!await isPartnerAdmin(user)) {
     return (
       <main className="admin-denied">
