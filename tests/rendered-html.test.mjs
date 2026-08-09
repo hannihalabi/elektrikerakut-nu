@@ -14,6 +14,8 @@ test("keeps the Elektrikerakut customer journey and area guard", async () => {
   assert.match(page, /value >= 10000 && value <= 19999/);
   assert.match(page, /Ops! Vi har just nu inga partners utanför Stockholm/);
   assert.match(page, /förmedlingstjänst och utför inte elinstallationsarbete/);
+  assert.match(page, /Teamet bakom Elektrikerakut\.nu/);
+  assert.match(page, /personalImage/);
   assert.match(page, /prefers-reduced-motion|aria-live/);
 });
 
@@ -58,9 +60,10 @@ test("uses Next.js and Postgres without Cloudflare runtime files", async () => {
   await assert.rejects(access(new URL("../app/chatgpt-auth.ts", import.meta.url)));
 });
 
-test("includes the generated brand assets", async () => {
+test("includes the generated brand and team assets", async () => {
   await Promise.all([
     access(new URL("../public/og.png", import.meta.url)),
     access(new URL("../public/favicon.png", import.meta.url)),
+    access(new URL("../public/personal.png", import.meta.url)),
   ]);
 });

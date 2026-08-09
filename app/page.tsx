@@ -16,7 +16,9 @@ import {
   TriangleAlert,
   Zap,
 } from "lucide-react";
+import Image from "next/image";
 import { type FormEvent, type ElementType, useEffect, useRef, useState } from "react";
+import personalImage from "../public/personal.png";
 
 type Issue = {
   id: string;
@@ -149,6 +151,21 @@ export default function Home() {
             <span><Clock3 size={18} /> Snabb återkoppling</span>
             <span><MapPin size={18} /> Stockholm med omnejd</span>
           </div>
+          <figure className="hero-team">
+            <Image
+              src={personalImage}
+              alt="Teamet bakom Elektrikerakut.nu samlat framför företagets skylt"
+              fill
+              sizes="(max-width: 700px) calc(100vw - 32px), (max-width: 980px) 560px, 590px"
+              placeholder="blur"
+              quality={82}
+            />
+            <figcaption>
+              <span><i className="live-dot" aria-hidden="true" /> Personlig jourkontakt</span>
+              <strong>Teamet bakom Elektrikerakut.nu</strong>
+              <small>Snabb teknik. Personlig återkoppling.</small>
+            </figcaption>
+          </figure>
         </div>
 
         <div className="match-card" id="matchning">
