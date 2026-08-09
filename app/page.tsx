@@ -7,6 +7,7 @@ import {
   ChevronDown,
   CircleEllipsis,
   Clock3,
+  LogIn,
   MapPin,
   PhoneCall,
   PlugZap,
@@ -143,9 +144,14 @@ export default function Home() {
         <nav aria-label="Huvudnavigering">
           <a href="#sa-fungerar-det">Så fungerar det</a>
           <a href="#trygghet">Trygg matchning</a>
-          <a href="/bli-partner">Bli partner</a>
         </nav>
-        <a className="header-action" href="#matchning"><PhoneCall size={17} /> Ring jouren</a>
+        <div className="header-actions">
+          <a className="header-partner" href="/bli-partner">Bli partner</a>
+          <a className="header-action" href="#matchning"><PhoneCall size={17} /> Ring jouren</a>
+          <a className="header-login" href="/admin/login" aria-label="Logga in" title="Logga in">
+            <LogIn size={19} aria-hidden="true" />
+          </a>
+        </div>
       </header>
 
       <section className="hero" id="top">
