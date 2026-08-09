@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowLeft, BadgeCheck, Building2, Check, ChevronDown, Clock3, ExternalLink, Mail, MapPin, Pause, Phone, Plus, Search, ShieldCheck, UserRound, X, Zap } from "lucide-react";
+import { ArrowLeft, BadgeCheck, Building2, Check, ChevronDown, Clock3, ExternalLink, LogOut, Mail, MapPin, Pause, Phone, Plus, Search, ShieldCheck, UserRound, X, Zap } from "lucide-react";
 import Link from "next/link";
 import { type FormEvent, useEffect, useMemo, useState } from "react";
 
@@ -116,6 +116,11 @@ export function PartnersAdmin({ displayName }: { displayName: string }) {
     }
   }
 
+  async function signOut() {
+    await fetch("/api/admin/session", { method: "DELETE" });
+    window.location.assign("/admin/login");
+  }
+
   return (
     <main className="admin-shell">
       <aside className="admin-sidebar">
@@ -124,7 +129,7 @@ export function PartnersAdmin({ displayName }: { displayName: string }) {
           <Link className="active" href="/admin"><Building2 size={18} /> Partners</Link>
           <Link href="/"><ArrowLeft size={18} /> Kundsidan</Link>
         </nav>
-        <div className="admin-user"><span><UserRound size={17} /></span><div><small>Inloggad som</small><strong>{displayName}</strong></div></div>
+        <div className="admin-user"><span><UserRound size={17} /></span><div><small>Inloggad som</small><strong>{displayName}</strong></div><button type="button" aria-label="Logga ut" onClick={signOut}><LogOut size={16} /></button></div>
       </aside>
 
       <section className="admin-content">

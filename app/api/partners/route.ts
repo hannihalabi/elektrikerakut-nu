@@ -85,7 +85,7 @@ export async function POST(request: Request) {
       phone: result.phone,
       website: result.website || null,
       serviceAreas: result.serviceAreas,
-      capabilities: JSON.stringify(result.capabilities),
+      capabilities: result.capabilities,
       availability: result.availability,
       notes: result.notes || null,
       source: "SELF_SERVICE",
@@ -97,7 +97,7 @@ export async function POST(request: Request) {
     return Response.json({ ok: true, reference: publicId }, { status: 201 });
   } catch (error) {
     const message = error instanceof Error ? error.message : "";
-    if (message.includes("UNIQUE constraint failed")) {
+    if (message.includes("duplicate key value") || message.includes("unique constraint")) {
       return Response.json({ error: "Det finns redan en partneransökan för organisationsnumret." }, { status: 409 });
     }
     return Response.json({ error: "Ansökan kunde inte sparas. Försök igen senare." }, { status: 500 });

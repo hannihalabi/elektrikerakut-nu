@@ -22,7 +22,6 @@ function validWebsite(value: string) {
 function publicPartner(row: typeof partners.$inferSelect) {
   return {
     ...row,
-    capabilities: JSON.parse(row.capabilities) as string[],
     registrationVerifiedAt: row.registrationVerifiedAt?.toISOString() ?? null,
     createdAt: row.createdAt.toISOString(),
     updatedAt: row.updatedAt.toISOString(),
@@ -72,7 +71,7 @@ export async function POST(request: Request) {
       phone,
       website: website || null,
       serviceAreas,
-      capabilities: JSON.stringify(capabilities),
+      capabilities,
       availability,
       notes: text(payload.notes, 1000) || null,
       source: "ADMIN",
@@ -85,7 +84,7 @@ export async function POST(request: Request) {
     return Response.json({ partner: publicPartner(created) }, { status: 201 });
   } catch (error) {
     const message = error instanceof Error ? error.message : "";
-    if (message.includes("UNIQUE constraint failed")) return Response.json({ error: "Organisationsnumret finns redan." }, { status: 409 });
+    if (message.includes("duplicate key value") || message.includes("unique constraint")) return Response.json({ error: "Organisationsnumret finns redan." }, { status: 409 });
     return Response.json({ error: "Partnern kunde inte registreras." }, { status: 500 });
   }
 }

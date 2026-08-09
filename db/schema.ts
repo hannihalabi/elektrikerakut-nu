@@ -1,9 +1,9 @@
-import { index, integer, sqliteTable, text, uniqueIndex } from "drizzle-orm/sqlite-core";
+import { index, jsonb, pgTable, serial, text, timestamp, uniqueIndex } from "drizzle-orm/pg-core";
 
-export const partners = sqliteTable(
+export const partners = pgTable(
   "partners",
   {
-    id: integer("id").primaryKey({ autoIncrement: true }),
+    id: serial("id").primaryKey(),
     publicId: text("public_id").notNull(),
     legalName: text("legal_name").notNull(),
     organizationNumber: text("organization_number").notNull(),
@@ -12,15 +12,15 @@ export const partners = sqliteTable(
     phone: text("phone").notNull(),
     website: text("website"),
     serviceAreas: text("service_areas").notNull(),
-    capabilities: text("capabilities").notNull(),
+    capabilities: jsonb("capabilities").$type<string[]>().notNull(),
     availability: text("availability").notNull(),
     notes: text("notes"),
     source: text("source", { enum: ["SELF_SERVICE", "ADMIN"] }).notNull().default("SELF_SERVICE"),
     status: text("status", { enum: ["PENDING", "ACTIVE", "PAUSED", "REJECTED"] }).notNull().default("PENDING"),
-    registrationVerifiedAt: integer("registration_verified_at", { mode: "timestamp_ms" }),
+    registrationVerifiedAt: timestamp("registration_verified_at", { withTimezone: true }),
     createdBy: text("created_by"),
-    createdAt: integer("created_at", { mode: "timestamp_ms" }).notNull(),
-    updatedAt: integer("updated_at", { mode: "timestamp_ms" }).notNull(),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+    updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
   },
   (table) => [
     uniqueIndex("partners_public_id_unique").on(table.publicId),

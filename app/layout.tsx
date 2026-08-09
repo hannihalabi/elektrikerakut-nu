@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://elektrikerakut.nu"),
   title: "Elektrikerakut.nu – snabb hjälp vid akuta elproblem",
   description: "Beskriv ditt elproblem en gång. Vi matchar din förfrågan med ett registrerat elföretag med kapacitet i Stockholmsområdet.",
   icons: { icon: "/favicon.png", shortcut: "/favicon.png" },
