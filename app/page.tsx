@@ -155,7 +155,7 @@ export default function Home() {
             </figcaption>
           </figure>
           <p className="hero-lead">
-            Beskriv problemet en gång. Vi söker efter ett registrerat elföretag med kapacitet i ditt område.
+            Vi kvalificerar elföretagen och skapar prispress på jouruppdragen – så att du får snabb, trygg hjälp utan onödiga kostnader.
           </p>
           <div className="hero-actions">
             <a className="primary-link" href="#matchning"><Zap size={18} fill="currentColor" /> Hitta elektriker nu <ArrowRight size={18} /></a>
