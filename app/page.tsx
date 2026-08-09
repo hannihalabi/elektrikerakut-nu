@@ -139,18 +139,6 @@ export default function Home() {
         <div className="hero-copy">
           <div className="eyebrow"><span /> Matchningstjänst för Stockholm</div>
           <h1>Akut elproblem?<br /><em>Vi hittar rätt hjälp.</em></h1>
-          <p className="hero-lead">
-            Beskriv problemet en gång. Vi söker efter ett registrerat elföretag med kapacitet i ditt område.
-          </p>
-          <div className="hero-actions">
-            <a className="primary-link" href="#matchning"><Zap size={18} fill="currentColor" /> Hitta elektriker nu <ArrowRight size={18} /></a>
-            <a className="secondary-link" href="#matchning"><PhoneCall size={18} /> Ring för snabb hjälp</a>
-          </div>
-          <div className="trust-row" aria-label="Fördelar">
-            <span><ShieldCheck size={18} /> Registerkontrollerade partners</span>
-            <span><Clock3 size={18} /> Snabb återkoppling</span>
-            <span><MapPin size={18} /> Stockholm med omnejd</span>
-          </div>
           <figure className="hero-team">
             <Image
               src={personalImage}
@@ -166,6 +154,18 @@ export default function Home() {
               <small>Snabb teknik. Personlig återkoppling.</small>
             </figcaption>
           </figure>
+          <p className="hero-lead">
+            Beskriv problemet en gång. Vi söker efter ett registrerat elföretag med kapacitet i ditt område.
+          </p>
+          <div className="hero-actions">
+            <a className="primary-link" href="#matchning"><Zap size={18} fill="currentColor" /> Hitta elektriker nu <ArrowRight size={18} /></a>
+            <a className="secondary-link" href="#matchning"><PhoneCall size={18} /> Ring för snabb hjälp</a>
+          </div>
+          <div className="trust-row" aria-label="Fördelar">
+            <span><ShieldCheck size={18} /> Registerkontrollerade partners</span>
+            <span><Clock3 size={18} /> Snabb återkoppling</span>
+            <span><MapPin size={18} /> Stockholm med omnejd</span>
+          </div>
         </div>
 
         <div className="match-card" id="matchning">
