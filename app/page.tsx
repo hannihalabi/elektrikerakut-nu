@@ -4,7 +4,6 @@ import {
   ArrowRight,
   BadgeCheck,
   Check,
-  ChevronDown,
   CircleEllipsis,
   Clock3,
   LogIn,
@@ -368,49 +367,6 @@ export default function Home() {
         <span><TriangleAlert size={22} /></span>
         <p><strong>Brand, rök eller omedelbar personfara?</strong> Lämna platsen och ring 112. Rör inte skadad elektrisk utrustning.</p>
       </section>
-
-      <section className="how-section" id="sa-fungerar-det">
-        <div className="section-heading">
-          <p>Så fungerar det</p>
-          <h2>Från problem till rätt hjälp.<br />Utan onödiga omvägar.</h2>
-        </div>
-        <div className="steps-grid">
-          <article><span>01</span><div className="step-icon"><Zap size={23} /></div><h3>Beskriv läget</h3><p>Välj problemet och ange postnummer och telefonnummer.</p></article>
-          <article><span>02</span><div className="step-icon"><ShieldCheck size={23} /></div><h3>Vi matchar</h3><p>Systemet kontrollerar område, kapacitet och verifierad registrering.</p></article>
-          <article><span>03</span><div className="step-icon"><PhoneCall size={23} /></div><h3>Partnern bekräftar</h3><p>Du får veta vem som kontaktar dig samt villkor för nästa steg.</p></article>
-        </div>
-      </section>
-
-      <section className="confidence-section" id="trygghet">
-        <div className="confidence-copy">
-          <p className="section-label">Trygg matchning</p>
-          <h2>Rätt företag.<br />Tydligt ansvar.</h2>
-          <p>Vi kontrollerar partnerföretagets registrering och matchar bara inom de områden och tider där partnern uppgett kapacitet.</p>
-          <a href="https://www.elsakerhetsverket.se/kolla-elforetaget/" target="_blank" rel="noreferrer">Kolla elföretaget hos Elsäkerhetsverket <ArrowRight size={17} /></a>
-        </div>
-        <div className="confidence-card">
-          <div><BadgeCheck size={25} /><span><strong>Registrering kontrolleras</strong><small>Mot Elsäkerhetsverkets register</small></span></div>
-          <div><MapPin size={25} /><span><strong>Område och kapacitet</strong><small>Matchning efter faktisk täckning</small></span></div>
-          <div><ShieldCheck size={25} /><span><strong>Transparent ansvar</strong><small>Partnern utför och fakturerar arbetet</small></span></div>
-        </div>
-      </section>
-
-      <section className="faq-section">
-        <div className="section-heading compact"><p>Vanliga frågor</p><h2>Det viktigaste, direkt.</h2></div>
-        <div className="faq-list">
-          <details><summary>Är Elektrikerakut.nu ett elföretag?<ChevronDown size={19} /></summary><p>Nej. Tjänsten förmedlar din förfrågan till ett registrerat elinstallationsföretag. Det företaget bedömer, utför och fakturerar arbetet.</p></details>
-          <details><summary>Vad kostar det?<ChevronDown size={19} /></summary><p>Det är kostnadsfritt att skicka en förfrågan. Partnerföretaget informerar om besöksavgift, jourpåslag, pris och villkor innan ni ingår avtal.</p></details>
-          <details><summary>Är hjälp garanterad?<ChevronDown size={19} /></summary><p>Nej. Tillgänglighet beror på område, tid, problemtyp och partnerkapacitet. Vi visar aldrig en bekräftad matchning innan ett företag har accepterat.</p></details>
-          <details><summary>Hur används mina uppgifter?<ChevronDown size={19} /></summary><p>I skarp drift används minsta nödvändiga information för att kvalificera och förmedla förfrågan till en vald partner. Den här prototypen skickar eller sparar inga formuläruppgifter.</p></details>
-        </div>
-      </section>
-
-      <footer>
-        <a className="brand footer-brand" href="#top"><span className="brand-mark"><Zap size={18} /></span><span>Elektrikerakut<span>.nu</span></span></a>
-        <p>En snabb och transparent matchningstjänst för akuta elproblem i Stockholm.</p>
-        <div><a href="#matchning">Hitta elektriker</a><a href="#sa-fungerar-det">Så fungerar det</a><a href="#trygghet">Trygghet</a><a href="/bli-partner">Bli partner</a></div>
-        <small>Prototyp – juridisk identitet, kontaktuppgifter, integritetspolicy, kakor och villkor kompletteras före publik lansering.</small>
-      </footer>
 
       <div className="mobile-actions">
         <a href="#matchning"><PhoneCall size={18} /> Ring</a>
