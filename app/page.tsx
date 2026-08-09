@@ -137,7 +137,7 @@ export default function Home() {
         <div className="hero-orb hero-orb-one" />
         <div className="hero-orb hero-orb-two" />
         <div className="hero-copy">
-          <div className="eyebrow"><span /> Matchningstjänst för Stockholm</div>
+          <div className="eyebrow"><span /> Jour dygnet runt</div>
           <h1>Akut elproblem?<br /><em>Vi står redo.</em></h1>
           <figure className="hero-team">
             <Image

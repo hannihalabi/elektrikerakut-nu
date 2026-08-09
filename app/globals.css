@@ -57,8 +57,8 @@ nav a:hover { color: var(--blue); }
 .hero-orb-one { width: 260px; height: 260px; right: -100px; top: 60px; background: rgba(22,104,232,.08); }
 .hero-orb-two { width: 100px; height: 100px; left: 42%; bottom: 80px; background: rgba(255,184,76,.12); }
 .hero-copy, .match-card { position: relative; z-index: 2; }
-.eyebrow { display: inline-flex; align-items: center; gap: 9px; text-transform: uppercase; letter-spacing: .13em; color: var(--blue-deep); font-size: 12px; font-weight: 800; }
-.eyebrow span { --dot-color: var(--blue); --dot-ring: rgba(22,104,232,.3); width: 8px; height: 8px; border-radius: 50%; background: var(--dot-color); box-shadow: 0 0 0 5px rgba(22,104,232,.11); }
+.eyebrow { display: inline-flex; align-items: center; gap: 9px; text-transform: uppercase; letter-spacing: .13em; color: var(--success); font-size: 12px; font-weight: 800; }
+.eyebrow span { --dot-color: #18a66f; --dot-ring: rgba(24,166,111,.36); width: 8px; height: 8px; border-radius: 50%; background: var(--dot-color); box-shadow: 0 0 0 5px rgba(24,166,111,.13); }
 h1 { font-size: clamp(52px, 5.3vw, 78px); line-height: .99; letter-spacing: -.065em; margin: 24px 0 25px; max-width: 720px; }
 h1 em { color: var(--blue); font-style: normal; }
 .hero-lead { font-size: 19px; line-height: 1.65; color: var(--muted); max-width: 590px; margin: 0; }
