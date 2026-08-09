@@ -89,10 +89,10 @@ export default function Home() {
     const startedAt = Date.now();
     const interval = window.setInterval(() => {
       const elapsed = Date.now() - startedAt;
-      setProgress(Math.min((elapsed / 4000) * 100, 100));
+      setProgress(Math.min((elapsed / 7000) * 100, 100));
       setLoadingStep(Math.min(Math.floor(elapsed / 1000), loadingSteps.length - 1));
 
-      if (elapsed >= 4000) {
+      if (elapsed >= 7000) {
         window.clearInterval(interval);
         setProgress(100);
         setView("result");

@@ -10,7 +10,7 @@ test("keeps the Elektrikerakut customer journey and area guard", async () => {
 
   assert.match(layout, /metadataBase: new URL\("https:\/\/elektrikerakut\.nu"\)/);
   assert.match(layout, /Elektrikerakut\.nu – snabb hjälp vid akuta elproblem/);
-  assert.match(page, /elapsed >= 4000/);
+  assert.match(page, /elapsed >= 7000/);
   assert.match(page, /value >= 10000 && value <= 19999/);
   assert.match(page, /Ops! Vi har just nu inga partners utanför Stockholm/);
   assert.match(page, /förmedlingstjänst och utför inte elinstallationsarbete/);
