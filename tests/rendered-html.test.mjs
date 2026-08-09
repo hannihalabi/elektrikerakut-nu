@@ -2,13 +2,13 @@ import assert from "node:assert/strict";
 import { access, readFile } from "node:fs/promises";
 import test from "node:test";
 
-async function render() {
+async function render(pathname = "/") {
   const workerUrl = new URL("../dist/server/index.js", import.meta.url);
   workerUrl.searchParams.set("test", `${process.pid}-${Date.now()}`);
   const { default: worker } = await import(workerUrl.href);
 
   return worker.fetch(
-    new Request("https://elektrikerakut.nu/", { headers: { accept: "text/html" } }),
+    new Request(new URL(pathname, "https://elektrikerakut.nu"), { headers: { accept: "text/html" } }),
     { ASSETS: { fetch: async () => new Response("Not found", { status: 404 }) } },
     { waitUntil() {}, passThroughOnException() {} },
   );
@@ -45,4 +45,33 @@ test("removes the disposable starter and wires product metadata", async () => {
 
 test("includes the generated social preview image", async () => {
   await access(new URL("../public/og.png", import.meta.url));
+});
+
+test("server-renders the partner application", async () => {
+  const response = await render("/bli-partner");
+  assert.equal(response.status, 200);
+
+  const html = await response.text();
+  assert.match(html, /Partneransökan/);
+  assert.match(html, /Berätta om företaget/);
+  assert.match(html, /Ansökan blir inte aktiv förrän/);
+});
+
+test("protects the partner register behind sign-in", async () => {
+  const response = await render("/admin/partners");
+  assert.equal(response.status, 307);
+  assert.match(response.headers.get("location") ?? "", /^\/signin-with-chatgpt\?return_to=%2Fadmin%2Fpartners$/);
+});
+
+test("ships the partner schema and migration", async () => {
+  const [schema, migration] = await Promise.all([
+    readFile(new URL("../db/schema.ts", import.meta.url), "utf8"),
+    readFile(new URL("../drizzle/0000_flippant_texas_twister.sql", import.meta.url), "utf8"),
+  ]);
+
+  assert.match(schema, /export const partners/);
+  assert.match(schema, /SELF_SERVICE/);
+  assert.match(schema, /registrationVerifiedAt/);
+  assert.match(migration, /CREATE TABLE `partners`/);
+  assert.match(migration, /PRAGMA optimize/);
 });

@@ -116,6 +116,7 @@ export default function Home() {
         <nav aria-label="Huvudnavigering">
           <a href="#sa-fungerar-det">Så fungerar det</a>
           <a href="#trygghet">Trygg matchning</a>
+          <a href="/bli-partner">Bli partner</a>
         </nav>
         <a className="header-action" href="#matchning"><PhoneCall size={17} /> Ring jouren</a>
       </header>
@@ -312,7 +313,7 @@ export default function Home() {
       <footer>
         <a className="brand footer-brand" href="#top"><span className="brand-mark"><Zap size={18} /></span><span>Elektrikerakut<span>.nu</span></span></a>
         <p>En snabb och transparent matchningstjänst för akuta elproblem i Stockholm.</p>
-        <div><a href="#matchning">Hitta elektriker</a><a href="#sa-fungerar-det">Så fungerar det</a><a href="#trygghet">Trygghet</a></div>
+        <div><a href="#matchning">Hitta elektriker</a><a href="#sa-fungerar-det">Så fungerar det</a><a href="#trygghet">Trygghet</a><a href="/bli-partner">Bli partner</a></div>
         <small>Prototyp – juridisk identitet, kontaktuppgifter, integritetspolicy, kakor och villkor kompletteras före publik lansering.</small>
       </footer>
 
