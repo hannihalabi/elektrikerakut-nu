@@ -218,7 +218,7 @@ export default function Home() {
             <a className="secondary-link" href="#matchning"><PhoneCall size={18} /> Ring för snabb hjälp</a>
           </div>
           <div className="trust-row" aria-label="Fördelar">
-            <span><ShieldCheck size={18} /> Registerkontrollerade partners</span>
+            <span><ShieldCheck size={18} /> Registerkontrollerade</span>
             <span><Clock3 size={18} /> Snabb återkoppling</span>
             <span><MapPin size={18} /> Stockholm med omnejd</span>
           </div>
