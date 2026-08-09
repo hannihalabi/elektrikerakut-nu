@@ -301,7 +301,7 @@ export default function Home() {
               <button className="submit-button" type="submit">Hitta elektriker nu <ArrowRight size={19} /></button>
               <p className="privacy-line"><ShieldCheck size={15} /> Prototyp: inga uppgifter skickas eller sparas ännu.</p>
               <p className="disclosure">
-                Elektrikerakut.nu är en förmedlingstjänst och utför inte elinstallationsarbete. Avtal om besök, pris och arbete ingås direkt med företaget som accepterar uppdraget.
+                Elektrikerakut.nu är en förmedlingstjänst och utför inte elinstallationsarbete.
               </p>
             </form>
           )}
