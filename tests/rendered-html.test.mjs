@@ -64,6 +64,6 @@ test("includes the generated brand and team assets", async () => {
   await Promise.all([
     access(new URL("../public/og.png", import.meta.url)),
     access(new URL("../public/favicon.png", import.meta.url)),
-    access(new URL("../public/personal.png", import.meta.url)),
+    access(new URL("../public/personal2.png", import.meta.url)),
   ]);
 });

@@ -18,7 +18,7 @@ import {
 } from "lucide-react";
 import Image from "next/image";
 import { type FormEvent, type ElementType, useEffect, useRef, useState } from "react";
-import personalImage from "../public/personal.png";
+import personalImage from "../public/personal2.png";
 
 type Issue = {
   id: string;
