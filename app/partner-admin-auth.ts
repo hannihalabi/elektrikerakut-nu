@@ -5,7 +5,7 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
 export const ADMIN_COOKIE = "elektrikerakut_admin";
-const SESSION_DURATION_SECONDS = 60 * 60 * 12;
+const SESSION_DURATION_SECONDS = 60 * 5;
 
 type PartnerAdmin = { email: string; displayName: string };
 

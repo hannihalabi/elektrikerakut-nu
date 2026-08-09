@@ -42,6 +42,7 @@ test("protects admin with a signed Vercel-compatible session", async () => {
   assert.match(auth, /createHmac\("sha256"/);
   assert.match(auth, /httpOnly|ADMIN_COOKIE/);
   assert.match(auth, /ADMIN_SESSION_SECRET/);
+  assert.match(auth, /SESSION_DURATION_SECONDS = 60 \* 5/);
   assert.match(login, /\/api\/admin\/session/);
 });
 
