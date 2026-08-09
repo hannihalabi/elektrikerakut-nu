@@ -2,6 +2,7 @@
 
 import { ArrowLeft, BadgeCheck, Building2, Check, ChevronDown, Clock3, ExternalLink, LogOut, Mail, MapPin, Pause, Phone, Plus, Search, ShieldCheck, UserRound, X, Zap } from "lucide-react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { type FormEvent, useEffect, useMemo, useState } from "react";
 
 type Status = "PENDING" | "ACTIVE" | "PAUSED" | "REJECTED";
@@ -35,6 +36,7 @@ const emptyPartner: NewPartner = { legalName: "", organizationNumber: "", contac
 const statusLabels: Record<Status, string> = { PENDING: "Väntar på granskning", ACTIVE: "Aktiv", PAUSED: "Pausad", REJECTED: "Avslagen" };
 
 export function PartnersAdmin({ displayName }: { displayName: string }) {
+  const router = useRouter();
   const [partners, setPartners] = useState<Partner[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -118,7 +120,8 @@ export function PartnersAdmin({ displayName }: { displayName: string }) {
 
   async function signOut() {
     await fetch("/api/admin/session", { method: "DELETE" });
-    window.location.assign("/admin/login");
+    router.push("/admin/login");
+    router.refresh();
   }
 
   return (

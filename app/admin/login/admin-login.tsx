@@ -2,9 +2,11 @@
 
 import { ArrowLeft, LockKeyhole, LogIn, ShieldCheck, Zap } from "lucide-react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { type FormEvent, useState } from "react";
 
 export function AdminLogin() {
+  const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -22,7 +24,8 @@ export function AdminLogin() {
       });
       const data = await response.json() as { error?: string };
       if (!response.ok) throw new Error(data.error ?? "Inloggningen misslyckades.");
-      window.location.assign("/admin");
+      router.push("/admin");
+      router.refresh();
     } catch (loginError) {
       setError(loginError instanceof Error ? loginError.message : "Inloggningen misslyckades.");
     } finally {
