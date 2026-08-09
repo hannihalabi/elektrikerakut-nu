@@ -151,7 +151,6 @@ export default function Home() {
             <figcaption>
               <span><i className="live-dot" aria-hidden="true" /> Personlig jourkontakt</span>
               <strong>Teamet bakom Elektrikerakut.nu</strong>
-              <small>Snabb teknik. Personlig återkoppling.</small>
             </figcaption>
           </figure>
           <p className="hero-lead">
