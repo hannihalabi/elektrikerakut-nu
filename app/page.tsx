@@ -57,7 +57,22 @@ export default function Home() {
   const [loadingStep, setLoadingStep] = useState(0);
   const [progress, setProgress] = useState(0);
   const [errors, setErrors] = useState<{ issue?: string; postcode?: string; phone?: string }>({});
+  const matchCardRef = useRef<HTMLDivElement>(null);
   const resultRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (view !== "loading") return;
+
+    const frame = window.requestAnimationFrame(() => {
+      const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      matchCardRef.current?.scrollIntoView({
+        behavior: reduceMotion ? "auto" : "smooth",
+        block: "start",
+      });
+    });
+
+    return () => window.cancelAnimationFrame(frame);
+  }, [view]);
 
   useEffect(() => {
     if (view !== "loading") return;
@@ -167,7 +182,7 @@ export default function Home() {
           </div>
         </div>
 
-        <div className="match-card" id="matchning">
+        <div className="match-card" id="matchning" ref={matchCardRef}>
           <div className="card-topline">
             <span className="live-dot" />
             <span>Snabb matchning</span>

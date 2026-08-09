@@ -16,6 +16,8 @@ test("keeps the Elektrikerakut customer journey and area guard", async () => {
   assert.match(page, /förmedlingstjänst och utför inte elinstallationsarbete/);
   assert.match(page, /Teamet bakom Elektrikerakut\.nu/);
   assert.match(page, /personalImage/);
+  assert.match(page, /matchCardRef\.current\?\.scrollIntoView/);
+  assert.match(page, /requestAnimationFrame/);
   assert.match(page, /prefers-reduced-motion|aria-live/);
 });
 
