@@ -278,27 +278,38 @@ export function SeoUrlMap({ items, areas, origin }: { items: SeoUrlItem[]; areas
       const batches = Array.from({ length: Math.ceil(indexableItems.length / 20) }, (_, index) => indexableItems.slice(index * 20, index * 20 + 20));
       let completed = 0;
       let lastInspectedAt: string | null = null;
+      let failedUrlCount = 0;
       for (const batch of batches) {
-        const response = await fetch("/api/admin/search-console/indexing", {
-          method: "POST",
-          credentials: "same-origin",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ paths: batch.map((item) => item.path) }),
-        });
-        const text = await response.text();
-        let payload: { results?: IndexingResult[]; inspectedAt?: string; error?: string };
         try {
-          payload = JSON.parse(text) as { results?: IndexingResult[]; inspectedAt?: string; error?: string };
+          const response = await fetch("/api/admin/search-console/indexing", {
+            method: "POST",
+            credentials: "same-origin",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ paths: batch.map((item) => item.path) }),
+          });
+          const text = await response.text();
+          let payload: { results?: IndexingResult[]; inspectedAt?: string; error?: string };
+          try {
+            payload = JSON.parse(text) as { results?: IndexingResult[]; inspectedAt?: string; error?: string };
+          } catch {
+            throw new Error("Search Console svarade inte i tid.");
+          }
+          if (!response.ok || !payload.results || !payload.inspectedAt) throw new Error(payload.error ?? "Kunde inte hämta indexstatus.");
+          setIndexing((current) => ({ ...current, ...Object.fromEntries(payload.results!.map((result) => [result.path, result])) }));
+          lastInspectedAt = payload.inspectedAt;
         } catch {
-          throw new Error("Search Console svarade inte i tid. Försök igen om en stund.");
+          failedUrlCount += batch.length;
+          lastInspectedAt ??= new Date().toISOString();
+          setIndexing((current) => ({
+            ...current,
+            ...Object.fromEntries(batch.map((item) => [item.path, { path: item.path, state: "ERROR" as const, coverageState: null, verdict: null, lastCrawlTime: null, googleCanonical: null }])),
+          }));
         }
-        if (!response.ok || !payload.results || !payload.inspectedAt) throw new Error(payload.error ?? "Kunde inte hämta indexstatus.");
-        setIndexing((current) => ({ ...current, ...Object.fromEntries(payload.results!.map((result) => [result.path, result])) }));
         completed += batch.length;
-        lastInspectedAt = payload.inspectedAt;
         setInspectionProgress({ done: completed, total: indexableItems.length });
       }
       setInspectedAt(lastInspectedAt);
+      if (failedUrlCount) setInspectionError(`${failedUrlCount} av ${indexableItems.length} URL:er kunde inte kontrolleras just nu och visas som "Kunde ej kontrolleras". Tryck Uppdatera status för att försöka igen.`);
     } catch (error) {
       setInspectionError(error instanceof Error ? error.message : "Kunde inte hämta indexstatus.");
     } finally {
