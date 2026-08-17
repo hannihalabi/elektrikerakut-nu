@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowRight, BatteryCharging, BookOpen, CircleOff, Clock3, Home, Lightbulb, PlugZap, Search, ShieldAlert, TriangleAlert, Zap } from "lucide-react";
+import { ArrowDownUp, ArrowRight, BatteryCharging, BookOpen, CircleOff, Clock3, Home, Lightbulb, PlugZap, Search, ShieldAlert, TriangleAlert, Zap } from "lucide-react";
 import { useMemo, useState } from "react";
 import type { GuidePost } from "./posts";
 import { servicePhotos } from "../site-photos";
@@ -32,17 +32,34 @@ function matches(post: GuidePost, query: string) {
   return haystack.includes(query.toLocaleLowerCase("sv-SE").trim());
 }
 
+type SortOrder = "senaste" | "aldsta" | "az";
+
+const sortOptions: { id: SortOrder; label: string }[] = [
+  { id: "senaste", label: "Senaste först" },
+  { id: "aldsta", label: "Äldsta först" },
+  { id: "az", label: "Titel A–Ö" },
+];
+
+function sortPosts(posts: GuidePost[], order: SortOrder) {
+  const sorted = [...posts];
+  if (order === "az") return sorted.sort((left, right) => left.title.localeCompare(right.title, "sv-SE"));
+  sorted.sort((left, right) => left.publishedAt.localeCompare(right.publishedAt));
+  return order === "senaste" ? sorted.reverse() : sorted;
+}
+
 export function GuideLibrary({ posts }: { posts: GuidePost[] }) {
   const [activeTopic, setActiveTopic] = useState("alla");
   const [query, setQuery] = useState("");
   const [showAll, setShowAll] = useState(false);
+  const [sortOrder, setSortOrder] = useState<SortOrder>("senaste");
 
   const visiblePosts = useMemo(() => {
     const topic = topics.find((item) => item.id === activeTopic);
-    return posts.filter((post) => (!topic || topic.categories.includes(post.category)) && (!query.trim() || matches(post, query)));
-  }, [activeTopic, posts, query]);
+    const filtered = posts.filter((post) => (!topic || topic.categories.includes(post.category)) && (!query.trim() || matches(post, query)));
+    return sortPosts(filtered, sortOrder);
+  }, [activeTopic, posts, query, sortOrder]);
 
-  const featuredPosts = posts.slice(0, 6);
+  const featuredPosts = useMemo(() => sortPosts(posts, sortOrder).slice(0, 6), [posts, sortOrder]);
   const isFiltered = activeTopic !== "alla" || Boolean(query.trim());
   const displayedPosts = isFiltered || showAll ? visiblePosts : featuredPosts;
 
@@ -65,7 +82,10 @@ export function GuideLibrary({ posts }: { posts: GuidePost[] }) {
 
     <section className="guide-browser" aria-labelledby="guide-browser-title">
       <div className="guide-browser-copy"><span><BookOpen size={17} /> Utforska alla guider</span><h2 id="guide-browser-title">Sök eller välj ett ämne</h2><p>{posts.length} guider om elfel, elsäkerhet och vardagliga frågor i hemmet.</p></div>
-      <label className="guide-search"><Search size={18} /><span className="sr-only">Sök bland guider</span><input type="search" value={query} onChange={(event) => { setQuery(event.target.value); setShowAll(true); }} placeholder="Sök, till exempel jordfelsbrytare eller laddare" /></label>
+      <div className="guide-search-row">
+        <label className="guide-search"><Search size={18} /><span className="sr-only">Sök bland guider</span><input type="search" value={query} onChange={(event) => { setQuery(event.target.value); setShowAll(true); }} placeholder="Sök, till exempel jordfelsbrytare eller laddare" /></label>
+        <label className="guide-sort"><ArrowDownUp size={16} /><span className="sr-only">Sortera guider</span><select value={sortOrder} onChange={(event) => setSortOrder(event.target.value as SortOrder)}>{sortOptions.map((option) => <option key={option.id} value={option.id}>{option.label}</option>)}</select></label>
+      </div>
       <div className="guide-topic-list" aria-label="Ämnesfilter">
         <button className={activeTopic === "alla" ? "active" : ""} type="button" onClick={() => chooseTopic("alla")}>Alla guider <small>{posts.length}</small></button>
         {topics.map((topic) => <button className={activeTopic === topic.id ? "active" : ""} type="button" key={topic.id} onClick={() => chooseTopic(topic.id)}>{topic.label} <small>{posts.filter((post) => topic.categories.includes(post.category)).length}</small></button>)}
