@@ -113,6 +113,48 @@ function StatCard({ icon: Icon, label, value, tone }: { icon: typeof BarChart3; 
   return <article className="seo-stat-card"><span className={tone ?? ""}><Icon size={19} /></span><small>{label}</small><strong>{value}</strong></article>;
 }
 
+function SeoIndexingChart({ breakdown, notChecked, total, inspectedAt, activeFilter, onSelectFilter }: {
+  breakdown: { key: IndexingFilter; label: string; count: number; className: string }[];
+  notChecked: number;
+  total: number;
+  inspectedAt: string | null;
+  activeFilter: IndexingFilter;
+  onSelectFilter: (filter: IndexingFilter) => void;
+}) {
+  if (!inspectedAt) return null;
+  const scale = Math.max(total, 1);
+  return (
+    <div className="seo-indexing-chart" role="group" aria-label="Fördelning av Google-indexeringsstatus">
+      <div className="seo-indexing-chart-head">
+        <h3>Indexeringsstatus, fördelning</h3>
+        <span>{total} kontrollerade URL:er · uppdateras vid varje statuskontroll</span>
+      </div>
+      <div className="seo-indexing-chart-bars">
+        {breakdown.map((row) => (
+          <button
+            type="button"
+            key={row.key}
+            className={`seo-indexing-chart-row ${row.className}${activeFilter === row.key ? " active" : ""}`}
+            onClick={() => onSelectFilter(activeFilter === row.key ? "ALL" : row.key)}
+            aria-pressed={activeFilter === row.key}
+          >
+            <span className="seo-indexing-chart-label">{row.label}</span>
+            <span className="seo-indexing-chart-track"><span className="seo-indexing-chart-fill" style={{ width: `${(row.count / scale) * 100}%` }} /></span>
+            <span className="seo-indexing-chart-value">{row.count}</span>
+          </button>
+        ))}
+        {notChecked > 0 && (
+          <div className="seo-indexing-chart-row unknown" aria-disabled="true">
+            <span className="seo-indexing-chart-label">Ej kontrollerad</span>
+            <span className="seo-indexing-chart-track"><span className="seo-indexing-chart-fill" style={{ width: `${(notChecked / scale) * 100}%` }} /></span>
+            <span className="seo-indexing-chart-value">{notChecked}</span>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
 export function SeoUrlMap({ items, areas, origin }: { items: SeoUrlItem[]; areas: ServiceArea[]; origin: string }) {
   const [query, setQuery] = useState("");
   const [filter, setFilter] = useState<Filter>("ALL");
@@ -177,6 +219,14 @@ export function SeoUrlMap({ items, areas, origin }: { items: SeoUrlItem[]; areas
   const crawledNotIndexed = Object.values(indexing).filter((result) => result.state === "CRAWLED_NOT_INDEXED");
   const discoveredNotIndexed = Object.values(indexing).filter((result) => result.state === "DISCOVERED_NOT_INDEXED");
   const excluded = Object.values(indexing).filter((result) => result.state === "EXCLUDED");
+  const erroredCount = Object.values(indexing).filter((result) => result.state === "ERROR").length;
+  const notCheckedCount = Math.max(indexableItems.length - Object.keys(indexing).length, 0);
+  const indexingBreakdown: { key: IndexingFilter; label: string; count: number; className: string }[] = [
+    { key: "INDEXED", label: "Indexerad", count: indexedCount, className: "indexed" },
+    { key: "CRAWLED_NOT_INDEXED", label: "Crawlad, ej indexerad", count: crawledNotIndexed.length, className: "crawled-not-indexed" },
+    { key: "DISCOVERED_NOT_INDEXED", label: "Upptäckt, ej indexerad", count: discoveredNotIndexed.length, className: "discovered-not-indexed" },
+    { key: "EXCLUDED", label: "Exkluderad eller fel", count: excluded.length + erroredCount, className: "excluded" },
+  ];
   const bingIndexedCount = Object.values(bingIndexing).filter((result) => result.state === "INDEXED").length;
   const bingAttentionCount = Object.values(bingIndexing).filter(bingNeedsReview).length;
   const bingCrawledNotIndexedCount = Object.values(bingIndexing).filter((result) => result.state === "CRAWLED_NOT_INDEXED").length;
@@ -447,6 +497,15 @@ export function SeoUrlMap({ items, areas, origin }: { items: SeoUrlItem[]; areas
           {indexNowError && <p className="seo-indexing-error">{indexNowError}</p>}
           {indexNowHistory.length > 0 ? <div className="seo-indexnow-table-wrap"><table><thead><tr><th>URL</th><th>Åtgärd</th><th>Skickad</th><th>Svar</th></tr></thead><tbody>{indexNowHistory.slice(0, 12).map((entry) => <tr key={`${entry.id}-${entry.path}-${entry.submittedAt}`}><td><code>{entry.path}</code></td><td>{entry.action === "DELETED" ? "Borttagen" : "Uppdaterad"}</td><td>{formatCrawlTime(entry.submittedAt)}</td><td><span className={entry.success ? "success" : "failed"}>{entry.responseStatus ?? "–"} {entry.responseMessage ?? "Inget svar"}</span></td></tr>)}</tbody></table></div> : <div className="seo-indexnow-empty"><Send size={20} /><span>Ingen IndexNow-historik ännu. Välj en publik URL längre ned för att skicka den efter en faktisk ändring.</span></div>}
         </section>
+
+        <SeoIndexingChart
+          breakdown={indexingBreakdown}
+          notChecked={notCheckedCount}
+          total={indexableItems.length}
+          inspectedAt={inspectedAt}
+          activeFilter={indexingFilter}
+          onSelectFilter={showIndexingFilter}
+        />
 
         <div className="seo-stat-grid">
           <StatCard icon={Globe2} label="HTML-sidor" value={htmlCount} />
