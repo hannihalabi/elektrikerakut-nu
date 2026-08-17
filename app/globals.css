@@ -376,6 +376,23 @@ footer > small { grid-column: 1 / -1; color: #8994a4; font-size: 9px; line-heigh
 .search-trend-tooltip i.impressions { background: #b7c6dc; }
 .search-trend-axis-labels { display: flex; justify-content: space-between; margin-top: 4px; padding: 0 16px; color: #9aa7ba; font-size: 9px; }
 .search-trend-caption { display: flex; align-items: center; gap: 6px; margin: 16px 0 0; color: #8290a1; font-size: 10px; }
+.live-feed-card { margin-top: 0; }
+.live-feed-active-paths { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px; }
+.live-feed-active-pill { display: inline-flex; align-items: center; gap: 7px; padding: 6px 10px; border-radius: 999px; background: #eefbf6; color: #087b53; font-size: 10px; font-weight: 700; }
+.live-feed-active-pill i { width: 6px; height: 6px; border-radius: 50%; background: #0ca86e; animation: dot-breathe 2s ease-in-out infinite; }
+.live-feed-active-pill small { padding: 1px 5px; border-radius: 999px; background: rgba(8,123,83,.14); font-weight: 850; }
+.live-feed-list { display: grid; gap: 2px; margin: 18px 0 0; padding: 0; list-style: none; max-height: 340px; overflow-y: auto; }
+.live-feed-row { display: grid; grid-template-columns: 26px auto 1fr auto; align-items: center; gap: 10px; padding: 9px 6px; border-radius: 8px; }
+.live-feed-row:hover { background: #f7faff; }
+.live-feed-icon { width: 26px; height: 26px; display: grid; place-items: center; border-radius: 8px; background: #eef1f5; color: #6d7f95; }
+.live-feed-row.blue .live-feed-icon { background: #eaf2ff; color: var(--blue); }
+.live-feed-row.green .live-feed-icon { background: #e3f6ef; color: var(--success); }
+.live-feed-row.amber .live-feed-icon { background: #fff1dc; color: #b76b0f; }
+.live-feed-row.red .live-feed-icon { background: #ffedeb; color: #b24b3a; }
+.live-feed-label { color: #334d6b; font-size: 11px; font-weight: 700; white-space: nowrap; }
+.live-feed-path { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: #8290a1; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 10px; }
+.live-feed-time { flex: 0 0 auto; color: #9aa7ba; font-size: 9px; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.live-feed-empty { padding: 20px 6px; color: #9aa7ba; font-size: 11px; text-align: center; }
 .admin-topbar { display: flex; align-items: end; justify-content: space-between; gap: 30px; }
 .admin-topbar p { margin: 0 0 5px; color: var(--blue); font-size: 10px; font-weight: 850; text-transform: uppercase; letter-spacing: .1em; }
 .admin-topbar h1 { margin: 0; font-size: 36px; line-height: 1; letter-spacing: -.045em; }
@@ -995,6 +1012,11 @@ footer > small { grid-column: 1 / -1; color: #8994a4; font-size: 9px; line-heigh
   .seo-map-board { grid-template-columns: 1fr; }
   .seo-detail-card { position: static; }
   .search-trend-summary { grid-template-columns: 1fr 1fr; }
+  .live-feed-row { grid-template-columns: 22px 1fr; grid-template-areas: "icon label" "icon path" "icon time"; row-gap: 2px; }
+  .live-feed-row .live-feed-icon { grid-area: icon; }
+  .live-feed-row .live-feed-label { grid-area: label; }
+  .live-feed-row .live-feed-path { grid-area: path; }
+  .live-feed-row .live-feed-time { grid-area: time; }
 }
 
 @media (max-width: 700px) {

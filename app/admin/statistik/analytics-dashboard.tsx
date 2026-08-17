@@ -4,6 +4,7 @@ import { ArrowLeft, BarChart3, CheckCircle2, ChevronLeft, ChevronRight, Eye, Fil
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { SearchConsoleTrend } from "./search-console-trend";
+import { LiveActivityFeed } from "./live-activity-feed";
 
 type Stats = { visitsDay: number; visitsWeek: number; visitsMonth: number; matchesMonth: number; foundMonth: number };
 
@@ -54,6 +55,7 @@ export function AnalyticsDashboard() {
         <header className="admin-topbar"><div><p>Besöksdata</p><h1>Statistik</h1></div><span className="analytics-live-badge"><Radio size={14} /> Live från webbplatsen</span></header>
         {error ? <p className="admin-alert" role="alert">{error}</p> : !stats ? <div className="admin-empty analytics-loading"><LoaderCircle className="admin-spinner" size={28} /> Hämtar statistik…</div> : (
           <>
+            <LiveActivityFeed />
             <div className="admin-stats analytics-stats">
               <article><span><Eye size={19} /></span><small>Besök senaste 24 h</small><strong>{stats.visitsDay}</strong></article>
               <article><span className="green"><Users size={19} /></span><small>Besök senaste 7 dagar</small><strong>{stats.visitsWeek}</strong></article>
