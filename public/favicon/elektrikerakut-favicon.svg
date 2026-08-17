@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Elektrikerakut blixtikon">
+  <rect width="512" height="512" rx="72" fill="#3673F5"/>
+  <path d="M285 90 151 265h92l-31 157 149-199h-96l20-133Z"
+        fill="none" stroke="#FFFFFF" stroke-width="30"
+        stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

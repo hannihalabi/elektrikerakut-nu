@@ -50,6 +50,7 @@ export function AdminLogin() {
           {error && <p className="form-error" role="alert">{error}</p>}
           <button className="submit-button" type="submit" disabled={submitting}>{submitting ? "Loggar in…" : "Logga in"}<LogIn size={17} /></button>
         </form>
+        <Link className="password-reset-link" href="/admin/aterstall-losenord">Glömt lösenordet?</Link>
         <div className="admin-login-security"><ShieldCheck size={16} /> Säker, tidsbegränsad session</div>
         <Link className="back-link" href="/"><ArrowLeft size={16} /> Till kundsidan</Link>
       </section>

@@ -17,8 +17,10 @@ import {
   Zap,
 } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 import { type FormEvent, type ElementType, useEffect, useRef, useState } from "react";
 import personalImage from "../public/personal2.png";
+import { servicePhotos } from "./site-photos";
 
 type Issue = {
   id: string;
@@ -43,9 +45,11 @@ const loadingSteps = [
 ];
 
 type ViewState = "form" | "loading" | "result" | "unavailable";
+type AnalyticsEvent = "CTA_CLICK" | "FORM_ERROR" | "REQUEST_SUBMITTED" | "MATCH_STARTED" | "MATCH_FOUND" | "MATCH_NOT_FOUND" | "COVERAGE_UNAVAILABLE";
 type MatchedPartner = {
   publicId: string;
   legalName: string;
+  logoUrl: string | null;
   phone: string;
   website: string | null;
   serviceAreas: string;
@@ -54,18 +58,27 @@ type MatchedPartner = {
 
 function isStockholmPostcode(postcode: string) {
   const value = Number(postcode);
-  return Number.isInteger(value) && value >= 10000 && value <= 19999;
+  return Number.isInteger(value) && ((value >= 10000 && value <= 19999) || (value >= 76000 && value <= 76999));
+}
+
+function formatCallbackTimer(seconds: number) {
+  const minutes = Math.floor(seconds / 60).toString().padStart(2, "0");
+  const remainingSeconds = (seconds % 60).toString().padStart(2, "0");
+  return `${minutes}:${remainingSeconds}`;
 }
 
 export default function Home() {
   const [selectedIssue, setSelectedIssue] = useState("");
+  const [details, setDetails] = useState("");
   const [postcode, setPostcode] = useState("");
   const [phone, setPhone] = useState("");
+  const [accepted, setAccepted] = useState(false);
   const [view, setView] = useState<ViewState>("form");
   const [loadingStep, setLoadingStep] = useState(0);
   const [progress, setProgress] = useState(0);
   const [matchedPartner, setMatchedPartner] = useState<MatchedPartner | null>(null);
-  const [errors, setErrors] = useState<{ issue?: string; postcode?: string; phone?: string }>({});
+  const [callbackSeconds, setCallbackSeconds] = useState(0);
+  const [errors, setErrors] = useState<{ issue?: string; details?: string; postcode?: string; phone?: string; accepted?: string }>({});
   const matchCardRef = useRef<HTMLDivElement>(null);
   const resultRef = useRef<HTMLDivElement>(null);
 
@@ -106,11 +119,23 @@ export default function Home() {
     if (view === "result" || view === "unavailable") resultRef.current?.focus();
   }, [view]);
 
+  useEffect(() => {
+    if (view !== "result" || !matchedPartner) {
+      return;
+    }
+
+    const interval = window.setInterval(() => {
+      setCallbackSeconds((current) => Math.max(current - 1, 0));
+    }, 1000);
+
+    return () => window.clearInterval(interval);
+  }, [view, matchedPartner]);
+
   function normalizePostcode(value: string) {
     return value.replace(/\D/g, "").slice(0, 5);
   }
 
-  function recordEvent(eventType: "MATCH_STARTED" | "MATCH_FOUND") {
+  function recordEvent(eventType: AnalyticsEvent) {
     void fetch("/api/events", {
       method: "POST",
       headers: { "content-type": "application/json" },
@@ -125,27 +150,46 @@ export default function Home() {
     const nextErrors: typeof errors = {};
 
     if (!selectedIssue) nextErrors.issue = "Välj det som bäst beskriver problemet.";
+    if (selectedIssue === "other" && details.trim().length < 5) nextErrors.details = "Beskriv kort vad som har hänt.";
     if (!/^\d{5}$/.test(postcode)) nextErrors.postcode = "Ange ett svenskt postnummer med fem siffror.";
     if (digits.length < 7) nextErrors.phone = "Ange ett telefonnummer där elektrikern kan nå dig.";
+    if (!accepted) nextErrors.accepted = "Godkänn att vi använder uppgifterna för att hantera förfrågan.";
 
     setErrors(nextErrors);
-    if (Object.keys(nextErrors).length) return;
-
-    if (!isStockholmPostcode(postcode)) {
-      setView("unavailable");
+    if (Object.keys(nextErrors).length) {
+      recordEvent("FORM_ERROR");
       return;
     }
 
     setProgress(0);
     setLoadingStep(0);
     setMatchedPartner(null);
-    setView("loading");
-    recordEvent("MATCH_STARTED");
-    void fetch("/api/match", {
+    const requestPromise = fetch("/api/requests", {
       method: "POST",
       headers: { "content-type": "application/json" },
-      body: JSON.stringify({ issue: selectedIssue, postcode }),
+      body: JSON.stringify({ issue: selectedIssue, details: details.trim(), postcode, phone, accepted }),
     })
+      .then(async (response) => {
+        if (!response.ok) throw new Error("Förfrågan kunde inte sparas.");
+        recordEvent("REQUEST_SUBMITTED");
+        return await response.json() as { request?: { id: number } };
+      });
+
+    if (!isStockholmPostcode(postcode)) {
+      setView("unavailable");
+      recordEvent("COVERAGE_UNAVAILABLE");
+      void requestPromise.catch(() => undefined);
+      return;
+    }
+
+    setView("loading");
+    recordEvent("MATCH_STARTED");
+    void requestPromise
+      .then(({ request }) => fetch("/api/match", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ issue: selectedIssue, details: details.trim(), postcode, phone, requestId: request?.id }),
+      }))
       .then(async (response) => {
         if (!response.ok) return null;
         const data = await response.json() as { match?: MatchedPartner | null };
@@ -153,6 +197,8 @@ export default function Home() {
       })
       .then((match) => {
         if (match) recordEvent("MATCH_FOUND");
+        else recordEvent("MATCH_NOT_FOUND");
+        setCallbackSeconds(match ? 120 : 0);
         setMatchedPartner(match);
       })
       .catch(() => setMatchedPartner(null));
@@ -160,11 +206,14 @@ export default function Home() {
 
   function resetSearch() {
     setSelectedIssue("");
+    setDetails("");
     setPostcode("");
     setPhone("");
+    setAccepted(false);
     setProgress(0);
     setLoadingStep(0);
     setMatchedPartner(null);
+    setCallbackSeconds(0);
     setErrors({});
     setView("form");
   }
@@ -177,12 +226,13 @@ export default function Home() {
           <span>Elektrikerakut<span>.nu</span></span>
         </a>
         <nav aria-label="Huvudnavigering">
-          <a href="#sa-fungerar-det">Så fungerar det</a>
-          <a href="#trygghet">Trygg matchning</a>
+          <Link href="/eljour">Så fungerar det</Link>
+          <Link href="/trygghet">Trygg matchning</Link>
+          <Link href="/guider">Elguiden</Link>
         </nav>
         <div className="header-actions">
           <a className="header-partner" href="/bli-partner">Bli partner</a>
-          <a className="header-action" href="#matchning"><PhoneCall size={17} /> Ring jouren</a>
+          <a className="header-action" href="#matchning" onClick={() => recordEvent("CTA_CLICK")}><PhoneCall size={17} /> Få snabb hjälp</a>
           <a className="header-login" href="/admin/login" aria-label="Logga in" title="Logga in">
             <LogIn size={19} aria-hidden="true" />
           </a>
@@ -202,6 +252,7 @@ export default function Home() {
               fill
               sizes="(max-width: 700px) calc(100vw - 32px), (max-width: 980px) 560px, 590px"
               placeholder="blur"
+              priority
               quality={82}
             />
             <figcaption>
@@ -213,8 +264,8 @@ export default function Home() {
             Vi kvalificerar elföretagen och skapar prispress på jouruppdragen – så att du får snabb, trygg hjälp utan onödiga kostnader.
           </p>
           <div className="hero-actions">
-            <a className="primary-link" href="#matchning"><Zap size={18} fill="currentColor" /> Hitta elektriker nu <ArrowRight size={18} /></a>
-            <a className="secondary-link" href="#matchning"><PhoneCall size={18} /> Ring för snabb hjälp</a>
+            <a className="primary-link" href="#matchning" onClick={() => recordEvent("CTA_CLICK")}><Zap size={18} fill="currentColor" /> Hitta elektriker nu <ArrowRight size={18} /></a>
+            <a className="secondary-link" href="#matchning" onClick={() => recordEvent("CTA_CLICK")}><PhoneCall size={18} /> Starta matchning</a>
           </div>
           <div className="trust-row" aria-label="Fördelar">
             <span><ShieldCheck size={18} /> Registerkontrollerade</span>
@@ -227,7 +278,6 @@ export default function Home() {
           <div className="card-topline">
             <span className="live-dot" />
             <span>Snabb matchning</span>
-            <small>Prototypläge</small>
           </div>
 
           {view === "form" && (
@@ -251,7 +301,8 @@ export default function Home() {
                         aria-pressed={selected}
                         onClick={() => {
                           setSelectedIssue(issue.id);
-                          setErrors((current) => ({ ...current, issue: undefined }));
+                          if (issue.id !== "other") setDetails("");
+                          setErrors((current) => ({ ...current, issue: undefined, details: undefined }));
                         }}
                       >
                         <span className="issue-icon"><Icon size={20} /></span>
@@ -297,8 +348,31 @@ export default function Home() {
                 </label>
               </div>
 
+              {selectedIssue === "other" && (
+                <label className="details-field">
+                  <span>Beskriv kort vad som hänt</span>
+                  <textarea
+                    rows={3}
+                    maxLength={500}
+                    value={details}
+                    aria-invalid={Boolean(errors.details)}
+                    onChange={(event) => {
+                      setDetails(event.target.value);
+                      setErrors((current) => ({ ...current, details: undefined }));
+                    }}
+                    placeholder="Exempel: Lamporna blinkar och det luktar bränt från elcentralen."
+                  />
+                  {errors.details && <small className="field-error">{errors.details}</small>}
+                </label>
+              )}
+
               <button className="submit-button" type="submit">Hitta elektriker nu <ArrowRight size={19} /></button>
-              <p className="privacy-line"><ShieldCheck size={15} /> Prototyp: inga uppgifter skickas eller sparas ännu.</p>
+              <label className="request-consent">
+                <input type="checkbox" checked={accepted} onChange={(event) => { setAccepted(event.target.checked); setErrors((current) => ({ ...current, accepted: undefined })); }} />
+                <span>Jag godkänner att vi använder uppgifterna för att hantera min förfrågan. <Link href="/integritetspolicy">Läs integritetspolicyn</Link>.</span>
+              </label>
+              {errors.accepted && <p className="field-error consent-error">{errors.accepted}</p>}
+              <p className="privacy-line"><ShieldCheck size={15} /> En förfrågan är kostnadsfri. Partnern utför och fakturerar arbetet direkt.</p>
               <p className="disclosure">
                 Elektrikerakut.nu är en förmedlingstjänst och utför inte elinstallationsarbete.
               </p>
@@ -336,7 +410,7 @@ export default function Home() {
               <h2>{matchedPartner ? "Vi hittade rätt hjälp" : "Din förfrågan är redo"}</h2>
               <p>{matchedPartner ? "En aktiv partner matchar ditt område och den typ av elproblem du valt." : "Vi hittade ingen aktiv partner som matchar både område och kompetens just nu."}</p>
               <div className="result-preview">
-                <span className="partner-avatar"><Zap size={22} /></span>
+                <span className="partner-avatar">{matchedPartner?.logoUrl ? <span className="partner-logo" role="img" aria-label={`Logotyp för ${matchedPartner.legalName}`} style={{ backgroundImage: `url(${matchedPartner.logoUrl})` }} /> : <Zap size={22} />}</span>
                 <span><small>{matchedPartner ? "Vald leverantör" : "Matchningsstatus"}</small><strong>{matchedPartner?.legalName ?? "Ingen aktiv partner hittades"}</strong></span>
                 {matchedPartner && <BadgeCheck size={22} className="verified-icon" />}
               </div>
@@ -344,7 +418,15 @@ export default function Home() {
                 <span><Clock3 size={17} /><small>{matchedPartner ? "Tillgänglighet" : "Återkoppling"}</small><strong>{matchedPartner?.availability ?? "Ingen bekräftad match"}</strong></span>
                 <span><MapPin size={17} /><small>Område</small><strong>{matchedPartner?.serviceAreas ?? `${postcode.slice(0, 3)} **`}</strong></span>
               </div>
-              {matchedPartner && <a className="submit-button" href={`tel:${matchedPartner.phone}`}><PhoneCall size={18} /> Ring {matchedPartner.legalName}</a>}
+              {matchedPartner && (
+                <div className="callback-promise" role="status" aria-live="polite">
+                  <PhoneCall size={20} />
+                  <span>
+                    <strong>Vi ringer dig inom 2 minuter</strong>
+                    <small>Beräknad tid kvar: {formatCallbackTimer(callbackSeconds)}</small>
+                  </span>
+                </div>
+              )}
               <button className="submit-button" type="button" onClick={resetSearch}><RotateCcw size={18} /> Starta ny sökning</button>
               <p className="privacy-line">{matchedPartner ? "Partnern utför och fakturerar arbetet direkt." : "Försök igen senare när fler partners är aktiva i området."}</p>
             </div>
@@ -367,10 +449,11 @@ export default function Home() {
         <span><TriangleAlert size={22} /></span>
         <p><strong>Brand, rök eller omedelbar personfara?</strong> Lämna platsen och ring 112. Rör inte skadad elektrisk utrustning.</p>
       </section>
+      <figure className="home-trust-photo"><Image src={servicePhotos[8]} alt="Elektriker med verktyg vid servicebil utanför en bostad" width={1448} height={1086} sizes="(max-width: 700px) calc(100vw - 48px), 720px" quality={82} /></figure>
 
       <div className="mobile-actions">
-        <a href="#matchning"><PhoneCall size={18} /> Ring</a>
-        <a href="#matchning">Hitta elektriker <ArrowRight size={17} /></a>
+        <a href="#matchning" onClick={() => recordEvent("CTA_CLICK")}><PhoneCall size={18} /> Hjälp nu</a>
+        <a href="#matchning" onClick={() => recordEvent("CTA_CLICK")}>Hitta elektriker <ArrowRight size={17} /></a>
       </div>
     </main>
   );

@@ -13,7 +13,7 @@ export async function POST(request: Request) {
     const payload = await request.json() as Record<string, unknown>;
     const email = text(payload.email, 160).toLowerCase();
     const password = text(payload.password, 300);
-    if (!authenticatePartnerAdmin(email, password)) {
+    if (!await authenticatePartnerAdmin(email, password)) {
       await new Promise((resolve) => setTimeout(resolve, 450));
       return NextResponse.json({ error: "Fel e-postadress eller lösenord." }, { status: 401 });
     }

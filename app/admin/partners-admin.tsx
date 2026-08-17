@@ -1,9 +1,11 @@
 "use client";
 
-import { ArrowLeft, BadgeCheck, BarChart3, Building2, Check, ChevronDown, Clock3, ExternalLink, LogOut, Mail, MapPin, Pause, Phone, Plus, Search, ShieldCheck, UserRound, X, Zap } from "lucide-react";
+import { ArrowLeft, BadgeCheck, BarChart3, Building2, Check, ChevronDown, ChevronLeft, ChevronRight, Clock3, ExternalLink, FileText, LogOut, Mail, MapPin, Network, Pause, Phone, PhoneCall, Plus, Search, ShieldCheck, X, Zap } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { type FormEvent, useEffect, useMemo, useState } from "react";
+import { ProfilePhotoCropper } from "./profile-photo-cropper";
+import { ProfileSettings } from "./profile-settings";
 
 type Status = "PENDING" | "ACTIVE" | "PAUSED" | "REJECTED";
 type Partner = {
@@ -15,6 +17,7 @@ type Partner = {
   email: string;
   phone: string;
   website: string | null;
+  logoUrl: string | null;
   serviceAreas: string;
   capabilities: string[];
   availability: string;
@@ -46,6 +49,10 @@ export function PartnersAdmin({ displayName }: { displayName: string }) {
   const [draft, setDraft] = useState<NewPartner>(emptyPartner);
   const [saving, setSaving] = useState(false);
   const [updatingId, setUpdatingId] = useState<number | null>(null);
+  const [uploadingId, setUploadingId] = useState<number | null>(null);
+  const [profileUrl, setProfileUrl] = useState<string | null>(null);
+  const [profileName, setProfileName] = useState(displayName);
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
 
   useEffect(() => {
     let active = true;
@@ -63,6 +70,25 @@ export function PartnersAdmin({ displayName }: { displayName: string }) {
       });
     return () => { active = false; };
   }, []);
+
+  useEffect(() => {
+    void fetch("/api/admin/profile", { cache: "no-store" }).then((response) => response.json()).then((data: { profile?: { photoUrl?: string | null } }) => setProfileUrl(data.profile?.photoUrl ?? null)).catch(() => undefined);
+  }, []);
+
+  useEffect(() => {
+    if (window.localStorage.getItem("admin-sidebar-collapsed") !== "true") return;
+    const timer = window.setTimeout(() => setSidebarCollapsed(true), 0);
+    return () => window.clearTimeout(timer);
+  }, []);
+
+  function toggleSidebar() {
+    setSidebarCollapsed((current) => {
+      const next = !current;
+      window.localStorage.setItem("admin-sidebar-collapsed", String(next));
+      return next;
+    });
+  }
+
 
   const filtered = useMemo(() => partners.filter((partner) => {
     const matchesStatus = filter === "ALL" || partner.status === filter;
@@ -118,6 +144,24 @@ export function PartnersAdmin({ displayName }: { displayName: string }) {
     }
   }
 
+  async function uploadLogo(id: number, file: File) {
+    setUploadingId(id);
+    setError("");
+    try {
+      const body = new FormData();
+      body.set("partnerId", String(id));
+      body.set("file", file);
+      const response = await fetch("/api/admin/partners/logo", { method: "POST", body });
+      const data = await response.json() as { partner?: Partner; error?: string };
+      if (!response.ok || !data.partner) throw new Error(data.error ?? "Logotypen kunde inte laddas upp.");
+      setPartners((current) => current.map((partner) => partner.id === id ? data.partner! : partner));
+    } catch (uploadError) {
+      setError(uploadError instanceof Error ? uploadError.message : "Logotypen kunde inte laddas upp.");
+    } finally {
+      setUploadingId(null);
+    }
+  }
+
   async function signOut() {
     await fetch("/api/admin/session", { method: "DELETE" });
     router.push("/admin/login");
@@ -125,15 +169,19 @@ export function PartnersAdmin({ displayName }: { displayName: string }) {
   }
 
   return (
-    <main className="admin-shell">
+    <main className={`admin-shell${sidebarCollapsed ? " sidebar-collapsed" : ""}`}>
       <aside className="admin-sidebar">
+        <button className="admin-sidebar-toggle" type="button" onClick={toggleSidebar} aria-label={sidebarCollapsed ? "Expandera sidomeny" : "Minimera sidomeny"} title={sidebarCollapsed ? "Expandera meny" : "Minimera meny"}>{sidebarCollapsed ? <ChevronRight size={17} /> : <ChevronLeft size={17} />}</button>
         <Link className="brand admin-brand" href="/"><span className="brand-mark"><Zap size={18} /></span><span>Elektrikerakut<span>.nu</span></span></Link>
         <nav aria-label="Adminnavigering">
           <Link className="active" href="/admin"><Building2 size={18} /> Partners</Link>
+          <Link href="/admin/call-center"><PhoneCall size={18} /> Call center</Link>
           <Link href="/admin/statistik"><BarChart3 size={18} /> Statistik</Link>
+          <Link href="/admin/seo"><Network size={18} /> URL-karta</Link>
+          <Link href="/admin/serps"><FileText size={18} /> SERPS</Link>
           <Link href="/"><ArrowLeft size={18} /> Kundsidan</Link>
         </nav>
-        <div className="admin-user"><span><UserRound size={17} /></span><div><small>Inloggad som</small><strong>{displayName}</strong></div><button type="button" aria-label="Logga ut" onClick={signOut}><LogOut size={16} /></button></div>
+        <div className="admin-user"><ProfilePhotoCropper displayName={profileName} profileUrl={profileUrl} onUploaded={setProfileUrl} onError={setError} /><div><small>Inloggad som</small><ProfileSettings email={displayName} onNameChange={setProfileName} /></div><button type="button" aria-label="Logga ut" onClick={signOut}><LogOut size={16} /></button></div>
       </aside>
 
       <section className="admin-content">
@@ -162,7 +210,7 @@ export function PartnersAdmin({ displayName }: { displayName: string }) {
           ) : (
             <div className="partner-table-scroll"><table><thead><tr><th>Företag</th><th>Område och tjänster</th><th>Kontakt</th><th>Status</th><th>Åtgärd</th></tr></thead><tbody>{filtered.map((partner) => (
               <tr key={partner.id}>
-                <td><div className="company-cell"><span>{partner.legalName.slice(0, 2).toUpperCase()}</span><div><strong>{partner.legalName}</strong><small>{partner.organizationNumber} · {partner.publicId}</small>{partner.website && <a href={partner.website} target="_blank" rel="noreferrer">Webbplats <ExternalLink size={11} /></a>}</div></div></td>
+                <td><div className="company-cell"><label className={`company-avatar${partner.logoUrl ? " has-logo" : ""}${uploadingId === partner.id ? " is-uploading" : ""}`} title={partner.logoUrl ? "Klicka för att byta logo" : "Klicka för att ladda upp logo"}>{partner.logoUrl ? <span className="partner-logo" role="img" aria-label={`Logotyp för ${partner.legalName}`} style={{ backgroundImage: `url(${partner.logoUrl})` }} /> : partner.legalName.slice(0, 2).toUpperCase()}<input type="file" accept="image/png,image/jpeg,image/webp" disabled={uploadingId === partner.id} aria-label={`${partner.logoUrl ? "Byt" : "Ladda upp"} logo för ${partner.legalName}`} onChange={(event) => { const file = event.target.files?.[0]; event.target.value = ""; if (file) void uploadLogo(partner.id, file); }} /></label><div><strong>{partner.legalName}</strong><small>{partner.organizationNumber} · {partner.publicId}</small>{partner.website && <a href={partner.website} target="_blank" rel="noreferrer">Webbplats <ExternalLink size={11} /></a>}</div></div></td>
                 <td><div className="area-cell"><span><MapPin size={14} />{partner.serviceAreas}</span><small>{partner.capabilities.slice(0, 2).join(" · ")}{partner.capabilities.length > 2 ? ` +${partner.capabilities.length - 2}` : ""}</small></div></td>
                 <td><div className="contact-cell"><strong>{partner.contactName}</strong><a href={`mailto:${partner.email}`}><Mail size={13} />{partner.email}</a><a href={`tel:${partner.phone}`}><Phone size={13} />{partner.phone}</a></div></td>
                 <td><span className={`status-badge ${partner.status.toLowerCase()}`}>{partner.status === "ACTIVE" && <BadgeCheck size={13} />}{statusLabels[partner.status]}</span>{partner.registrationVerifiedAt && <small className="verified-date">Kontrollerad {new Intl.DateTimeFormat("sv-SE").format(new Date(partner.registrationVerifiedAt))}</small>}</td>

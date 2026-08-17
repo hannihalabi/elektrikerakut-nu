@@ -1,7 +1,7 @@
 import { getDb } from "../../../db";
 import { siteEvents } from "../../../db/schema";
 
-const EVENT_TYPES = new Set(["PAGE_VIEW", "MATCH_STARTED", "MATCH_FOUND"]);
+const EVENT_TYPES = new Set(["PAGE_VIEW", "CTA_CLICK", "FORM_ERROR", "REQUEST_SUBMITTED", "MATCH_STARTED", "MATCH_FOUND", "MATCH_NOT_FOUND", "COVERAGE_UNAVAILABLE"]);
 
 function text(value: unknown, max: number) {
   return typeof value === "string" ? value.trim().slice(0, max) : "";
@@ -19,7 +19,7 @@ export async function POST(request: Request) {
     if (!EVENT_TYPES.has(eventType)) return Response.json({ error: "Ogiltig händelse." }, { status: 400 });
 
     await getDb().insert(siteEvents).values({
-      eventType: eventType as "PAGE_VIEW" | "MATCH_STARTED" | "MATCH_FOUND",
+      eventType: eventType as "PAGE_VIEW" | "CTA_CLICK" | "FORM_ERROR" | "REQUEST_SUBMITTED" | "MATCH_STARTED" | "MATCH_FOUND" | "MATCH_NOT_FOUND" | "COVERAGE_UNAVAILABLE",
       path,
       createdAt: new Date(),
     });

@@ -1,8 +1,10 @@
 "use client";
 
 import { ArrowLeft, ArrowRight, BadgeCheck, Check, CheckCircle2, Clock3, MapPin, ShieldCheck, Zap } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 import { type FormEvent, useState } from "react";
+import { servicePhotos } from "../site-photos";
 
 const capabilityOptions = ["Akut felsökning", "Strömlöst", "Elcentral och säkringar", "Uttag och installation", "Företag och fastighet"];
 
@@ -87,6 +89,7 @@ export function PartnerApplication() {
           <div className="eyebrow"><span /> Partnernätverk Stockholm</div>
           <h1>Fyll luckor i jouren.<br /><em>Betala för bokningar.</em></h1>
           <p>Ta emot strukturerade förfrågningar från kunder i ditt aktiva område. Du styr själv geografi, tider och kapacitet.</p>
+          <figure className="partner-photo"><Image src={servicePhotos[5]} alt="Elektriker med verktyg vid servicebil i kvällsmiljö" width={1448} height={1086} sizes="(max-width: 980px) calc(100vw - 48px), 560px" priority /></figure>
           <div className="partner-benefits">
             <div><BadgeCheck size={21} /><span><strong>Kvalificerade bokningar</strong><small>Nåbar kund, rätt område och verkligt elbehov.</small></span></div>
             <div><MapPin size={21} /><span><strong>Du styr täckningen</strong><small>Välj postnummer, tider och vilka uppdrag ni tar.</small></span></div>

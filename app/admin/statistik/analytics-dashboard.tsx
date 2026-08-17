@@ -1,6 +1,6 @@
 "use client";
 
-import { BarChart3, CheckCircle2, Eye, LoaderCircle, Radio, Users } from "lucide-react";
+import { ArrowLeft, BarChart3, CheckCircle2, ChevronLeft, ChevronRight, Eye, FileText, LoaderCircle, Network, PhoneCall, Radio, Users } from "lucide-react";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 
@@ -9,6 +9,21 @@ type Stats = { visitsDay: number; visitsWeek: number; visitsMonth: number; match
 export function AnalyticsDashboard() {
   const [stats, setStats] = useState<Stats | null>(null);
   const [error, setError] = useState("");
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+
+  useEffect(() => {
+    if (window.localStorage.getItem("admin-sidebar-collapsed") !== "true") return;
+    const timer = window.setTimeout(() => setSidebarCollapsed(true), 0);
+    return () => window.clearTimeout(timer);
+  }, []);
+
+  function toggleSidebar() {
+    setSidebarCollapsed((current) => {
+      const next = !current;
+      window.localStorage.setItem("admin-sidebar-collapsed", String(next));
+      return next;
+    });
+  }
 
   useEffect(() => {
     fetch("/api/admin/analytics", { cache: "no-store" })
@@ -21,13 +36,17 @@ export function AnalyticsDashboard() {
   }, []);
 
   return (
-    <main className="admin-shell">
+    <main className={`admin-shell${sidebarCollapsed ? " sidebar-collapsed" : ""}`}>
       <aside className="admin-sidebar">
+        <button className="admin-sidebar-toggle" type="button" onClick={toggleSidebar} aria-label={sidebarCollapsed ? "Expandera sidomeny" : "Minimera sidomeny"} title={sidebarCollapsed ? "Expandera meny" : "Minimera meny"}>{sidebarCollapsed ? <ChevronRight size={17} /> : <ChevronLeft size={17} />}</button>
         <Link className="brand admin-brand" href="/"><span className="brand-mark"><BarChart3 size={18} /></span><span>Elektrikerakut<span>.nu</span></span></Link>
         <nav aria-label="Adminnavigering">
           <Link href="/admin"><Users size={18} /> Partners</Link>
+          <Link href="/admin/call-center"><PhoneCall size={18} /> Call center</Link>
           <Link className="active" href="/admin/statistik"><BarChart3 size={18} /> Statistik</Link>
-          <Link href="/"><span aria-hidden="true">←</span> Kundsidan</Link>
+          <Link href="/admin/seo"><Network size={18} /> URL-karta</Link>
+          <Link href="/admin/serps"><FileText size={18} /> SERPS</Link>
+          <Link href="/"><ArrowLeft size={18} /> Kundsidan</Link>
         </nav>
       </aside>
       <section className="admin-content analytics-content">

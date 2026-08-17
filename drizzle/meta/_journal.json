@@ -15,6 +15,69 @@
       "when": 1786289294063,
       "tag": "0001_normal_switch",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1786292282928,
+      "tag": "0002_concerned_vermin",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1786292922926,
+      "tag": "0003_early_bloodstrike",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1786294150257,
+      "tag": "0004_high_abomination",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1786297882669,
+      "tag": "0005_wakeful_iron_lad",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1786299152027,
+      "tag": "0006_wooden_korath",
+      "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1786387471687,
+      "tag": "0007_magical_skrulls",
+      "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1786723200000,
+      "tag": "0008_admin_password_recovery",
+      "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "7",
+      "when": 1786723200001,
+      "tag": "0009_parched_sleepwalker",
+      "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "7",
+      "when": 1786800243380,
+      "tag": "0010_thick_iron_fist",
+      "breakpoints": true
     }
   ]
 }
