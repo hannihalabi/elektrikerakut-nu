@@ -1,18 +1,10 @@
 import type { GuidePost } from "./posts";
 
-type NewGuidePost = Omit<GuidePost, "publishedAt" | "updatedLabel">;
-
-function guide(post: NewGuidePost): GuidePost {
-  return {
-    ...post,
-    publishedAt: "2026-08-14",
-    updatedLabel: "Uppdaterad 14 augusti 2026",
-  };
-}
-
 export const newGuidePosts: GuidePost[] = [
-  guide({
+  {
     slug: "kontrollera-elforetag-registrerat",
+    publishedAt: "2026-05-30",
+    updatedLabel: "Uppdaterad 30 maj 2026",
     title: "Kontrollera att elföretaget är registrerat – så gör du före beställning",
     description: "Så kontrollerar du elföretagets registrering och verksamhetstyp innan du beställer ett elarbete.",
     category: "Elinstallation",
@@ -28,9 +20,11 @@ export const newGuidePosts: GuidePost[] = [
     ],
     sourceLabel: "Elsäkerhetsverket: Varför anlita ett registrerat elföretag?",
     sourceUrl: "https://www.elsakerhetsverket.se/privatpersoner/anlita-ett-elinstallationsforetag/varfor-anlita-ett-registrerat-elforetag/",
-  }),
-  guide({
+  },
+  {
     slug: "jamfora-offerter-elarbeten",
+    publishedAt: "2026-05-31",
+    updatedLabel: "Uppdaterad 31 maj 2026",
     title: "Jämföra offerter för elarbete – frågor som gör anbuden tydligare",
     description: "En praktisk checklista för att jämföra elofferter, omfattning, material, dokumentation och ansvar.",
     category: "Elinstallation",
@@ -46,9 +40,11 @@ export const newGuidePosts: GuidePost[] = [
     ],
     sourceLabel: "Elsäkerhetsverket: Jämför anbud och skriv avtal",
     sourceUrl: "https://www.elsakerhetsverket.se/privatpersoner/anlita-ett-elinstallationsforetag/jamfor-anbud-och-skriv-avtal/",
-  }),
-  guide({
+  },
+  {
     slug: "dokumentation-efter-elinstallation",
+    publishedAt: "2026-06-01",
+    updatedLabel: "Uppdaterad 1 juni 2026",
     title: "Dokumentation efter elinstallation – detta bör du få när arbetet är klart",
     description: "Vad du bör fråga efter när en elinstallation är färdig, från märkning till produkt- och kontrollunderlag.",
     category: "Elinstallation",
@@ -64,9 +60,11 @@ export const newGuidePosts: GuidePost[] = [
     ],
     sourceLabel: "Elsäkerhetsverket: Dokumentation och märkning",
     sourceUrl: "https://www.elsakerhetsverket.se/privatpersoner/anlita-ett-elinstallationsforetag/dokumentation-och-markning/",
-  }),
-  guide({
+  },
+  {
     slug: "elansvar-i-hyresratt",
+    publishedAt: "2026-06-02",
+    updatedLabel: "Uppdaterad 2 juni 2026",
     title: "Vem ansvarar för elen i en hyresrätt? Så hanterar du fel och brister",
     description: "Förstå hyresvärdens och hyresgästens roller när uttag, fasta installationer eller elprodukter har fel.",
     category: "Elsäkerhet hemma",
@@ -82,9 +80,11 @@ export const newGuidePosts: GuidePost[] = [
     ],
     sourceLabel: "Elsäkerhetsverket: Så tar du ansvar för elen i hyresrätt",
     sourceUrl: "https://www.elsakerhetsverket.se/privatpersoner/du-ar-ansvarig-for-elen/sa-tar-du-ditt-ansvar-for-elen/hyresratt/",
-  }),
-  guide({
+  },
+  {
     slug: "elansvar-i-bostadsratt",
+    publishedAt: "2026-06-03",
+    updatedLabel: "Uppdaterad 3 juni 2026",
     title: "Elansvar i bostadsrätt – vad ansvarar du och föreningen för?",
     description: "Så reder du ut ansvar för elanläggning, felanmälan och elarbete mellan dig och bostadsrättsföreningen.",
     category: "Elsäkerhet hemma",
@@ -100,9 +100,11 @@ export const newGuidePosts: GuidePost[] = [
     ],
     sourceLabel: "Elsäkerhetsverket: Så tar du ansvar för elen i bostadsrätt",
     sourceUrl: "https://www.elsakerhetsverket.se/privatpersoner/du-ar-ansvarig-for-elen/sa-tar-du-ditt-ansvar-for-elen/bostadsratt/",
-  }),
-  guide({
+  },
+  {
     slug: "elansvar-villa",
+    publishedAt: "2026-06-04",
+    updatedLabel: "Uppdaterad 4 juni 2026",
     title: "Ditt ansvar för elen i villa – kontroller som hjälper dig förebygga fel",
     description: "En tydlig översikt över villaägarens ansvar för elanläggning, elprodukter och fortlöpande kontroll.",
     category: "Elsäkerhet hemma",
@@ -118,9 +120,11 @@ export const newGuidePosts: GuidePost[] = [
     ],
     sourceLabel: "Elsäkerhetsverket: Så tar du ansvar för elen i villa eller fritidshus",
     sourceUrl: "https://www.elsakerhetsverket.se/privatpersoner/du-ar-ansvarig-for-elen/sa-tar-du-ditt-ansvar-for-elen/villa-eller-fritidshus/",
-  }),
-  guide({
+  },
+  {
     slug: "elsakerhet-for-aldre-hemma",
+    publishedAt: "2026-06-05",
+    updatedLabel: "Uppdaterad 5 juni 2026",
     title: "Elsäkerhet för äldre hemma – små kontroller som minskar risken",
     description: "Praktiska råd om sladdar, belysning, laddning och hjälpmedel för ett tryggare hem på äldre dagar.",
     category: "Elsäkerhet hemma",
@@ -136,9 +140,11 @@ export const newGuidePosts: GuidePost[] = [
     ],
     sourceLabel: "Elsäkerhetsverket: Elsäkerhet på äldre dagar",
     sourceUrl: "https://www.elsakerhetsverket.se/privatpersoner/du-ar-ansvarig-for-elen/elsakerhet-pa-aldre-dagar/",
-  }),
-  guide({
+  },
+  {
     slug: "byta-lamphallare-sjalv",
+    publishedAt: "2026-06-06",
+    updatedLabel: "Uppdaterad 6 juni 2026",
     title: "Får man byta lamphållare själv? Detta måste vara uppfyllt",
     description: "När byte av lamphållare kan vara tillåtet och när du ska lämna arbetet till ett registrerat elföretag.",
     category: "Elinstallation",
@@ -154,9 +160,11 @@ export const newGuidePosts: GuidePost[] = [
     ],
     sourceLabel: "Elsäkerhetsverket: Byta lamphållare",
     sourceUrl: "https://www.elsakerhetsverket.se/privatpersoner/detta-far-du-gora-sjalv-med-el/byta-lamphallare/",
-  }),
-  guide({
+  },
+  {
     slug: "byta-sladdstrombrytare-sjalv",
+    publishedAt: "2026-06-07",
+    updatedLabel: "Uppdaterad 7 juni 2026",
     title: "Byta sladdströmbrytare själv – vad gäller för en lös lampa?",
     description: "Så bedömer du om en sladdströmbrytare får bytas och vilka varningssignaler som kräver hjälp.",
     category: "Elinstallation",
@@ -172,9 +180,11 @@ export const newGuidePosts: GuidePost[] = [
     ],
     sourceLabel: "Elsäkerhetsverket: Byta sladdströmbrytare",
     sourceUrl: "https://www.elsakerhetsverket.se/privatpersoner/detta-far-du-gora-sjalv-med-el/byta-sladdstrombrytare/",
-  }),
-  guide({
+  },
+  {
     slug: "byta-jordat-vagguttag-sjalv",
+    publishedAt: "2026-06-08",
+    updatedLabel: "Uppdaterad 8 juni 2026",
     title: "Får man byta ett jordat vägguttag själv? Regler och risker",
     description: "Vad som gäller vid byte av ett befintligt jordat uttag och varför nytt uttag eller flytt kräver elföretag.",
     category: "Elinstallation",
@@ -190,9 +200,11 @@ export const newGuidePosts: GuidePost[] = [
     ],
     sourceLabel: "Elsäkerhetsverket: Byta ett jordat vägguttag",
     sourceUrl: "https://www.elsakerhetsverket.se/privatpersoner/detta-far-du-gora-sjalv-med-el/byta-vagguttag/byta-ett-jordat-vagguttag/",
-  }),
-  guide({
+  },
+  {
     slug: "byta-ojordat-vagguttag-sjalv",
+    publishedAt: "2026-06-09",
+    updatedLabel: "Uppdaterad 9 juni 2026",
     title: "Byta ojordat vägguttag – när är ett eget byte tillåtet?",
     description: "Förutsättningarna för att ersätta ett befintligt ojordat uttag och när anläggningen behöver bedömas av elföretag.",
     category: "Elinstallation",
@@ -208,9 +220,11 @@ export const newGuidePosts: GuidePost[] = [
     ],
     sourceLabel: "Elsäkerhetsverket: Byta ett ojordat vägguttag",
     sourceUrl: "https://www.elsakerhetsverket.se/privatpersoner/detta-far-du-gora-sjalv-med-el/byta-vagguttag/byta-ett-ojordat-vagguttag/",
-  }),
-  guide({
+  },
+  {
     slug: "vad-betyder-fast-ansluten-elprodukt",
+    publishedAt: "2026-06-10",
+    updatedLabel: "Uppdaterad 10 juni 2026",
     title: "Vad betyder fast ansluten elprodukt? Skillnaden mot stickpropp",
     description: "Så känner du igen fast ansluten utrustning och förstår varför inkoppling och frånkoppling kräver rätt elföretag.",
     category: "Elinstallation",
@@ -226,9 +240,11 @@ export const newGuidePosts: GuidePost[] = [
     ],
     sourceLabel: "Elsäkerhetsverket: Vad betyder fast ansluten?",
     sourceUrl: "https://www.elsakerhetsverket.se/privatpersoner/detta-far-du-gora-sjalv-med-el/elsakerhetsverket-forklarar-begrepp/vad-betyder-fast-ansluten/",
-  }),
-  guide({
+  },
+  {
     slug: "el-i-tvattstuga-planering",
+    publishedAt: "2026-06-11",
+    updatedLabel: "Uppdaterad 11 juni 2026",
     title: "El i tvättstuga – planera uttag, maskiner och fuktskydd rätt",
     description: "Detta behöver planeras för säker el till tvättmaskin, torktumlare, belysning och uttag i tvättstugan.",
     category: "Vitvaror",
@@ -244,9 +260,11 @@ export const newGuidePosts: GuidePost[] = [
     ],
     sourceLabel: "Elsäkerhetsverket: Installation av el i tvättstuga",
     sourceUrl: "https://www.elsakerhetsverket.se/privatpersoner/din-elanlaggning/bygga-och-renovera/installation-av-el-i-tvattstuga/",
-  }),
-  guide({
+  },
+  {
     slug: "installera-elektrisk-golvvarme",
+    publishedAt: "2026-06-12",
+    updatedLabel: "Uppdaterad 12 juni 2026",
     title: "Installera elektrisk golvvärme – planera innan golvet byggs in",
     description: "Viktiga beslut om effekt, styrning, underlag, kontroll och dokumentation vid elektrisk golvvärme.",
     category: "Uppvärmning",
@@ -262,9 +280,11 @@ export const newGuidePosts: GuidePost[] = [
     ],
     sourceLabel: "Elsäkerhetsverket: Installation av golvvärme",
     sourceUrl: "https://www.elsakerhetsverket.se/privatpersoner/din-elanlaggning/bygga-och-renovera/installation-av-golvvarme/",
-  }),
-  guide({
+  },
+  {
     slug: "planera-batterilager-hemma",
+    publishedAt: "2026-06-13",
+    updatedLabel: "Uppdaterad 13 juni 2026",
     title: "Planera batterilager hemma – frågor att lösa före installation",
     description: "Så planerar du placering, kapacitet, drift, skydd och ansvar innan du beställer ett batterilager.",
     category: "Batterier",
@@ -280,9 +300,11 @@ export const newGuidePosts: GuidePost[] = [
     ],
     sourceLabel: "Elsäkerhetsverket: Planera ditt batterilager",
     sourceUrl: "https://www.elsakerhetsverket.se/privatpersoner/din-elanlaggning/bygga-och-renovera/installation-av-batterilager/planera-ditt-batterilager/",
-  }),
-  guide({
+  },
+  {
     slug: "sakerhetsrisker-med-batterilager",
+    publishedAt: "2026-06-14",
+    updatedLabel: "Uppdaterad 14 juni 2026",
     title: "Säkerhetsrisker med batterilager – varningssignaler och rätt agerande",
     description: "Lär dig känna igen onormal värme, lukt, ljud, skador och larm från hemmets stationära batterilager.",
     category: "Batterier",
@@ -298,9 +320,11 @@ export const newGuidePosts: GuidePost[] = [
     ],
     sourceLabel: "Elsäkerhetsverket: Säkerhetsrisker med batterilager",
     sourceUrl: "https://www.elsakerhetsverket.se/privatpersoner/din-elanlaggning/bygga-och-renovera/installation-av-batterilager/sakerhetsrisker-med-batterilager/",
-  }),
-  guide({
+  },
+  {
     slug: "underhall-batterilager-hemma",
+    publishedAt: "2026-06-15",
+    updatedLabel: "Uppdaterad 15 juni 2026",
     title: "Underhålla batterilager hemma – kontroller som bör bli rutin",
     description: "En ägarchecklista för larm, miljö, märkning, uppdateringar och professionell kontroll av batterilager.",
     category: "Batterier",
@@ -316,9 +340,11 @@ export const newGuidePosts: GuidePost[] = [
     ],
     sourceLabel: "Elsäkerhetsverket: Kontrollera och underhåll ditt batterilager",
     sourceUrl: "https://www.elsakerhetsverket.se/privatpersoner/din-elanlaggning/bygga-och-renovera/installation-av-batterilager/kontrollera-och-underhall-ditt-batterilager/",
-  }),
-  guide({
+  },
+  {
     slug: "planera-solceller-villa",
+    publishedAt: "2026-06-16",
+    updatedLabel: "Uppdaterad 16 juni 2026",
     title: "Planera solceller på villa – elsäkerhet före offert och montage",
     description: "Frågor om tak, placering, systemval, företag och dokumentation innan du beställer solceller.",
     category: "Solceller",
@@ -334,9 +360,11 @@ export const newGuidePosts: GuidePost[] = [
     ],
     sourceLabel: "Elsäkerhetsverket: Planera din solcellsanläggning",
     sourceUrl: "https://www.elsakerhetsverket.se/privatpersoner/din-elanlaggning/bygga-och-renovera/installation-av-solceller/planera-din-solcellsanlaggning/",
-  }),
-  guide({
+  },
+  {
     slug: "sakerhetsrisker-med-solceller",
+    publishedAt: "2026-06-17",
+    updatedLabel: "Uppdaterad 17 juni 2026",
     title: "Säkerhetsrisker med solceller – fel som inte ska ignoreras",
     description: "Känn igen synliga skador, lösa kablar, larm och andra tecken på att en solcellsanläggning behöver kontrolleras.",
     category: "Solceller",
@@ -352,9 +380,11 @@ export const newGuidePosts: GuidePost[] = [
     ],
     sourceLabel: "Elsäkerhetsverket: Vilka säkerhetsrisker finns med solceller?",
     sourceUrl: "https://www.elsakerhetsverket.se/privatpersoner/din-elanlaggning/bygga-och-renovera/installation-av-solceller/vilka-sakerhetsrisker-finns/",
-  }),
-  guide({
+  },
+  {
     slug: "underhall-solcellsanlaggning",
+    publishedAt: "2026-06-18",
+    updatedLabel: "Uppdaterad 18 juni 2026",
     title: "Underhålla solcellsanläggning – ägarens checklista över året",
     description: "Så följer du produktion, larm, synliga delar och dokumentation utan att arbeta på spänningssatta komponenter.",
     category: "Solceller",
@@ -370,9 +400,11 @@ export const newGuidePosts: GuidePost[] = [
     ],
     sourceLabel: "Elsäkerhetsverket: Kontrollera och underhåll din solcellsanläggning",
     sourceUrl: "https://www.elsakerhetsverket.se/privatpersoner/din-elanlaggning/bygga-och-renovera/installation-av-solceller/kontrollera-och-underhall-din-solcellsanlaggning/",
-  }),
-  guide({
+  },
+  {
     slug: "stickproppsanslutna-solceller-balkong",
+    publishedAt: "2026-06-19",
+    updatedLabel: "Uppdaterad 19 juni 2026",
     title: "Solceller med stickpropp på balkong – varför inkopplingen kan vara farlig",
     description: "Detta gäller för plug-in-solceller och varför en vanlig stickpropp inte är en säker genväg till elnätet.",
     category: "Solceller",
@@ -388,9 +420,11 @@ export const newGuidePosts: GuidePost[] = [
     ],
     sourceLabel: "Elsäkerhetsverket: Stickproppsanslutna solceller",
     sourceUrl: "https://www.elsakerhetsverket.se/privatpersoner/dina-elprodukter/produkter/stickproppsanslutna-solceller/",
-  }),
-  guide({
+  },
+  {
     slug: "laddbox-i-bostadsratt",
+    publishedAt: "2026-06-20",
+    updatedLabel: "Uppdaterad 20 juni 2026",
     title: "Laddbox i bostadsrätt – planering för plats, ansvar och belastning",
     description: "En praktisk guide för bostadsrättshavare och föreningar om ansvar, kapacitet och installation av laddpunkt.",
     category: "Elbilsladdning",
@@ -406,9 +440,11 @@ export const newGuidePosts: GuidePost[] = [
     ],
     sourceLabel: "Elsäkerhetsverket: Planera din laddningspunkt",
     sourceUrl: "https://www.elsakerhetsverket.se/privatpersoner/din-elanlaggning/bygga-och-renovera/installation-av-elbilsladdare/planera-din-laddningspunkt/",
-  }),
-  guide({
+  },
+  {
     slug: "underhall-laddbox-hemma",
+    publishedAt: "2026-06-21",
+    updatedLabel: "Uppdaterad 21 juni 2026",
     title: "Underhålla laddbox hemma – kontrollera kabel, kontakt och larm",
     description: "En trygg rutin för yttre kontroll, rengöring, felkoder och service av hemmets laddningspunkt.",
     category: "Elbilsladdning",
@@ -424,9 +460,11 @@ export const newGuidePosts: GuidePost[] = [
     ],
     sourceLabel: "Elsäkerhetsverket: Kontrollera och underhåll din laddningspunkt",
     sourceUrl: "https://www.elsakerhetsverket.se/privatpersoner/din-elanlaggning/bygga-och-renovera/installation-av-elbilsladdare/kontrollera-och-underhall-din-laddningspunkt/",
-  }),
-  guide({
+  },
+  {
     slug: "ladda-elbil-med-skarvsladd",
+    publishedAt: "2026-06-22",
+    updatedLabel: "Uppdaterad 22 juni 2026",
     title: "Ladda elbil med skarvsladd – därför ska du välja en annan lösning",
     description: "Riskerna med skarvsladd, grenuttag och vanliga uttag vid långvarig elbilsladdning – och vad du väljer i stället.",
     category: "Elbilsladdning",
@@ -442,9 +480,11 @@ export const newGuidePosts: GuidePost[] = [
     ],
     sourceLabel: "Elsäkerhetsverket: Säkerhetsrisker vid laddning av elbilar",
     sourceUrl: "https://www.elsakerhetsverket.se/privatpersoner/din-elanlaggning/bygga-och-renovera/installation-av-elbilsladdare/sakerhetsrisker-vid-laddning-av-elbilar/",
-  }),
-  guide({
+  },
+  {
     slug: "julbelysning-utomhus-sakert",
+    publishedAt: "2026-06-23",
+    updatedLabel: "Uppdaterad 23 juni 2026",
     title: "Julbelysning utomhus – kontrollera märkning, sladdar och fuktskydd",
     description: "Så använder du ljusslingor och dekorationer utomhus utan fel produkt, fukt eller skadade kablar.",
     category: "Belysning",
@@ -460,9 +500,11 @@ export const newGuidePosts: GuidePost[] = [
     ],
     sourceLabel: "Elsäkerhetsverket: Julbelysning",
     sourceUrl: "https://www.elsakerhetsverket.se/privatpersoner/dina-elprodukter/produkter/belysning/julbelysning/",
-  }),
-  guide({
+  },
+  {
     slug: "adapter-till-ljusslinga",
+    publishedAt: "2026-06-24",
+    updatedLabel: "Uppdaterad 24 juni 2026",
     title: "Adapter till ljusslinga – så undviker du fel spänning och kontakt",
     description: "Varför transformatorer och adaptrar till ljusslingor inte ska blandas utan att märkningen stämmer.",
     category: "Belysning",
@@ -478,9 +520,11 @@ export const newGuidePosts: GuidePost[] = [
     ],
     sourceLabel: "Elsäkerhetsverket: Rätt adapter till rätt ljusslinga",
     sourceUrl: "https://www.elsakerhetsverket.se/privatpersoner/dina-elprodukter/produkter/belysning/ratt-adapter-till-ratt-ljusslinga/",
-  }),
-  guide({
+  },
+  {
     slug: "led-lysror-i-gammal-armatur",
+    publishedAt: "2026-06-25",
+    updatedLabel: "Uppdaterad 25 juni 2026",
     title: "LED-lysrör i gammal armatur – kontrollera kompatibiliteten först",
     description: "Detta behöver du veta innan ett traditionellt lysrör ersätts med LED-rör i en befintlig armatur.",
     category: "Belysning",
@@ -496,9 +540,11 @@ export const newGuidePosts: GuidePost[] = [
     ],
     sourceLabel: "Elsäkerhetsverket: LED-lysrör",
     sourceUrl: "https://www.elsakerhetsverket.se/privatpersoner/dina-elprodukter/produkter/belysning/led-lysror/",
-  }),
-  guide({
+  },
+  {
     slug: "motorvarmare-sakert",
+    publishedAt: "2026-06-26",
+    updatedLabel: "Uppdaterad 26 juni 2026",
     title: "Motorvärmare och kupévärmare – använd kabel och timer säkert",
     description: "Så kontrollerar du uttag, anslutningskabel, kupévärmarens effekt och timer före vinterns kalla morgnar.",
     category: "Uppvärmning",
@@ -514,9 +560,11 @@ export const newGuidePosts: GuidePost[] = [
     ],
     sourceLabel: "Elsäkerhetsverket: Bilvärmare",
     sourceUrl: "https://www.elsakerhetsverket.se/privatpersoner/dina-elprodukter/produkter/bilvarmare/",
-  }),
-  guide({
+  },
+  {
     slug: "elfilt-och-varmedyna-sakert",
+    publishedAt: "2026-06-27",
+    updatedLabel: "Uppdaterad 27 juni 2026",
     title: "Elfilt och värmedyna – så använder och förvarar du dem säkert",
     description: "Kontrollera veck, sladd, styrning, förvaring och onormal värme innan du använder en elfilt eller värmedyna.",
     category: "Uppvärmning",
@@ -532,9 +580,11 @@ export const newGuidePosts: GuidePost[] = [
     ],
     sourceLabel: "Elsäkerhetsverket: Elfiltar och värmedynor",
     sourceUrl: "https://www.elsakerhetsverket.se/privatpersoner/dina-elprodukter/produkter/elfiltar-och-varmedynor/",
-  }),
-  guide({
+  },
+  {
     slug: "elgrill-utomhus-sakert",
+    publishedAt: "2026-06-28",
+    updatedLabel: "Uppdaterad 28 juni 2026",
     title: "Elgrill utomhus – säker anslutning på balkong och uteplats",
     description: "Råd om uttag, sladd, hög belastning, placering och rengöring när en elektrisk grill används utomhus.",
     category: "Utomhus",
@@ -550,9 +600,11 @@ export const newGuidePosts: GuidePost[] = [
     ],
     sourceLabel: "Elsäkerhetsverket: Elgrill",
     sourceUrl: "https://www.elsakerhetsverket.se/privatpersoner/dina-elprodukter/produkter/elgrill/",
-  }),
-  guide({
+  },
+  {
     slug: "infravarmare-uteplats-sakert",
+    publishedAt: "2026-06-29",
+    updatedLabel: "Uppdaterad 29 juni 2026",
     title: "Infravärmare på uteplats – placering, effekt och säker anslutning",
     description: "Så planerar du fri höjd, brännbara material, uttag och fast installation för en infravärmare.",
     category: "Uppvärmning",
@@ -568,9 +620,11 @@ export const newGuidePosts: GuidePost[] = [
     ],
     sourceLabel: "Elsäkerhetsverket: Infravärmare",
     sourceUrl: "https://www.elsakerhetsverket.se/privatpersoner/dina-elprodukter/produkter/infravarmare/",
-  }),
-  guide({
+  },
+  {
     slug: "robotgrasklippare-laddstation-sakert",
+    publishedAt: "2026-06-30",
+    updatedLabel: "Uppdaterad 30 juni 2026",
     title: "Robotgräsklipparens laddstation – säker placering och anslutning",
     description: "Undvik fukt, skadad begränsningskabel och olämplig nätadapter när robotgräsklipparen installeras.",
     category: "Utomhus",
@@ -586,9 +640,11 @@ export const newGuidePosts: GuidePost[] = [
     ],
     sourceLabel: "Elsäkerhetsverket: Robotgräsklippare",
     sourceUrl: "https://www.elsakerhetsverket.se/privatpersoner/dina-elprodukter/produkter/robotgrasklippare/",
-  }),
-  guide({
+  },
+  {
     slug: "angdusch-och-bubbelbad-el",
+    publishedAt: "2026-07-01",
+    updatedLabel: "Uppdaterad 1 juli 2026",
     title: "Ångdusch och bubbelbadkar – elsäkerhet före installation och användning",
     description: "Vad du behöver kontrollera om fast anslutning, fuktskydd, service och jordfelsbrytare för våtrumsprodukter.",
     category: "Badrum",
@@ -604,9 +660,11 @@ export const newGuidePosts: GuidePost[] = [
     ],
     sourceLabel: "Elsäkerhetsverket: Ångduschar och bubbelbadkar",
     sourceUrl: "https://www.elsakerhetsverket.se/privatpersoner/dina-elprodukter/produkter/angduschar-och-bubbelbadkar/",
-  }),
-  guide({
+  },
+  {
     slug: "elektriska-leksaker-sakert",
+    publishedAt: "2026-07-02",
+    updatedLabel: "Uppdaterad 2 juli 2026",
     title: "Elektriska leksaker – kontrollera batterier, laddare och märkning",
     description: "Så granskar du en elektrisk leksak före köp och användning, särskilt när barn ska ladda den själva.",
     category: "Batterier",
@@ -622,9 +680,11 @@ export const newGuidePosts: GuidePost[] = [
     ],
     sourceLabel: "Elsäkerhetsverket: Leksaker",
     sourceUrl: "https://www.elsakerhetsverket.se/privatpersoner/dina-elprodukter/produkter/leksaker/",
-  }),
-  guide({
+  },
+  {
     slug: "kopa-usb-laddare-sakert",
+    publishedAt: "2026-07-03",
+    updatedLabel: "Uppdaterad 3 juli 2026",
     title: "Köpa USB-laddare – så granskar du märkning och säljare",
     description: "En köpchecklista för USB-laddare med rätt specifikation, svensk information och spårbar säljare.",
     category: "Laddare",
@@ -640,9 +700,11 @@ export const newGuidePosts: GuidePost[] = [
     ],
     sourceLabel: "Elsäkerhetsverket: USB-laddare",
     sourceUrl: "https://www.elsakerhetsverket.se/privatpersoner/dina-elprodukter/produkter/usb-laddare/",
-  }),
-  guide({
+  },
+  {
     slug: "laga-elprodukt-sjalv",
+    publishedAt: "2026-07-04",
+    updatedLabel: "Uppdaterad 4 juli 2026",
     title: "Laga en elprodukt själv – när blir du ansvarig för säkerheten?",
     description: "Förstå riskerna och ansvaret när en elektrisk produkt ändras, byggs om eller repareras hemma.",
     category: "Elsäkerhet hemma",
@@ -658,9 +720,11 @@ export const newGuidePosts: GuidePost[] = [
     ],
     sourceLabel: "Elsäkerhetsverket: Tillverka, ändra och laga elprodukter",
     sourceUrl: "https://www.elsakerhetsverket.se/privatpersoner/dina-elprodukter/tillverka-andra-och-laga-elprodukter/",
-  }),
-  guide({
+  },
+  {
     slug: "kopa-begagnade-elektriska-leksaker",
+    publishedAt: "2026-07-05",
+    updatedLabel: "Uppdaterad 5 juli 2026",
     title: "Köpa begagnade elektriska leksaker – checklista före användning",
     description: "Granska ålder, batterier, laddare, återkallelser och slitage innan en begagnad leksak ges till barn.",
     category: "Köpa elprodukter",
@@ -676,9 +740,11 @@ export const newGuidePosts: GuidePost[] = [
     ],
     sourceLabel: "Elsäkerhetsverket: Köpa begagnade leksaker – checklista",
     sourceUrl: "https://www.elsakerhetsverket.se/privatpersoner/dina-elprodukter/kopa-elprodukter/kopa-elprodukter-begagnat/kopa-begagnade-leksaker-checklista/",
-  }),
-  guide({
+  },
+  {
     slug: "kontrollera-saljare-pa-marknadsplats",
+    publishedAt: "2026-07-06",
+    updatedLabel: "Uppdaterad 6 juli 2026",
     title: "Handla elprodukter på marknadsplats – kontrollera vem säljaren är",
     description: "Så tar du reda på om du handlar av en ansvarig EU-aktör eller en okänd säljare på en digital marknadsplats.",
     category: "Köpa elprodukter",
@@ -694,9 +760,11 @@ export const newGuidePosts: GuidePost[] = [
     ],
     sourceLabel: "Elsäkerhetsverket: Köpa elprodukter på nätet",
     sourceUrl: "https://www.elsakerhetsverket.se/privatpersoner/dina-elprodukter/kopa-elprodukter/kopa-elprodukter-pa-natet/",
-  }),
-  guide({
+  },
+  {
     slug: "elprodukt-saknar-svensk-bruksanvisning",
+    publishedAt: "2026-07-07",
+    updatedLabel: "Uppdaterad 7 juli 2026",
     title: "Elprodukt saknar svensk bruksanvisning – bör du använda den?",
     description: "Vad du kan kräva av säkerhetsinformation och hur du agerar när en elprodukt saknar begriplig svensk anvisning.",
     category: "Köpa elprodukter",
@@ -712,9 +780,11 @@ export const newGuidePosts: GuidePost[] = [
     ],
     sourceLabel: "Elsäkerhetsverket: Checklista vid köp av produkter",
     sourceUrl: "https://www.elsakerhetsverket.se/privatpersoner/dina-elprodukter/kopa-elprodukter/checklista-vid-kop-av-produkter/",
-  }),
-  guide({
+  },
+  {
     slug: "energisparbox-i-uttag",
+    publishedAt: "2026-07-08",
+    updatedLabel: "Uppdaterad 8 juli 2026",
     title: "Energisparbox i vägguttaget – fungerar den och är den säker?",
     description: "Var kritisk till produkter som lovar lägre elförbrukning bara genom att sättas i ett vanligt uttag.",
     category: "Köpa elprodukter",
@@ -730,9 +800,11 @@ export const newGuidePosts: GuidePost[] = [
     ],
     sourceLabel: "Elsäkerhetsverket: Energisparboxar",
     sourceUrl: "https://www.elsakerhetsverket.se/privatpersoner/dina-elprodukter/produkter/energisparboxar/",
-  }),
-  guide({
+  },
+  {
     slug: "elsakerhet-fore-semestern",
+    publishedAt: "2026-07-09",
+    updatedLabel: "Uppdaterad 9 juli 2026",
     title: "Elsäkerhet före semestern – checklista innan du lämnar hemmet",
     description: "Minska risken för elfel medan bostaden står tom genom att kontrollera laddning, apparater och utomhusel.",
     category: "Elsäkerhet hemma",
@@ -748,9 +820,11 @@ export const newGuidePosts: GuidePost[] = [
     ],
     sourceLabel: "Elsäkerhetsverket: Säker el på semestern",
     sourceUrl: "https://www.elsakerhetsverket.se/privatpersoner/du-ar-ansvarig-for-elen/saker-el-pa-semestern/",
-  }),
-  guide({
+  },
+  {
     slug: "reseadapter-utomlands-sakert",
+    publishedAt: "2026-07-10",
+    updatedLabel: "Uppdaterad 10 juli 2026",
     title: "Reseadapter utomlands – kontrollera spänning, effekt och jordning",
     description: "Så skiljer du en enkel kontaktadapter från en spänningsomvandlare och använder reseladdning säkrare.",
     category: "Laddare",
@@ -766,9 +840,11 @@ export const newGuidePosts: GuidePost[] = [
     ],
     sourceLabel: "Elsäkerhetsverket: Säker el på semestern",
     sourceUrl: "https://www.elsakerhetsverket.se/privatpersoner/du-ar-ansvarig-for-elen/saker-el-pa-semestern/",
-  }),
-  guide({
+  },
+  {
     slug: "anmal-elolycka-privatperson",
+    publishedAt: "2026-07-11",
+    updatedLabel: "Uppdaterad 11 juli 2026",
     title: "Anmäla elolycka – vilka uppgifter bör en privatperson spara?",
     description: "Så prioriterar du vård och samlar relevanta uppgifter om plats, produkt och händelse efter en elolycka.",
     category: "Elolycka",
@@ -784,9 +860,11 @@ export const newGuidePosts: GuidePost[] = [
     ],
     sourceLabel: "Elsäkerhetsverket: Anmäl en elolycka",
     sourceUrl: "https://www.elsakerhetsverket.se/privatpersoner/om-du-drabbas-av-en-elolycka/anmal-en-elolycka/",
-  }),
-  guide({
+  },
+  {
     slug: "led-lampor-stor-radio",
+    publishedAt: "2026-07-12",
+    updatedLabel: "Uppdaterad 12 juli 2026",
     title: "LED-lampor stör radio – så avgränsar du störningskällan säkert",
     description: "En säker metod för att se om en lampa, dimmer eller drivare orsakar störningar på radio och mottagning.",
     category: "Belysning",
@@ -802,9 +880,11 @@ export const newGuidePosts: GuidePost[] = [
     ],
     sourceLabel: "Elsäkerhetsverket: Checklista för störningsfri el",
     sourceUrl: "https://www.elsakerhetsverket.se/privatpersoner/storningsfri-el-emc/checklista-for-storningsfri-el/",
-  }),
-  guide({
+  },
+  {
     slug: "laddare-stor-radio-eller-wifi",
+    publishedAt: "2026-07-13",
+    updatedLabel: "Uppdaterad 13 juli 2026",
     title: "Laddare stör radio eller wifi – hitta sambandet utan att öppna produkten",
     description: "Så testar du säkert om en USB-laddare eller nätadapter orsakar elektromagnetiska störningar hemma.",
     category: "Laddare",
@@ -820,9 +900,11 @@ export const newGuidePosts: GuidePost[] = [
     ],
     sourceLabel: "Elsäkerhetsverket: Vanliga frågor om störningsfri el",
     sourceUrl: "https://www.elsakerhetsverket.se/privatpersoner/storningsfri-el-emc/vanliga-fragor-om-storningsfri-el/",
-  }),
-  guide({
+  },
+  {
     slug: "felsoka-elektriska-storningar-hemma",
+    publishedAt: "2026-07-14",
+    updatedLabel: "Uppdaterad 14 juli 2026",
     title: "Elektriska störningar hemma – checklista för att hitta mönstret",
     description: "Dokumentera tid, plats och berörd utrustning för att avgränsa EMC-störningar utan ingrepp i elanläggningen.",
     category: "Elsäkerhet hemma",
@@ -838,9 +920,11 @@ export const newGuidePosts: GuidePost[] = [
     ],
     sourceLabel: "Elsäkerhetsverket: Störningsfri el",
     sourceUrl: "https://www.elsakerhetsverket.se/privatpersoner/storningsfri-el-emc/storningsfri-el/",
-  }),
-  guide({
+  },
+  {
     slug: "vatten-droppar-fran-taklampa",
+    publishedAt: "2026-07-15",
+    updatedLabel: "Uppdaterad 15 juli 2026",
     title: "Vatten droppar från taklampan – gör platsen säker direkt",
     description: "Så spärrar du av och agerar vid vatten i eller nära en takarmatur utan att röra våta elektriska delar.",
     category: "Akut elsäkerhet",
@@ -856,9 +940,11 @@ export const newGuidePosts: GuidePost[] = [
     ],
     sourceLabel: "Elsäkerhetsverket: Förhindra skador vid översvämning och ras",
     sourceUrl: "https://www.elsakerhetsverket.se/privatpersoner/din-elanlaggning/om-du-ager-din-bostad/forhindra-skador-vid-oversvamning-och-ras/",
-  }),
-  guide({
+  },
+  {
     slug: "borrat-i-elkabel-i-vagg",
+    publishedAt: "2026-07-16",
+    updatedLabel: "Uppdaterad 16 juli 2026",
     title: "Borrat i en elkabel i väggen – vad ska du göra nu?",
     description: "Säkra området efter misstänkt kabelträff och undvik att dra ut borr eller skruv innan elen har bedömts.",
     category: "Akut elsäkerhet",
@@ -874,9 +960,11 @@ export const newGuidePosts: GuidePost[] = [
     ],
     sourceLabel: "Elsäkerhetsverket: Vad kan orsaka en elolycka?",
     sourceUrl: "https://www.elsakerhetsverket.se/privatpersoner/om-du-drabbas-av-en-elolycka/vad-kan-orsaka-en-elolycka/",
-  }),
-  guide({
+  },
+  {
     slug: "klippt-sladd-med-grasklippare",
+    publishedAt: "2026-07-17",
+    updatedLabel: "Uppdaterad 17 juli 2026",
     title: "Klippt sladden med gräsklipparen – säkra området innan du rör något",
     description: "Rätt första steg när gräsklippare, häcksax eller annat trädgårdsverktyg skadar en elkabel.",
     category: "Utomhus",
@@ -892,9 +980,11 @@ export const newGuidePosts: GuidePost[] = [
     ],
     sourceLabel: "Elsäkerhetsverket: Säker el utomhus",
     sourceUrl: "https://www.elsakerhetsverket.se/privatpersoner/du-ar-ansvarig-for-elen/saker-el-utomhus/",
-  }),
-  guide({
+  },
+  {
     slug: "torktumlare-loser-sakringen",
+    publishedAt: "2026-07-18",
+    updatedLabel: "Uppdaterad 18 juli 2026",
     title: "Torktumlaren löser säkringen – kontrollera belastning och värme",
     description: "Så skiljer du ett möjligt apparatfel från överbelastning utan att öppna torktumlaren eller elanläggningen.",
     category: "Vitvaror",
@@ -910,5 +1000,5 @@ export const newGuidePosts: GuidePost[] = [
     ],
     sourceLabel: "Elsäkerhetsverket: Vitvaror",
     sourceUrl: "https://www.elsakerhetsverket.se/privatpersoner/dina-elprodukter/produkter/vitvaror/",
-  }),
+  },
 ];

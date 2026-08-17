@@ -1,18 +1,10 @@
 import type { GuidePost } from "./posts";
 
-type NewGuidePost = Omit<GuidePost, "publishedAt" | "updatedLabel">;
-
-function guide(post: NewGuidePost): GuidePost {
-  return {
-    ...post,
-    publishedAt: "2026-08-17",
-    updatedLabel: "Uppdaterad 17 augusti 2026",
-  };
-}
-
 export const outdoorGuidePosts: GuidePost[] = [
-  guide({
+  {
     slug: "el-pa-campingplats-husvagn-husbil",
+    publishedAt: "2026-08-08",
+    updatedLabel: "Uppdaterad 8 augusti 2026",
     title: "El på campingplats – anslut husvagn och husbil säkert",
     description: "En trygg checklista för campingel: uttag, jordfelsbrytare, kabel och kontroll före anslutning.",
     category: "Utomhus",
@@ -28,9 +20,11 @@ export const outdoorGuidePosts: GuidePost[] = [
     ],
     sourceLabel: "Elsäkerhetsverket: Säker el på semestern",
     sourceUrl: "https://www.elsakerhetsverket.se/privatpersoner/du-ar-ansvarig-for-elen/saker-el-pa-semestern/",
-  }),
-  guide({
+  },
+  {
     slug: "portabel-jordfelsbrytare-utomhus",
+    publishedAt: "2026-08-09",
+    updatedLabel: "Uppdaterad 9 augusti 2026",
     title: "Portabel jordfelsbrytare utomhus – när är den rätt extra skydd?",
     description: "Så använder du en portabel jordfelsbrytare säkrare vid trädgårdsarbete, belysning och andra utomhusprodukter.",
     category: "Jordfelsbrytare",
@@ -46,9 +40,11 @@ export const outdoorGuidePosts: GuidePost[] = [
     ],
     sourceLabel: "Elsäkerhetsverket: Jordfelsbrytaren – din säkerhet",
     sourceUrl: "https://www.elsakerhetsverket.se/privatpersoner/din-elanlaggning/om-du-ager-din-bostad/jordfelsbrytaren-din-sakerhet/om-jordfelsbrytare/",
-  }),
-  guide({
+  },
+  {
     slug: "anvanda-elverktyg-utomhus-i-regn",
+    publishedAt: "2026-08-10",
+    updatedLabel: "Uppdaterad 10 augusti 2026",
     title: "Använda elverktyg utomhus i regn – när ska arbetet vänta?",
     description: "Praktiska säkerhetsråd för eldrivna trädgårdsverktyg när marken, verktyget eller vädret är fuktigt.",
     category: "Utomhus",
@@ -64,9 +60,11 @@ export const outdoorGuidePosts: GuidePost[] = [
     ],
     sourceLabel: "Elsäkerhetsverket: Säker el utomhus",
     sourceUrl: "https://www.elsakerhetsverket.se/privatpersoner/du-ar-ansvarig-for-elen/saker-el-utomhus/",
-  }),
-  guide({
+  },
+  {
     slug: "planera-tradgardsbelysning-sakert",
+    publishedAt: "2026-08-11",
+    updatedLabel: "Uppdaterad 11 augusti 2026",
     title: "Planera trädgårdsbelysning – jordning, IP-klass och trygg installation",
     description: "Så planerar du säker trädgårdsbelysning med rätt anslutning, fuktskydd och hjälp för fasta elarbeten.",
     category: "Utomhus",
@@ -82,9 +80,11 @@ export const outdoorGuidePosts: GuidePost[] = [
     ],
     sourceLabel: "Elsäkerhetsverket: Belysning utomhus",
     sourceUrl: "https://www.elsakerhetsverket.se/privatpersoner/dina-elprodukter/produkter/belysning/belysning-utomhus/",
-  }),
-  guide({
+  },
+  {
     slug: "elektrisk-fontan-tradgard-elsakerhet",
+    publishedAt: "2026-08-12",
+    updatedLabel: "Uppdaterad 12 augusti 2026",
     title: "Elektrisk fontän i trädgården – säker anslutning nära vatten",
     description: "Kontrollera fontän, pump, kabel och jordfelsbrytare innan du använder el nära damm, vatten och våt mark.",
     category: "Utomhus",
@@ -100,9 +100,11 @@ export const outdoorGuidePosts: GuidePost[] = [
     ],
     sourceLabel: "Elsäkerhetsverket: Säker el utomhus",
     sourceUrl: "https://www.elsakerhetsverket.se/privatpersoner/du-ar-ansvarig-for-elen/saker-el-utomhus/",
-  }),
-  guide({
+  },
+  {
     slug: "ladda-elbil-vid-fritidshus",
+    publishedAt: "2026-08-13",
+    updatedLabel: "Uppdaterad 13 augusti 2026",
     title: "Ladda elbil vid fritidshus – planera för säker laddning",
     description: "Så laddar du elbilen säkrare vid sommarstugan eller fjällstugan och undviker långvarig laddning i vanligt uttag.",
     category: "Laddning",
@@ -118,9 +120,11 @@ export const outdoorGuidePosts: GuidePost[] = [
     ],
     sourceLabel: "Elsäkerhetsverket: Elsäkert sportlov",
     sourceUrl: "https://www.elsakerhetsverket.se/privatpersoner/dina-elprodukter/anvanda-elprodukter/elsakert-sportlov/",
-  }),
-  guide({
+  },
+  {
     slug: "lastbalansering-laddbox-vad-ar-det",
+    publishedAt: "2026-08-14",
+    updatedLabel: "Uppdaterad 14 augusti 2026",
     title: "Lastbalansering till laddbox – vad är det och när behövs den?",
     description: "Förstå hur lastbalansering kan minska risken för överbelastning när elbilen laddas hemma.",
     category: "Laddning",
@@ -136,9 +140,11 @@ export const outdoorGuidePosts: GuidePost[] = [
     ],
     sourceLabel: "Elsäkerhetsverket: Installation av elbilsladdare",
     sourceUrl: "https://www.elsakerhetsverket.se/privatpersoner/din-elanlaggning/bygga-och-renovera/installation-av-elbilsladdare/",
-  }),
-  guide({
+  },
+  {
     slug: "laddbox-i-carport-sakert",
+    publishedAt: "2026-08-15",
+    updatedLabel: "Uppdaterad 15 augusti 2026",
     title: "Laddbox i carport – planera placering, kabel och skydd",
     description: "Vad du bör ta upp med elektrikern när laddboxen ska sitta i en carport eller vid en öppen parkeringsplats.",
     category: "Laddning",
@@ -154,9 +160,11 @@ export const outdoorGuidePosts: GuidePost[] = [
     ],
     sourceLabel: "Elsäkerhetsverket: Installation av elbilsladdare",
     sourceUrl: "https://www.elsakerhetsverket.se/privatpersoner/din-elanlaggning/bygga-och-renovera/installation-av-elbilsladdare/",
-  }),
-  guide({
+  },
+  {
     slug: "solceller-efter-storm-kontroll",
+    publishedAt: "2026-08-16",
+    updatedLabel: "Uppdaterad 16 augusti 2026",
     title: "Solceller efter storm – kontrollera anläggningen utan att gå på taket",
     description: "Så dokumenterar du synliga skador efter hårt väder och vet när solcellsanläggningen behöver professionell kontroll.",
     category: "Solceller",
@@ -172,9 +180,11 @@ export const outdoorGuidePosts: GuidePost[] = [
     ],
     sourceLabel: "Elsäkerhetsverket: Säkerhetsrisker med solcellsanläggningar",
     sourceUrl: "https://www.elsakerhetsverket.se/privatpersoner/din-elanlaggning/bygga-och-renovera/installation-av-solceller/vilka-sakerhetsrisker-finns/",
-  }),
-  guide({
+  },
+  {
     slug: "reservkraft-med-solceller",
+    publishedAt: "2026-08-17",
+    updatedLabel: "Uppdaterad 17 augusti 2026",
     title: "Reservkraft med solceller – varför krävs särskild planering?",
     description: "Förstå skillnaden mellan vanliga nätanslutna solceller och reservkraft vid strömavbrott.",
     category: "Solceller",
@@ -190,5 +200,5 @@ export const outdoorGuidePosts: GuidePost[] = [
     ],
     sourceLabel: "Elsäkerhetsverket: Planera din solcellsanläggning",
     sourceUrl: "https://www.elsakerhetsverket.se/privatpersoner/din-elanlaggning/bygga-och-renovera/installation-av-solceller/planera-din-solcellsanlaggning/",
-  }),
+  },
 ];

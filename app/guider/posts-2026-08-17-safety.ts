@@ -1,18 +1,10 @@
 import type { GuidePost } from "./posts";
 
-type NewGuidePost = Omit<GuidePost, "publishedAt" | "updatedLabel">;
-
-function guide(post: NewGuidePost): GuidePost {
-  return {
-    ...post,
-    publishedAt: "2026-08-17",
-    updatedLabel: "Uppdaterad 17 augusti 2026",
-  };
-}
-
 export const safetyGuidePosts: GuidePost[] = [
-  guide({
+  {
     slug: "tillverka-egen-lampa-sakert",
+    publishedAt: "2026-07-19",
+    updatedLabel: "Uppdaterad 19 juli 2026",
     title: "Tillverka egen lampa – därför bör du tänka om före första kopplingen",
     description: "Egenbyggda lampor kan medföra brand- och elchocksrisk. Här är vad du behöver veta innan du börjar.",
     category: "Belysning",
@@ -28,9 +20,11 @@ export const safetyGuidePosts: GuidePost[] = [
     ],
     sourceLabel: "Elsäkerhetsverket: Tillverka lampor för eget bruk",
     sourceUrl: "https://www.elsakerhetsverket.se/privatpersoner/dina-elprodukter/tillverka-andra-och-laga-elprodukter/tillverka-lampor-for-eget-bruk/",
-  }),
-  guide({
+  },
+  {
     slug: "symbolen-dubbelisolerad-elprodukt",
+    publishedAt: "2026-07-20",
+    updatedLabel: "Uppdaterad 20 juli 2026",
     title: "Symbolen med två fyrkanter – så känner du igen en dubbelisolerad elprodukt",
     description: "Vad betyder två fyrkanter på en laddare eller lampa? Lär dig vad dubbelisolering visar och vad den inte säger.",
     category: "Elprodukter",
@@ -46,9 +40,11 @@ export const safetyGuidePosts: GuidePost[] = [
     ],
     sourceLabel: "Elsäkerhetsverket: Krav och märkning på elprodukter",
     sourceUrl: "https://www.elsakerhetsverket.se/privatpersoner/dina-elprodukter/krav-och-markning-pa-elprodukter/",
-  }),
-  guide({
+  },
+  {
     slug: "lampa-nara-gardin-eller-textil",
+    publishedAt: "2026-07-21",
+    updatedLabel: "Uppdaterad 21 juli 2026",
     title: "Lampa nära gardin eller säng – så minskar du brandrisken",
     description: "Heta lampor och textilier är en riskfylld kombination. Kontrollera placering, effekt och lampans skick hemma.",
     category: "Belysning",
@@ -64,9 +60,11 @@ export const safetyGuidePosts: GuidePost[] = [
     ],
     sourceLabel: "Elsäkerhetsverket: Kontrollera dina elprodukter",
     sourceUrl: "https://www.elsakerhetsverket.se/privatpersoner/dina-elprodukter/kontrollera-dina-elprodukter/",
-  }),
-  guide({
+  },
+  {
     slug: "sladd-mot-varmeelement-eller-ugn",
+    publishedAt: "2026-07-22",
+    updatedLabel: "Uppdaterad 22 juli 2026",
     title: "Sladd mot värmeelement eller ugn – därför kan isoleringen skadas",
     description: "En kabel som ligger mot värme kan få skadad isolering. Så kontrollerar du placeringen utan att ta risker.",
     category: "Sladdar",
@@ -82,9 +80,11 @@ export const safetyGuidePosts: GuidePost[] = [
     ],
     sourceLabel: "Elsäkerhetsverket: Kontrollera dina elprodukter",
     sourceUrl: "https://www.elsakerhetsverket.se/privatpersoner/dina-elprodukter/kontrollera-dina-elprodukter/",
-  }),
-  guide({
+  },
+  {
     slug: "sladdharva-bakom-tv-och-dator",
+    publishedAt: "2026-07-23",
+    updatedLabel: "Uppdaterad 23 juli 2026",
     title: "Sladdhärva bakom tv eller dator – så minskar du risken för överhettning",
     description: "Täta kabelhärvor kan samla värme. Ordna tv-bänk och hemmakontor säkrare med en enkel kontroll.",
     category: "Sladdar",
@@ -100,9 +100,11 @@ export const safetyGuidePosts: GuidePost[] = [
     ],
     sourceLabel: "Elsäkerhetsverket: Kontrollera dina elprodukter",
     sourceUrl: "https://www.elsakerhetsverket.se/privatpersoner/dina-elprodukter/kontrollera-dina-elprodukter/",
-  }),
-  guide({
+  },
+  {
     slug: "gamla-elprodukter-nar-ska-de-byta",
+    publishedAt: "2026-07-24",
+    updatedLabel: "Uppdaterad 24 juli 2026",
     title: "Gamla elprodukter hemma – när är det dags att ta dem ur bruk?",
     description: "Äldre lampor, laddare och apparater kan vara säkra – men slitage och skador ska alltid tas på allvar.",
     category: "Elprodukter",
@@ -118,9 +120,11 @@ export const safetyGuidePosts: GuidePost[] = [
     ],
     sourceLabel: "Elsäkerhetsverket: Produkter A–Ö",
     sourceUrl: "https://www.elsakerhetsverket.se/privatpersoner/dina-elprodukter/produkter/",
-  }),
-  guide({
+  },
+  {
     slug: "hyra-ut-bostad-elansvar",
+    publishedAt: "2026-07-25",
+    updatedLabel: "Uppdaterad 25 juli 2026",
     title: "Hyra ut bostad – du har fortfarande ansvar för elsäkerheten",
     description: "Ska du hyra ut hus eller lägenhet? Så tydliggör du elansvar, kontroller och felanmälan före inflyttning.",
     category: "Elsäkerhet hemma",
@@ -136,9 +140,11 @@ export const safetyGuidePosts: GuidePost[] = [
     ],
     sourceLabel: "Elsäkerhetsverket: Hyra ut, sälja eller riva",
     sourceUrl: "https://www.elsakerhetsverket.se/privatpersoner/din-elanlaggning/hyra-ut-salja-eller-riva/",
-  }),
-  guide({
+  },
+  {
     slug: "salja-begagnad-elprodukt-privat",
+    publishedAt: "2026-07-26",
+    updatedLabel: "Uppdaterad 26 juli 2026",
     title: "Sälja begagnad elprodukt privat – kontrollera detta före annonsen",
     description: "En checklista för dig som ska sälja en begagnad lampa, laddare eller apparat utan att föra vidare en säkerhetsrisk.",
     category: "Elprodukter",
@@ -154,9 +160,11 @@ export const safetyGuidePosts: GuidePost[] = [
     ],
     sourceLabel: "Elsäkerhetsverket: Sälja begagnade elprodukter",
     sourceUrl: "https://www.elsakerhetsverket.se/yrkespersoner/tillverka-och-salja-elprodukter/salja-begagnade-elprodukter/",
-  }),
-  guide({
+  },
+  {
     slug: "anvanda-utlandsk-elprodukt-i-sverige",
+    publishedAt: "2026-07-27",
+    updatedLabel: "Uppdaterad 27 juli 2026",
     title: "Använda utländsk elprodukt i Sverige – kontrollera spänning och stickpropp först",
     description: "Köpt en apparat utomlands? Här är kontrollerna som avgör om den är avsedd för svenska uttag och 230 volt.",
     category: "Elprodukter",
@@ -172,9 +180,11 @@ export const safetyGuidePosts: GuidePost[] = [
     ],
     sourceLabel: "Elsäkerhetsverket: Köpa elprodukter i butik",
     sourceUrl: "https://www.elsakerhetsverket.se/privatpersoner/dina-elprodukter/kopa-elprodukter/kopa-elprodukter-i-butik/",
-  }),
-  guide({
+  },
+  {
     slug: "anmala-brister-i-elanlaggning",
+    publishedAt: "2026-07-28",
+    updatedLabel: "Uppdaterad 28 juli 2026",
     title: "Anmäla brister i en elanläggning – när och hur gör man?",
     description: "Så agerar du om en innehavare inte åtgärdar en misstänkt elbrist, från första kontakt till anmälan.",
     category: "Elsäkerhet hemma",
@@ -190,5 +200,5 @@ export const safetyGuidePosts: GuidePost[] = [
     ],
     sourceLabel: "Elsäkerhetsverket: Anmäl brister i en elanläggning",
     sourceUrl: "https://www.elsakerhetsverket.se/kontakta-oss/gor-en-anmalan/anmal-brister-i-elanlaggning/",
-  }),
+  },
 ];
