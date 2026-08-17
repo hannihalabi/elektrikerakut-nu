@@ -20,7 +20,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { type FormEvent, type ElementType, useEffect, useRef, useState } from "react";
 import personalImage from "../public/personal2.png";
-import { servicePhotos } from "./site-photos";
 
 type Issue = {
   id: string;
@@ -449,7 +448,6 @@ export default function Home() {
         <span><TriangleAlert size={22} /></span>
         <p><strong>Brand, rök eller omedelbar personfara?</strong> Lämna platsen och ring 112. Rör inte skadad elektrisk utrustning.</p>
       </section>
-      <figure className="home-trust-photo"><Image src={servicePhotos[8]} alt="Elektriker med verktyg vid servicebil utanför en bostad" width={1448} height={1086} sizes="(max-width: 700px) calc(100vw - 48px), 720px" quality={82} /></figure>
 
       <div className="mobile-actions">
         <a href="#matchning" onClick={() => recordEvent("CTA_CLICK")}><PhoneCall size={18} /> Hjälp nu</a>
