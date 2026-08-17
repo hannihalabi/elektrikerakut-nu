@@ -114,8 +114,8 @@ export function SearchConsoleTrend() {
       <div className="search-trend-chart-wrap">
         <svg ref={svgRef} viewBox={`0 0 ${CHART_WIDTH} ${CHART_HEIGHT}`} role="img" aria-label="Linjediagram över klick och exponeringar från Google Search Console de senaste 90 dagarna" className="search-trend-svg">
           <line x1={PADDING.left} y1={CHART_HEIGHT - PADDING.bottom} x2={CHART_WIDTH - PADDING.right} y2={CHART_HEIGHT - PADDING.bottom} className="search-trend-baseline" />
-          <path d={chart.impressionPath} className="search-trend-line impressions" />
-          <path d={chart.clickPath} className="search-trend-line clicks" />
+          <path d={chart.impressionPath} className="search-trend-line impressions" fill="none" />
+          <path d={chart.clickPath} className="search-trend-line clicks" fill="none" />
           {hoveredX !== null && <line x1={hoveredX} y1={PADDING.top} x2={hoveredX} y2={CHART_HEIGHT - PADDING.bottom} className="search-trend-crosshair" />}
           {hoverIndex !== null && (
             <>
