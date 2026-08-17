@@ -3,6 +3,7 @@
 import { ArrowLeft, BarChart3, CheckCircle2, ChevronLeft, ChevronRight, Eye, FileText, LoaderCircle, Network, PhoneCall, Radio, Users } from "lucide-react";
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { SearchConsoleTrend } from "./search-console-trend";
 
 type Stats = { visitsDay: number; visitsWeek: number; visitsMonth: number; matchesMonth: number; foundMonth: number };
 
@@ -60,6 +61,7 @@ export function AnalyticsDashboard() {
               <article><span className="amber"><CheckCircle2 size={19} /></span><small>Matchningar startade</small><strong>{stats.matchesMonth}</strong></article>
             </div>
             <div className="analytics-summary"><div><small>Partnerträffar senaste 30 dagar</small><strong>{stats.foundMonth}</strong></div><p>Besök räknas som anonyma sidvisningar. Inga IP-adresser, namn eller kontaktuppgifter sparas i statistiken.</p></div>
+            <SearchConsoleTrend />
           </>
         )}
       </section>

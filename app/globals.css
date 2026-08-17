@@ -342,6 +342,40 @@ footer > small { grid-column: 1 / -1; color: #8994a4; font-size: 9px; line-heigh
 .analytics-summary small { color: #78869a; font-size: 10px; }
 .analytics-summary strong { color: var(--ink); font-size: 30px; letter-spacing: -.04em; }
 .analytics-summary p { margin: 0; color: #687891; font-size: 11px; line-height: 1.6; }
+.admin-card { margin-top: 24px; padding: 22px; border: 1px solid #dfe5ed; border-radius: 14px; background: white; }
+.search-trend-heading span { display: inline-flex; align-items: center; gap: 7px; color: var(--blue); font-size: 10px; font-weight: 850; letter-spacing: .1em; text-transform: uppercase; }
+.search-trend-heading h2 { margin: 8px 0 4px; color: var(--ink); font-size: 19px; letter-spacing: -.03em; }
+.search-trend-heading p { margin: 0; color: #8290a1; font-size: 10px; }
+.search-trend-alert { margin-top: 14px; display: flex; align-items: center; gap: 8px; }
+.search-trend-loading { min-height: 200px; margin-top: 0; }
+.search-trend-summary { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-top: 20px; padding-top: 18px; border-top: 1px solid #edf1f5; }
+.search-trend-summary div { display: grid; gap: 5px; }
+.search-trend-summary small { color: #78869a; font-size: 9px; }
+.search-trend-summary strong { color: var(--ink); font-size: 20px; letter-spacing: -.03em; font-variant-numeric: tabular-nums; }
+.search-trend-legend { display: flex; gap: 16px; margin-top: 18px; }
+.search-trend-legend span { display: inline-flex; align-items: center; gap: 6px; color: #5a6b82; font-size: 10px; font-weight: 700; }
+.search-trend-legend i { width: 12px; height: 2px; border-radius: 2px; }
+.search-trend-legend .clicks i, .search-trend-dot.clicks, .search-trend-line.clicks { background: var(--blue); }
+.search-trend-legend .impressions i { background: #b7c6dc; }
+.search-trend-chart-wrap { position: relative; margin-top: 10px; }
+.search-trend-svg { width: 100%; height: 220px; display: block; overflow: visible; }
+.search-trend-baseline { stroke: #e1e6ed; stroke-width: 1; }
+.search-trend-line { fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.search-trend-line.clicks { stroke: var(--blue); }
+.search-trend-line.impressions { stroke: #b7c6dc; }
+.search-trend-crosshair { stroke: #cbd5e3; stroke-width: 1; }
+.search-trend-dot { stroke: white; stroke-width: 2; }
+.search-trend-dot.clicks { fill: var(--blue); }
+.search-trend-dot.impressions { fill: #b7c6dc; }
+.search-trend-tooltip { position: absolute; top: 0; transform: translate(-50%, -6px); min-width: 150px; padding: 10px 12px; border-radius: 10px; background: #16233a; color: white; font-size: 10px; line-height: 1.6; pointer-events: none; box-shadow: 0 10px 24px rgba(16,35,63,.22); z-index: 2; }
+.search-trend-tooltip strong { display: block; margin-bottom: 4px; font-size: 11px; }
+.search-trend-tooltip span { display: flex; align-items: center; gap: 6px; }
+.search-trend-tooltip span.muted { color: #9fb0c8; margin-top: 2px; }
+.search-trend-tooltip i { width: 8px; height: 8px; border-radius: 50%; }
+.search-trend-tooltip i.clicks { background: var(--blue); }
+.search-trend-tooltip i.impressions { background: #b7c6dc; }
+.search-trend-axis-labels { display: flex; justify-content: space-between; margin-top: 4px; padding: 0 16px; color: #9aa7ba; font-size: 9px; }
+.search-trend-caption { display: flex; align-items: center; gap: 6px; margin: 16px 0 0; color: #8290a1; font-size: 10px; }
 .admin-topbar { display: flex; align-items: end; justify-content: space-between; gap: 30px; }
 .admin-topbar p { margin: 0 0 5px; color: var(--blue); font-size: 10px; font-weight: 850; text-transform: uppercase; letter-spacing: .1em; }
 .admin-topbar h1 { margin: 0; font-size: 36px; line-height: 1; letter-spacing: -.045em; }
@@ -960,6 +994,7 @@ footer > small { grid-column: 1 / -1; color: #8994a4; font-size: 9px; line-heigh
   .seo-indexing-panels { grid-template-columns: 1fr; }
   .seo-map-board { grid-template-columns: 1fr; }
   .seo-detail-card { position: static; }
+  .search-trend-summary { grid-template-columns: 1fr 1fr; }
 }
 
 @media (max-width: 700px) {
