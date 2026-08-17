@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowLeft, ArrowUpRight, BarChart3, CheckCircle2, ChevronDown, ChevronLeft, ChevronRight, CircleDot, Clock3, FileText, Globe2, History, Info, Link2, ListChecks, MapPin, Network, PhoneCall, RefreshCw, Search, Send, ShieldCheck, TriangleAlert, Users, Zap } from "lucide-react";
+import { ArrowLeft, ArrowUpRight, BarChart3, BookOpen, CheckCircle2, ChevronDown, ChevronLeft, ChevronRight, CircleDot, Clock3, FileText, Globe2, History, Info, Link2, ListChecks, MapPin, Network, PhoneCall, RefreshCw, Search, Send, ShieldCheck, TriangleAlert, Users, Zap } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { SeoUrlOrbit } from "./seo-url-orbit";
@@ -169,6 +169,7 @@ export function SeoUrlMap({ items, areas, origin }: { items: SeoUrlItem[]; areas
   const sitemapCount = items.filter((item) => item.inSitemap).length;
   const htmlCount = items.filter((item) => item.group !== "Tekniskt").length;
   const localCount = items.filter((item) => item.group === "Lokala sidor").length;
+  const guideCount = items.filter((item) => item.group === "Guider").length;
   const linkedOutsideSitemap = items.filter((item) => !item.inSitemap && item.group !== "Tekniskt").length;
   const indexableItems = items.filter((item) => item.group !== "Tekniskt" && item.indexable !== false);
   const indexedCount = Object.values(indexing).filter((result) => result.state === "INDEXED").length;
@@ -451,6 +452,7 @@ export function SeoUrlMap({ items, areas, origin }: { items: SeoUrlItem[]; areas
           <StatCard icon={Globe2} label="HTML-sidor" value={htmlCount} />
           <StatCard icon={BarChart3} label="I sitemap" value={sitemapCount} tone="green" />
           <StatCard icon={MapPin} label="Lokala sidor" value={localCount} tone="blue" />
+          <StatCard icon={BookOpen} label="Guide-sidor" value={guideCount} tone="blue" />
           <StatCard icon={FileText} label="Länkade utanför sitemap" value={linkedOutsideSitemap} tone="amber" />
         </div>
 
