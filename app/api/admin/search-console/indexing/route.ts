@@ -73,8 +73,9 @@ async function getAccessToken(account: ServiceAccount) {
 function stateFor(verdict: string | null, coverageState: string | null): IndexingState {
   if (verdict === "PASS") return "INDEXED";
   const coverage = coverageState?.toLowerCase() ?? "";
-  if (coverage.includes("crawled") && coverage.includes("not indexed")) return "CRAWLED_NOT_INDEXED";
-  if (coverage.includes("discovered") && coverage.includes("not indexed")) return "DISCOVERED_NOT_INDEXED";
+  const notIndexed = coverage.includes("not indexed") || coverage.includes("inte indexerad");
+  if (notIndexed && (coverage.includes("crawled") || coverage.includes("crawlad") || coverage.includes("genomsökt"))) return "CRAWLED_NOT_INDEXED";
+  if (notIndexed && (coverage.includes("discovered") || coverage.includes("upptäckt"))) return "DISCOVERED_NOT_INDEXED";
   return "EXCLUDED";
 }
 
