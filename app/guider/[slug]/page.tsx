@@ -14,14 +14,47 @@ export const dynamicParams = false;
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const post = getGuidePost((await params).slug);
   if (!post) return {};
-  return { title: `${post.title} | Elektrikerakut.nu`, description: post.description, alternates: { canonical: `/guider/${post.slug}` } };
+  return {
+    title: `${post.title} | Elektrikerakut.nu`,
+    description: post.description,
+    alternates: { canonical: `/guider/${post.slug}` },
+    openGraph: {
+      title: post.title,
+      description: post.description,
+      url: `https://elektrikerakut.nu/guider/${post.slug}`,
+      type: "article",
+      publishedTime: `${post.publishedAt}T00:00:00.000Z`,
+    },
+  };
 }
 
 export default async function GuideArticlePage({ params }: PageProps) {
   const post = getGuidePost((await params).slug);
   if (!post) notFound();
   const related = guidePosts.filter((item) => item.slug !== post.slug).slice(0, 3);
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: post.title,
+    description: post.description,
+    datePublished: `${post.publishedAt}T00:00:00.000Z`,
+    dateModified: `${post.publishedAt}T00:00:00.000Z`,
+    author: { "@type": "Organization", name: "Elektrikerakut.nu" },
+    publisher: { "@type": "Organization", name: "Elektrikerakut.nu", url: "https://elektrikerakut.nu" },
+    mainEntityOfPage: { "@type": "WebPage", "@id": `https://elektrikerakut.nu/guider/${post.slug}` },
+  };
+  const breadcrumbJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Elektrikerakut.nu", item: "https://elektrikerakut.nu" },
+      { "@type": "ListItem", position: 2, name: "Elguiden", item: "https://elektrikerakut.nu/guider" },
+      { "@type": "ListItem", position: 3, name: post.title, item: `https://elektrikerakut.nu/guider/${post.slug}` },
+    ],
+  };
   return <main className="guide-site guide-article">
+    <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+    <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
     <header className="guide-header"><Link className="brand" href="/"><span className="brand-mark"><Zap size={18} /></span><span>Elektrikerakut<span>.nu</span></span></Link><Link className="guide-header-cta" href="/eljour">Behöver du hjälp nu? <ArrowRight size={16} /></Link></header>
     <article>
       <Link className="guide-back" href="/guider"><ArrowLeft size={16} /> Alla guider</Link>
