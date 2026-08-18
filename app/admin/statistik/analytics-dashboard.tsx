@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { SearchConsoleTrend } from "./search-console-trend";
 import { LiveActivityFeed } from "./live-activity-feed";
+import { VisitHistory } from "./visit-history";
 
 type Stats = { visitsDay: number; visitsWeek: number; visitsMonth: number; matchesMonth: number; foundMonth: number };
 
@@ -56,6 +57,7 @@ export function AnalyticsDashboard() {
         {error ? <p className="admin-alert" role="alert">{error}</p> : !stats ? <div className="admin-empty analytics-loading"><LoaderCircle className="admin-spinner" size={28} /> Hämtar statistik…</div> : (
           <>
             <LiveActivityFeed />
+            <VisitHistory />
             <div className="admin-stats analytics-stats">
               <article><span><Eye size={19} /></span><small>Besök senaste 24 h</small><strong>{stats.visitsDay}</strong></article>
               <article><span className="green"><Users size={19} /></span><small>Besök senaste 7 dagar</small><strong>{stats.visitsWeek}</strong></article>
