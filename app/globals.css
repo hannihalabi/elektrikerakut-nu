@@ -795,11 +795,19 @@ footer > small { grid-column: 1 / -1; color: #8994a4; font-size: 9px; line-heigh
   .trust-row span:last-child { grid-column: 1 / -1; }
   .hero-team { height: 250px; margin: 25px 0 20px; }
   .match-card { border-radius: 20px; }
-  .card-topline { padding: 0 19px; }
-  .match-card form, .loading-panel, .result-panel { padding: 21px 18px 23px; }
-  .issue-option { min-height: 60px; }
-  .contact-fields { grid-template-columns: 1fr; }
-  .contact-fields input { height: 50px; }
+  .card-topline { padding: 0 15px; min-height: 40px; }
+  .match-card form { padding: 16px 16px 90px; }
+  .loading-panel, .result-panel { padding: 21px 18px 23px; }
+  .card-heading { margin-bottom: 12px; }
+  .issue-grid { gap: 6px; }
+  .issue-option { min-height: 52px; padding: 6px 10px; }
+  .issue-option strong { font-size: 12px; }
+  .issue-option small { font-size: 9px; margin-top: 1px; }
+  .contact-fields { grid-template-columns: 1fr 1fr; margin-top: 11px; }
+  .contact-fields input { height: 46px; }
+  .details-field { margin-top: 11px; }
+  .submit-button { margin-top: 15px; }
+  .request-consent-note { margin-top: 10px; }
   .loading-panel, .result-panel { min-height: 520px; }
   .safety-note { width: calc(100% - 32px); align-items: flex-start; }
   .how-section, .faq-section { width: calc(100% - 32px); padding: 86px 0; }

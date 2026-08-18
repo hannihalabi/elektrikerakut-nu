@@ -95,6 +95,29 @@ export default function Home() {
   }, [view]);
 
   useEffect(() => {
+    const card = matchCardRef.current;
+    if (!card) return;
+    if (!window.matchMedia("(max-width: 700px)").matches) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    let hasSnapped = false;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const entry = entries[0];
+        if (!entry || hasSnapped || !entry.isIntersecting) return;
+        if (entry.intersectionRatio < 0.4) return;
+        hasSnapped = true;
+        card.scrollIntoView({ behavior: "smooth", block: "start" });
+        observer.disconnect();
+      },
+      { threshold: [0.4] },
+    );
+
+    observer.observe(card);
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
     if (view !== "loading") return;
 
     const startedAt = Date.now();
