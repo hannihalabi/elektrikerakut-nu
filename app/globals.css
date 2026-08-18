@@ -408,13 +408,20 @@ footer > small { grid-column: 1 / -1; color: #8994a4; font-size: 9px; line-heigh
 .visit-history-bar:hover .visit-history-bar-fill { background: #8fb4ec; }
 .visit-history-bar.selected .visit-history-bar-fill { background: var(--blue); }
 .visit-history-bar-label { position: absolute; top: 100%; margin-top: 6px; font-size: 8px; color: #9aa7ba; white-space: nowrap; transform: rotate(0deg); }
-.visit-history-list-head { margin-top: 34px; }
+.visit-history-list-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 34px; }
 .visit-history-list-head h3 { margin: 0; color: #334d6b; font-size: 12px; font-weight: 800; }
+.visit-history-view-toggle { display: flex; gap: 4px; padding: 3px; border-radius: 8px; background: #f1f4f8; flex: 0 0 auto; }
+.visit-history-view-toggle button { display: inline-flex; align-items: center; gap: 5px; min-height: 26px; border: 0; border-radius: 6px; padding: 0 10px; background: transparent; color: #6d7f95; font: inherit; font-size: 9px; font-weight: 750; cursor: pointer; }
+.visit-history-view-toggle button.active { background: white; color: var(--blue); box-shadow: 0 1px 3px rgba(16,35,63,.12); }
 .visit-history-list { display: grid; gap: 2px; margin: 10px 0 0; padding: 0; list-style: none; max-height: 320px; overflow-y: auto; }
 .visit-history-row { display: grid; grid-template-columns: 1fr auto auto; align-items: center; gap: 10px; padding: 9px 6px; border-radius: 8px; }
 .visit-history-row:hover { background: #f7faff; }
 .visit-history-row-label { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: #334d6b; font-size: 11px; font-weight: 700; }
 .visit-history-row-count { flex: 0 0 auto; min-width: 28px; padding: 3px 8px; border-radius: 999px; background: #eaf2ff; color: var(--blue); font-size: 10px; font-weight: 850; text-align: center; font-variant-numeric: tabular-nums; }
+.visit-history-timeline { display: grid; gap: 2px; margin: 10px 0 0; padding: 0; list-style: none; max-height: 380px; overflow-y: auto; }
+.visit-history-timeline-row { display: grid; grid-template-columns: 52px 1fr auto; align-items: center; gap: 10px; padding: 9px 6px; border-radius: 8px; }
+.visit-history-timeline-row:hover { background: #f7faff; }
+.visit-history-timeline-time { flex: 0 0 auto; color: var(--blue); font-size: 10px; font-weight: 850; font-variant-numeric: tabular-nums; }
 .admin-topbar { display: flex; align-items: end; justify-content: space-between; gap: 30px; }
 .admin-topbar p { margin: 0 0 5px; color: var(--blue); font-size: 10px; font-weight: 850; text-transform: uppercase; letter-spacing: .1em; }
 .admin-topbar h1 { margin: 0; font-size: 36px; line-height: 1; letter-spacing: -.045em; }

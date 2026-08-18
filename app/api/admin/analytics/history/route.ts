@@ -24,11 +24,35 @@ function labelForPath(path: string) {
   return path;
 }
 
+const DAY_RE = /^\d{4}-\d{2}-\d{2}$/;
+const DAY_EVENT_LIMIT = 500;
+
 export async function GET(request: Request) {
   const admin = await getPartnerAdmin();
   if (!admin) return Response.json({ error: "Åtkomst nekad." }, { status: 403 });
 
-  const rangeParam = new URL(request.url).searchParams.get("range") ?? "30d";
+  const url = new URL(request.url);
+  const dayParam = url.searchParams.get("day");
+  if (dayParam) {
+    if (!DAY_RE.test(dayParam)) return Response.json({ error: "Ogiltigt datum." }, { status: 400 });
+    const dayStart = new Date(`${dayParam}T00:00:00.000Z`);
+    if (Number.isNaN(dayStart.valueOf())) return Response.json({ error: "Ogiltigt datum." }, { status: 400 });
+    const dayEnd = new Date(dayStart);
+    dayEnd.setUTCDate(dayEnd.getUTCDate() + 1);
+
+    const rows = await getDb().select({ path: siteEvents.path, createdAt: siteEvents.createdAt })
+      .from(siteEvents)
+      .where(and(sql`${siteEvents.eventType} = 'PAGE_VIEW'`, gte(siteEvents.createdAt, dayStart), sql`${siteEvents.createdAt} < ${dayEnd}`))
+      .orderBy(desc(siteEvents.createdAt))
+      .limit(DAY_EVENT_LIMIT);
+
+    return Response.json({
+      day: dayParam,
+      visits: rows.map((row) => ({ path: row.path, label: labelForPath(row.path), createdAt: row.createdAt.toISOString() })),
+    }, { headers: { "Cache-Control": "no-store" } });
+  }
+
+  const rangeParam = url.searchParams.get("range") ?? "30d";
   const days = RANGE_DAYS[rangeParam] ?? RANGE_DAYS["30d"];
 
   const since = new Date();

@@ -1,11 +1,13 @@
 "use client";
 
-import { AlertTriangle, BarChart3, LoaderCircle } from "lucide-react";
+import { AlertTriangle, BarChart3, Clock3, LoaderCircle } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 
 type HistoryPoint = { date: string; count: number };
 type PathCount = { path: string; label: string; count: number };
 type HistoryData = { points: HistoryPoint[]; topPaths: PathCount[]; pathsByDay: Record<string, PathCount[]>; totalViews: number; rangeDays: number };
+type DayVisit = { path: string; label: string; createdAt: string };
+type DayTimeline = { day: string; visits: DayVisit[] };
 
 const RANGE_OPTIONS: { id: string; label: string }[] = [
   { id: "7d", label: "7 dagar" },
@@ -25,15 +27,23 @@ function formatFullDate(iso: string) {
   return new Intl.DateTimeFormat("sv-SE", { day: "numeric", month: "long", year: "numeric", timeZone: "UTC" }).format(date);
 }
 
+function formatTime(iso: string) {
+  return new Intl.DateTimeFormat("sv-SE", { hour: "2-digit", minute: "2-digit" }).format(new Date(iso));
+}
+
 export function VisitHistory() {
   const [range, setRange] = useState("30d");
   const [data, setData] = useState<HistoryData | null>(null);
   const [error, setError] = useState("");
   const [selectedDay, setSelectedDay] = useState<string | null>(null);
+  const [showTimeline, setShowTimeline] = useState(false);
+  const [timeline, setTimeline] = useState<DayTimeline | null>(null);
+  const [timelineError, setTimelineError] = useState("");
 
   useEffect(() => {
     setData(null);
     setSelectedDay(null);
+    setShowTimeline(false);
     fetch(`/api/admin/analytics/history?range=${range}`, { cache: "no-store" })
       .then(async (response) => {
         const payload = await response.json() as HistoryData & { error?: string };
@@ -43,6 +53,21 @@ export function VisitHistory() {
       })
       .catch((loadError: unknown) => setError(loadError instanceof Error ? loadError.message : "Historiken kunde inte hämtas."));
   }, [range]);
+
+  useEffect(() => {
+    if (!selectedDay || !showTimeline) { setTimeline(null); return; }
+    let cancelled = false;
+    setTimeline(null);
+    setTimelineError("");
+    fetch(`/api/admin/analytics/history?day=${selectedDay}`, { cache: "no-store" })
+      .then(async (response) => {
+        const payload = await response.json() as DayTimeline & { error?: string };
+        if (!response.ok) throw new Error(payload.error ?? "Tidslinjen kunde inte hämtas.");
+        if (!cancelled) setTimeline(payload);
+      })
+      .catch((loadError: unknown) => { if (!cancelled) setTimelineError(loadError instanceof Error ? loadError.message : "Tidslinjen kunde inte hämtas."); });
+    return () => { cancelled = true; };
+  }, [selectedDay, showTimeline]);
 
   const maxCount = useMemo(() => {
     if (!data) return 1;
@@ -57,6 +82,12 @@ export function VisitHistory() {
     if (selectedDay) return data.pathsByDay[selectedDay] ?? [];
     return data.topPaths;
   }, [data, selectedDay]);
+
+  function selectDay(date: string) {
+    const next = selectedDay === date ? null : date;
+    setSelectedDay(next);
+    setShowTimeline(false);
+  }
 
   if (error) return (
     <div className="admin-card visit-history-card">
@@ -98,7 +129,7 @@ export function VisitHistory() {
                   key={point.date}
                   type="button"
                   className={`visit-history-bar${isSelected ? " selected" : ""}`}
-                  onClick={() => setSelectedDay(isSelected ? null : point.date)}
+                  onClick={() => selectDay(point.date)}
                   aria-pressed={isSelected}
                   title={`${formatFullDate(point.date)}: ${point.count} sidvisningar`}
                   style={{ height: `${CHART_HEIGHT}px` }}
@@ -115,17 +146,43 @@ export function VisitHistory() {
 
           <div className="visit-history-list-head">
             <h3>{selectedDay ? formatFullDate(selectedDay) : "Mest besökta sidor i perioden"}</h3>
+            {selectedDay && (
+              <div className="visit-history-view-toggle" role="group" aria-label="Visningsläge">
+                <button type="button" className={!showTimeline ? "active" : ""} onClick={() => setShowTimeline(false)}>Per sida</button>
+                <button type="button" className={showTimeline ? "active" : ""} onClick={() => setShowTimeline(true)}><Clock3 size={12} /> Tidslinje</button>
+              </div>
+            )}
           </div>
-          <ol className="visit-history-list">
-            {listItems.length === 0 && <li className="live-feed-empty">Inga sidvisningar registrerade{selectedDay ? " denna dag." : " i perioden."}</li>}
-            {listItems.map((item) => (
-              <li key={item.path} className="visit-history-row">
-                <span className="visit-history-row-label">{item.label}</span>
-                <code className="live-feed-path">{item.path}</code>
-                <span className="visit-history-row-count">{item.count}</span>
-              </li>
-            ))}
-          </ol>
+
+          {selectedDay && showTimeline ? (
+            timelineError ? (
+              <p className="admin-alert search-trend-alert" role="alert"><AlertTriangle size={16} /> {timelineError}</p>
+            ) : !timeline ? (
+              <div className="admin-empty search-trend-loading"><LoaderCircle className="admin-spinner" size={20} /> Hämtar tidslinje…</div>
+            ) : (
+              <ol className="visit-history-timeline">
+                {timeline.visits.length === 0 && <li className="live-feed-empty">Inga sidvisningar registrerade denna dag.</li>}
+                {timeline.visits.map((visit, index) => (
+                  <li key={`${visit.createdAt}-${index}`} className="visit-history-timeline-row">
+                    <span className="visit-history-timeline-time">{formatTime(visit.createdAt)}</span>
+                    <span className="visit-history-row-label">{visit.label}</span>
+                    <code className="live-feed-path">{visit.path}</code>
+                  </li>
+                ))}
+              </ol>
+            )
+          ) : (
+            <ol className="visit-history-list">
+              {listItems.length === 0 && <li className="live-feed-empty">Inga sidvisningar registrerade{selectedDay ? " denna dag." : " i perioden."}</li>}
+              {listItems.map((item) => (
+                <li key={item.path} className="visit-history-row">
+                  <span className="visit-history-row-label">{item.label}</span>
+                  <code className="live-feed-path">{item.path}</code>
+                  <span className="visit-history-row-count">{item.count}</span>
+                </li>
+              ))}
+            </ol>
+          )}
         </>
       )}
     </div>
