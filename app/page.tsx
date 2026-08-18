@@ -71,13 +71,12 @@ export default function Home() {
   const [details, setDetails] = useState("");
   const [postcode, setPostcode] = useState("");
   const [phone, setPhone] = useState("");
-  const [accepted, setAccepted] = useState(false);
   const [view, setView] = useState<ViewState>("form");
   const [loadingStep, setLoadingStep] = useState(0);
   const [progress, setProgress] = useState(0);
   const [matchedPartner, setMatchedPartner] = useState<MatchedPartner | null>(null);
   const [callbackSeconds, setCallbackSeconds] = useState(0);
-  const [errors, setErrors] = useState<{ issue?: string; details?: string; postcode?: string; phone?: string; accepted?: string }>({});
+  const [errors, setErrors] = useState<{ issue?: string; details?: string; postcode?: string; phone?: string }>({});
   const matchCardRef = useRef<HTMLDivElement>(null);
   const resultRef = useRef<HTMLDivElement>(null);
 
@@ -152,7 +151,6 @@ export default function Home() {
     if (selectedIssue === "other" && details.trim().length < 5) nextErrors.details = "Beskriv kort vad som har hänt.";
     if (!/^\d{5}$/.test(postcode)) nextErrors.postcode = "Ange ett svenskt postnummer med fem siffror.";
     if (digits.length < 7) nextErrors.phone = "Ange ett telefonnummer där elektrikern kan nå dig.";
-    if (!accepted) nextErrors.accepted = "Godkänn att vi använder uppgifterna för att hantera förfrågan.";
 
     setErrors(nextErrors);
     if (Object.keys(nextErrors).length) {
@@ -166,7 +164,7 @@ export default function Home() {
     const requestPromise = fetch("/api/requests", {
       method: "POST",
       headers: { "content-type": "application/json" },
-      body: JSON.stringify({ issue: selectedIssue, details: details.trim(), postcode, phone, accepted }),
+      body: JSON.stringify({ issue: selectedIssue, details: details.trim(), postcode, phone, accepted: true }),
     })
       .then(async (response) => {
         if (!response.ok) throw new Error("Förfrågan kunde inte sparas.");
@@ -208,7 +206,6 @@ export default function Home() {
     setDetails("");
     setPostcode("");
     setPhone("");
-    setAccepted(false);
     setProgress(0);
     setLoadingStep(0);
     setMatchedPartner(null);
@@ -366,11 +363,7 @@ export default function Home() {
               )}
 
               <button className="submit-button" type="submit">Hitta elektriker nu <ArrowRight size={19} /></button>
-              <label className="request-consent">
-                <input type="checkbox" checked={accepted} onChange={(event) => { setAccepted(event.target.checked); setErrors((current) => ({ ...current, accepted: undefined })); }} />
-                <span>Jag godkänner att vi använder uppgifterna för att hantera min förfrågan. <Link href="/integritetspolicy">Läs integritetspolicyn</Link>.</span>
-              </label>
-              {errors.accepted && <p className="field-error consent-error">{errors.accepted}</p>}
+              <p className="request-consent-note">Genom att skicka godkänner du att vi använder uppgifterna för att hantera din förfrågan. <Link href="/integritetspolicy">Läs integritetspolicyn</Link>.</p>
               <p className="privacy-line"><ShieldCheck size={15} /> En förfrågan är kostnadsfri. Partnern utför och fakturerar arbetet direkt.</p>
               <p className="disclosure">
                 Elektrikerakut.nu är en förmedlingstjänst och utför inte elinstallationsarbete.

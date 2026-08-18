@@ -31,9 +31,8 @@ export default function LocalMatchForm({ areaName, postcodePrefix }: Props) {
   const [details, setDetails] = useState("");
   const [postcode, setPostcode] = useState("");
   const [phone, setPhone] = useState("");
-  const [accepted, setAccepted] = useState(false);
   const [state, setState] = useState<FormState>("form");
-  const [errors, setErrors] = useState<{ issue?: string; details?: string; postcode?: string; phone?: string; accepted?: string; submit?: string }>({});
+  const [errors, setErrors] = useState<{ issue?: string; details?: string; postcode?: string; phone?: string; submit?: string }>({});
   const matchSectionRef = useRef<HTMLElement>(null);
 
   const postcodePlaceholder = `${postcodePrefix}${"0".repeat(5 - postcodePrefix.length)}`.replace(/(\d{3})(\d{2})/, "$1 $2");
@@ -62,7 +61,6 @@ export default function LocalMatchForm({ areaName, postcodePrefix }: Props) {
     if (selectedIssue === "other" && details.trim().length < 5) nextErrors.details = "Beskriv kort vad som har hänt.";
     if (!/^\d{5}$/.test(postcode)) nextErrors.postcode = "Ange ett svenskt postnummer med fem siffror.";
     if (digits.length < 7) nextErrors.phone = "Ange ett telefonnummer där elektrikern kan nå dig.";
-    if (!accepted) nextErrors.accepted = "Godkänn att vi använder uppgifterna för att hantera förfrågan.";
 
     setErrors(nextErrors);
     if (Object.keys(nextErrors).length) return;
@@ -72,7 +70,7 @@ export default function LocalMatchForm({ areaName, postcodePrefix }: Props) {
       const response = await fetch("/api/requests", {
         method: "POST",
         headers: { "content-type": "application/json" },
-        body: JSON.stringify({ issue: selectedIssue, details: details.trim(), postcode, phone, accepted }),
+        body: JSON.stringify({ issue: selectedIssue, details: details.trim(), postcode, phone, accepted: true }),
       });
       if (!response.ok) throw new Error("Request failed");
 
@@ -142,8 +140,7 @@ export default function LocalMatchForm({ areaName, postcodePrefix }: Props) {
             <label><span>Telefonnummer</span><input inputMode="tel" autoComplete="tel" placeholder="070-123 45 67" value={phone} aria-invalid={Boolean(errors.phone)} onChange={(event) => { setPhone(event.target.value.slice(0, 20)); clearError("phone"); }} />{errors.phone && <small className="field-error">{errors.phone}</small>}</label>
           </div>
           <button className="submit-button" type="submit" disabled={state === "submitting"}>{state === "submitting" ? "Skickar förfrågan…" : <>Hitta elektriker nu <ArrowRight size={19} /></>}</button>
-          <label className="request-consent"><input type="checkbox" checked={accepted} onChange={(event) => { setAccepted(event.target.checked); clearError("accepted"); }} /><span>Jag godkänner att vi använder uppgifterna för att hantera min förfrågan. <Link href="/integritetspolicy">Läs integritetspolicyn</Link>.</span></label>
-          {errors.accepted && <p className="field-error consent-error">{errors.accepted}</p>}
+          <p className="request-consent-note">Genom att skicka godkänner du att vi använder uppgifterna för att hantera din förfrågan. <Link href="/integritetspolicy">Läs integritetspolicyn</Link>.</p>
           {errors.submit && <p className="field-error consent-error" role="alert">{errors.submit}</p>}
           <p className="privacy-line"><ShieldCheck size={15} /> En förfrågan är kostnadsfri. Partnern utför och fakturerar arbetet direkt.</p>
           <p className="disclosure">Elektrikerakut.nu är en förmedlingstjänst och utför inte elinstallationsarbete.</p>
