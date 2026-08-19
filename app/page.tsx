@@ -262,7 +262,7 @@ export default function Home() {
         <div className="match-card lean-match-card" id="matchning" ref={matchCardRef}>
           <div className="card-topline">
             <span className="live-dot" />
-            <span>Snabb matchning</span>
+            <span>Jour dygnet runt</span>
             {view === "form" && (
               <div className="step-progress" aria-hidden="true">
                 {steps.map((value, index) => (
@@ -363,7 +363,7 @@ export default function Home() {
 
                 <div className="lean-step-actions">
                   <button className="step-back" type="button" onClick={goBack}>Tillbaka</button>
-                  <button className="submit-button" type="submit">Bli kontaktad inom 2 minuter <ArrowRight size={19} /></button>
+                  <button className="submit-button" type="submit">Starta matchning <ArrowRight size={19} /></button>
                 </div>
                 <p className="request-consent-note">Genom att skicka godkänner du att vi använder uppgifterna för att hantera din förfrågan. Läs <a href="/integritetspolicy">integritetspolicyn</a>.</p>
                 <p className="disclosure">
