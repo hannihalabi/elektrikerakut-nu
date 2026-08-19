@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { SeoUrlOrbit } from "./seo-url-orbit";
 import { SeoCoverageMap } from "./seo-coverage-map";
+import { BacklinksPanel } from "./backlinks-panel";
 import type { ServiceArea } from "../../eljour/areas";
 
 export type SeoUrlItem = {
@@ -479,6 +480,8 @@ export function SeoUrlMap({ items, areas, origin }: { items: SeoUrlItem[]; areas
             </div>
             {bingInspectionError && <p className="seo-indexing-error">{bingInspectionError}</p>}
           </section>
+
+          <BacklinksPanel />
         </div>
 
         {inspectedAt && <section className="seo-action-plan" aria-labelledby="seo-action-plan-title">

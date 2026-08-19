@@ -14,9 +14,8 @@ test("keeps the Elektrikerakut customer journey and area guard", async () => {
   assert.match(page, /value >= 10000 && value <= 19999/);
   assert.match(page, /Ops! Vi har just nu inga partners utanför Stockholm/);
   assert.match(page, /förmedlingstjänst och utför inte elinstallationsarbete/);
-  assert.match(page, /Teamet bakom Elektrikerakut\.nu/);
-  assert.match(page, /personalImage/);
-  assert.match(page, /className="header-partner" href="\/bli-partner"/);
+  assert.match(page, /Vad har hänt\?/);
+  assert.match(page, /Bli kontaktad inom 2 minuter/);
   assert.match(page, /className="header-login" href="\/admin\/login" aria-label="Logga in"/);
   assert.match(page, /matchCardRef\.current\?\.scrollIntoView/);
   assert.match(page, /requestAnimationFrame/);

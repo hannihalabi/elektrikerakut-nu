@@ -16,10 +16,7 @@ import {
   TriangleAlert,
   Zap,
 } from "lucide-react";
-import Image from "next/image";
-import Link from "next/link";
 import { type FormEvent, type ElementType, useEffect, useRef, useState } from "react";
-import personalImage from "../public/personal2.png";
 
 type Issue = {
   id: string;
@@ -33,7 +30,7 @@ const issues: Issue[] = [
   { id: "breaker", label: "Säkring eller jordfelsbrytare", hint: "Löser ut eller går inte att återställa", icon: Zap },
   { id: "outlet", label: "Uttag eller elcentral", hint: "Fel, värme eller synlig skada", icon: PlugZap },
   { id: "risk", label: "Lukt, ljud eller annan risk", hint: "Något känns inte säkert", icon: TriangleAlert },
-  { id: "other", label: "Annat elproblem", hint: "Beskriv kort för elektrikern", icon: CircleEllipsis },
+  { id: "other", label: "Annat elproblem", hint: "Vi ringer upp och tar reda på detaljerna", icon: CircleEllipsis },
 ];
 
 const loadingSteps = [
@@ -43,6 +40,7 @@ const loadingSteps = [
   "Förbereder ditt resultat",
 ];
 
+type Step = "issue" | "postcode" | "phone";
 type ViewState = "form" | "loading" | "result" | "unavailable";
 type AnalyticsEvent = "CTA_CLICK" | "FORM_ERROR" | "REQUEST_SUBMITTED" | "MATCH_STARTED" | "MATCH_FOUND" | "MATCH_NOT_FOUND" | "COVERAGE_UNAVAILABLE";
 type MatchedPartner = {
@@ -54,6 +52,8 @@ type MatchedPartner = {
   serviceAreas: string;
   availability: string;
 };
+
+const steps: Step[] = ["issue", "postcode", "phone"];
 
 function isStockholmPostcode(postcode: string) {
   const value = Number(postcode);
@@ -67,8 +67,8 @@ function formatCallbackTimer(seconds: number) {
 }
 
 export default function Home() {
+  const [step, setStep] = useState<Step>("issue");
   const [selectedIssue, setSelectedIssue] = useState("");
-  const [details, setDetails] = useState("");
   const [postcode, setPostcode] = useState("");
   const [phone, setPhone] = useState("");
   const [view, setView] = useState<ViewState>("form");
@@ -76,9 +76,11 @@ export default function Home() {
   const [progress, setProgress] = useState(0);
   const [matchedPartner, setMatchedPartner] = useState<MatchedPartner | null>(null);
   const [callbackSeconds, setCallbackSeconds] = useState(0);
-  const [errors, setErrors] = useState<{ issue?: string; details?: string; postcode?: string; phone?: string }>({});
+  const [errors, setErrors] = useState<{ issue?: string; postcode?: string; phone?: string }>({});
   const matchCardRef = useRef<HTMLDivElement>(null);
   const resultRef = useRef<HTMLDivElement>(null);
+  const postcodeInputRef = useRef<HTMLInputElement>(null);
+  const phoneInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     if (view !== "loading") return;
@@ -93,29 +95,6 @@ export default function Home() {
 
     return () => window.cancelAnimationFrame(frame);
   }, [view]);
-
-  useEffect(() => {
-    const card = matchCardRef.current;
-    if (!card) return;
-    if (!window.matchMedia("(max-width: 700px)").matches) return;
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-
-    let hasSnapped = false;
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const entry = entries[0];
-        if (!entry || hasSnapped || !entry.isIntersecting) return;
-        if (entry.intersectionRatio < 0.4) return;
-        hasSnapped = true;
-        card.scrollIntoView({ behavior: "smooth", block: "start" });
-        observer.disconnect();
-      },
-      { threshold: [0.4] },
-    );
-
-    observer.observe(card);
-    return () => observer.disconnect();
-  }, []);
 
   useEffect(() => {
     if (view !== "loading") return;
@@ -152,6 +131,12 @@ export default function Home() {
     return () => window.clearInterval(interval);
   }, [view, matchedPartner]);
 
+  useEffect(() => {
+    if (view !== "form") return;
+    if (step === "postcode") postcodeInputRef.current?.focus();
+    if (step === "phone") phoneInputRef.current?.focus();
+  }, [step, view]);
+
   function normalizePostcode(value: string) {
     return value.replace(/\D/g, "").slice(0, 5);
   }
@@ -165,21 +150,37 @@ export default function Home() {
     });
   }
 
+  function goToIssue(id: string) {
+    setSelectedIssue(id);
+    setErrors((current) => ({ ...current, issue: undefined }));
+    setStep("postcode");
+  }
+
+  function goToPhoneStep(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    if (!/^\d{5}$/.test(postcode)) {
+      setErrors((current) => ({ ...current, postcode: "Ange ett svenskt postnummer med fem siffror." }));
+      return;
+    }
+    setErrors((current) => ({ ...current, postcode: undefined }));
+    setStep("phone");
+  }
+
+  function goBack() {
+    const index = steps.indexOf(step);
+    if (index > 0) setStep(steps[index - 1]);
+  }
+
   function submitRequest(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const digits = phone.replace(/\D/g, "");
-    const nextErrors: typeof errors = {};
 
-    if (!selectedIssue) nextErrors.issue = "Välj det som bäst beskriver problemet.";
-    if (selectedIssue === "other" && details.trim().length < 5) nextErrors.details = "Beskriv kort vad som har hänt.";
-    if (!/^\d{5}$/.test(postcode)) nextErrors.postcode = "Ange ett svenskt postnummer med fem siffror.";
-    if (digits.length < 7) nextErrors.phone = "Ange ett telefonnummer där elektrikern kan nå dig.";
-
-    setErrors(nextErrors);
-    if (Object.keys(nextErrors).length) {
+    if (digits.length < 7) {
+      setErrors((current) => ({ ...current, phone: "Ange ett telefonnummer där elektrikern kan nå dig." }));
       recordEvent("FORM_ERROR");
       return;
     }
+    setErrors((current) => ({ ...current, phone: undefined }));
 
     setProgress(0);
     setLoadingStep(0);
@@ -187,7 +188,7 @@ export default function Home() {
     const requestPromise = fetch("/api/requests", {
       method: "POST",
       headers: { "content-type": "application/json" },
-      body: JSON.stringify({ issue: selectedIssue, details: details.trim(), postcode, phone, accepted: true }),
+      body: JSON.stringify({ issue: selectedIssue, details: "", postcode, phone, accepted: true }),
     })
       .then(async (response) => {
         if (!response.ok) throw new Error("Förfrågan kunde inte sparas.");
@@ -208,7 +209,7 @@ export default function Home() {
       .then(({ request }) => fetch("/api/match", {
         method: "POST",
         headers: { "content-type": "application/json" },
-        body: JSON.stringify({ issue: selectedIssue, details: details.trim(), postcode, phone, requestId: request?.id }),
+        body: JSON.stringify({ issue: selectedIssue, details: "", postcode, phone, requestId: request?.id }),
       }))
       .then(async (response) => {
         if (!response.ok) return null;
@@ -225,8 +226,8 @@ export default function Home() {
   }
 
   function resetSearch() {
+    setStep("issue");
     setSelectedIssue("");
-    setDetails("");
     setPostcode("");
     setPhone("");
     setProgress(0);
@@ -237,72 +238,44 @@ export default function Home() {
     setView("form");
   }
 
+  const stepIndex = steps.indexOf(step);
+
   return (
-    <main>
-      <header className="site-header">
+    <main className="lean-page">
+      <header className="site-header lean-header">
         <a className="brand" href="#top" aria-label="Elektrikerakut.nu, startsida">
           <span className="brand-mark" aria-hidden="true"><Zap size={19} strokeWidth={2.6} /></span>
           <span>Elektrikerakut<span>.nu</span></span>
         </a>
-        <nav aria-label="Huvudnavigering">
-          <Link href="/eljour">Så fungerar det</Link>
-          <Link href="/trygghet">Trygg matchning</Link>
-          <Link href="/guider">Elguiden</Link>
-        </nav>
-        <div className="header-actions">
-          <a className="header-partner" href="/bli-partner">Bli partner</a>
-          <a className="header-action" href="#matchning" onClick={() => recordEvent("CTA_CLICK")}><PhoneCall size={17} /> Få snabb hjälp</a>
-          <a className="header-login" href="/admin/login" aria-label="Logga in" title="Logga in">
-            <LogIn size={19} aria-hidden="true" />
-          </a>
-        </div>
+        <a className="header-login" href="/admin/login" aria-label="Logga in" title="Logga in">
+          <LogIn size={19} aria-hidden="true" />
+        </a>
       </header>
 
-      <section className="hero" id="top">
-        <div className="hero-orb hero-orb-one" />
-        <div className="hero-orb hero-orb-two" />
-        <div className="hero-copy">
-          <div className="eyebrow"><span /> Jour dygnet runt</div>
-          <h1>Akut elproblem?<br /><em>Vi står redo.</em></h1>
-          <figure className="hero-team">
-            <Image
-              src={personalImage}
-              alt="Teamet bakom Elektrikerakut.nu samlat framför företagets skylt"
-              fill
-              sizes="(max-width: 700px) calc(100vw - 32px), (max-width: 980px) 560px, 590px"
-              placeholder="blur"
-              priority
-              quality={82}
-            />
-            <figcaption>
-              <span><i className="live-dot" aria-hidden="true" /> Personlig jourkontakt</span>
-              <strong>Teamet bakom Elektrikerakut.nu</strong>
-            </figcaption>
-          </figure>
-          <p className="hero-lead">
-            Vi kvalificerar elföretagen och skapar prispress på jouruppdragen – så att du får snabb, trygg hjälp utan onödiga kostnader.
-          </p>
-          <div className="hero-actions">
-            <a className="primary-link" href="#matchning" onClick={() => recordEvent("CTA_CLICK")}><Zap size={18} fill="currentColor" /> Hitta elektriker nu <ArrowRight size={18} /></a>
-            <a className="secondary-link" href="#matchning" onClick={() => recordEvent("CTA_CLICK")}><PhoneCall size={18} /> Starta matchning</a>
-          </div>
-          <div className="trust-row" aria-label="Fördelar">
-            <span><ShieldCheck size={18} /> Registerkontrollerade</span>
-            <span><Clock3 size={18} /> Snabb återkoppling</span>
-            <span><MapPin size={18} /> Stockholm med omnejd</span>
-          </div>
+      <section className="lean-hero" id="top">
+        <div className="trust-row lean-trust-row" aria-label="Fördelar">
+          <span><ShieldCheck size={18} /> Registerkontrollerade</span>
+          <span><Clock3 size={18} /> Snabb återkoppling</span>
+          <span><MapPin size={18} /> Stockholm med omnejd</span>
         </div>
 
-        <div className="match-card" id="matchning" ref={matchCardRef}>
+        <div className="match-card lean-match-card" id="matchning" ref={matchCardRef}>
           <div className="card-topline">
             <span className="live-dot" />
             <span>Snabb matchning</span>
+            {view === "form" && (
+              <div className="step-progress" aria-hidden="true">
+                {steps.map((value, index) => (
+                  <span key={value} className={index <= stepIndex ? "done" : ""} />
+                ))}
+              </div>
+            )}
           </div>
 
-          {view === "form" && (
-            <form onSubmit={submitRequest} noValidate>
+          {view === "form" && step === "issue" && (
+            <div className="card-heading-wrap">
               <div className="card-heading">
-                <p>Tar cirka 30 sekunder</p>
+                <p>Steg 1 av 3</p>
                 <h2>Vad har hänt?</h2>
               </div>
 
@@ -311,33 +284,37 @@ export default function Home() {
                 <div className="issue-grid">
                   {issues.map((issue) => {
                     const Icon = issue.icon;
-                    const selected = selectedIssue === issue.id;
                     return (
                       <button
-                        className={`issue-option${selected ? " selected" : ""}`}
+                        className="issue-option"
                         type="button"
                         key={issue.id}
-                        aria-pressed={selected}
-                        onClick={() => {
-                          setSelectedIssue(issue.id);
-                          if (issue.id !== "other") setDetails("");
-                          setErrors((current) => ({ ...current, issue: undefined, details: undefined }));
-                        }}
+                        onClick={() => goToIssue(issue.id)}
                       >
                         <span className="issue-icon"><Icon size={20} /></span>
                         <span><strong>{issue.label}</strong><small>{issue.hint}</small></span>
-                        <span className="option-check" aria-hidden="true"><Check size={13} /></span>
+                        <span className="option-check option-arrow" aria-hidden="true"><ArrowRight size={15} /></span>
                       </button>
                     );
                   })}
                 </div>
                 {errors.issue && <p className="field-error" id="issue-error">{errors.issue}</p>}
               </fieldset>
+            </div>
+          )}
 
-              <div className="contact-fields">
-                <label>
+          {view === "form" && step === "postcode" && (
+            <form onSubmit={goToPhoneStep} noValidate className="lean-step-form">
+              <div className="card-heading-wrap">
+                <div className="card-heading">
+                  <p>Steg 2 av 3</p>
+                  <h2>Vad har du för postnummer?</h2>
+                </div>
+
+                <label className="lean-field">
                   <span>Postnummer</span>
                   <input
+                    ref={postcodeInputRef}
                     inputMode="numeric"
                     autoComplete="postal-code"
                     placeholder="114 35"
@@ -350,9 +327,27 @@ export default function Home() {
                   />
                   {errors.postcode && <small className="field-error">{errors.postcode}</small>}
                 </label>
-                <label>
+
+                <div className="lean-step-actions">
+                  <button className="step-back" type="button" onClick={goBack}>Tillbaka</button>
+                  <button className="submit-button" type="submit">Nästa <ArrowRight size={19} /></button>
+                </div>
+              </div>
+            </form>
+          )}
+
+          {view === "form" && step === "phone" && (
+            <form onSubmit={submitRequest} noValidate className="lean-step-form">
+              <div className="card-heading-wrap">
+                <div className="card-heading">
+                  <p>Steg 3 av 3</p>
+                  <h2>Vart ska vi ringa?</h2>
+                </div>
+
+                <label className="lean-field">
                   <span>Telefonnummer</span>
                   <input
+                    ref={phoneInputRef}
                     inputMode="tel"
                     autoComplete="tel"
                     placeholder="070-123 45 67"
@@ -365,32 +360,16 @@ export default function Home() {
                   />
                   {errors.phone && <small className="field-error">{errors.phone}</small>}
                 </label>
+
+                <div className="lean-step-actions">
+                  <button className="step-back" type="button" onClick={goBack}>Tillbaka</button>
+                  <button className="submit-button" type="submit">Bli kontaktad inom 2 minuter <ArrowRight size={19} /></button>
+                </div>
+                <p className="request-consent-note">Genom att skicka godkänner du att vi använder uppgifterna för att hantera din förfrågan. Läs <a href="/integritetspolicy">integritetspolicyn</a>.</p>
+                <p className="disclosure">
+                  Elektrikerakut.nu är en förmedlingstjänst och utför inte elinstallationsarbete.
+                </p>
               </div>
-
-              {selectedIssue === "other" && (
-                <label className="details-field">
-                  <span>Beskriv kort vad som hänt</span>
-                  <textarea
-                    rows={3}
-                    maxLength={500}
-                    value={details}
-                    aria-invalid={Boolean(errors.details)}
-                    onChange={(event) => {
-                      setDetails(event.target.value);
-                      setErrors((current) => ({ ...current, details: undefined }));
-                    }}
-                    placeholder="Exempel: Lamporna blinkar och det luktar bränt från elcentralen."
-                  />
-                  {errors.details && <small className="field-error">{errors.details}</small>}
-                </label>
-              )}
-
-              <button className="submit-button" type="submit">Hitta elektriker nu <ArrowRight size={19} /></button>
-              <p className="request-consent-note">Genom att skicka godkänner du att vi använder uppgifterna för att hantera din förfrågan. <Link href="/integritetspolicy">Läs integritetspolicyn</Link>.</p>
-              <p className="privacy-line"><ShieldCheck size={15} /> En förfrågan är kostnadsfri. Partnern utför och fakturerar arbetet direkt.</p>
-              <p className="disclosure">
-                Elektrikerakut.nu är en förmedlingstjänst och utför inte elinstallationsarbete.
-              </p>
             </form>
           )}
 
@@ -408,10 +387,10 @@ export default function Home() {
                 <span style={{ width: `${progress}%` }} />
               </div>
               <div className="loading-checklist">
-                {loadingSteps.map((step, index) => (
-                  <div className={index < loadingStep ? "done" : index === loadingStep ? "active" : ""} key={step}>
+                {loadingSteps.map((stepLabel, index) => (
+                  <div className={index < loadingStep ? "done" : index === loadingStep ? "active" : ""} key={stepLabel}>
                     <span>{index < loadingStep ? <Check size={13} /> : index + 1}</span>
-                    {step}
+                    {stepLabel}
                   </div>
                 ))}
               </div>
@@ -464,11 +443,6 @@ export default function Home() {
         <span><TriangleAlert size={22} /></span>
         <p><strong>Brand, rök eller omedelbar personfara?</strong> Lämna platsen och ring 112. Rör inte skadad elektrisk utrustning.</p>
       </section>
-
-      <div className="mobile-actions">
-        <a href="#matchning" onClick={() => recordEvent("CTA_CLICK")}><PhoneCall size={18} /> Hjälp nu</a>
-        <a href="#matchning" onClick={() => recordEvent("CTA_CLICK")}>Hitta elektriker <ArrowRight size={17} /></a>
-      </div>
     </main>
   );
 }
