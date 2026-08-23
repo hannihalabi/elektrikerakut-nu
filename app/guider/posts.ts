@@ -4,6 +4,8 @@ import { outdoorGuidePosts } from "./posts-2026-08-17-outdoor";
 import { renovationGuidePosts } from "./posts-2026-08-17-renovation";
 import { safetyGuidePosts } from "./posts-2026-08-17-safety";
 import { batchGuidePosts } from "./posts-2026-08-18-batch";
+import { augustGuidePosts } from "./posts-2026-08-22";
+import { searchConsoleGuidePosts } from "./posts-2026-08-23-gsc";
 
 export type GuideSection = {
   heading: string;
@@ -18,6 +20,7 @@ export type GuidePost = {
   category: string;
   readTime: string;
   publishedAt: string;
+  sortPublishedAt?: string;
   updatedLabel: string;
   accent: "blue" | "green" | "amber" | "red";
   intro: string;
@@ -671,14 +674,14 @@ const existingGuidePosts: GuidePost[] = [
   },
   {
     slug: "gruppforteckning-elcentral",
-    title: "Gruppförteckning i elcentralen – därför är den viktig och så använder du den",
-    description: "Listan i eller vid elcentralen visar vad varje säkring styr och gör felsökning och elarbete säkrare.",
+    title: "Gruppförteckning i elcentralen – mall, märkning och felsökning",
+    description: "Listan i eller vid elcentralen visar vad varje säkring styr. Så använder du gruppförteckning vid felsökning och märkning.",
     category: "Elcentral",
-    readTime: "3 min läsning",
+    readTime: "4 min läsning",
     publishedAt: "2026-02-24",
     updatedLabel: "Uppdaterad 24 februari 2026",
     accent: "blue",
-    intro: "När en säkring eller jordfelsbrytare löser ut vill du snabbt veta vad som påverkas. Gruppförteckningen är kartan över elcentralen: den kopplar varje grupp till exempelvis rum, uttag, belysning eller fasta apparater.",
+    intro: "När en säkring eller jordfelsbrytare löser ut vill du snabbt veta vad som påverkas. Gruppförteckningen är kartan över elcentralen: den kopplar varje grupp till exempelvis rum, uttag, belysning eller fasta apparater. En enkel mall med gruppnummer, plats och funktion gör listan lättare att hålla aktuell.",
     safetyNote: "En egen anteckning kan underlätta vardagen, men ändra inte centralens märkning eller kopplingar om du inte vet exakt vad du gör.",
     sections: [
       { heading: "Vad ska listan visa?", paragraphs: ["En gruppförteckning beskriver vilka delar av anläggningen som hör till respektive säkring eller brytare. Den hjälper dig att avgränsa ett fel och gör det lättare för elektriker att arbeta säkert. En tydlig lista är särskilt värdefull när grupper har byggts ut eller bostaden har förändrats."], },
@@ -1366,6 +1369,8 @@ export const guidePosts: GuidePost[] = [
   ...outdoorGuidePosts,
   ...agentGuidePosts,
   ...batchGuidePosts,
+  ...augustGuidePosts,
+  ...searchConsoleGuidePosts,
 ];
 
 export function getGuidePost(slug: string) {
