@@ -4,11 +4,11 @@ Mål: Elektrikerakut.nu ska kunna upptäckas, crawlas och följas i Bing, Copilo
 
 ## 1. Sätt upp Bing Webmaster Tools
 
-- [ ] Skapa eller logga in på ett Microsoft-konto för verksamheten.
-- [ ] Lägg till `https://elektrikerakut.nu` i [Bing Webmaster Tools](https://www.bing.com/webmasters/).
-- [ ] Verifiera webbplatsen. Använd helst import från Google Search Console om kontot erbjuder det; annars DNS-verifiering.
-- [ ] Skicka in sitemap: `https://elektrikerakut.nu/sitemap.xml`.
-- [ ] Kontrollera att Bing hittar rätt antal publika URL:er och att tekniska URL:er inte behandlas som landningssidor.
+- [x] Skapa eller logga in på ett Microsoft-konto för verksamheten.
+- [x] Lägg till `https://elektrikerakut.nu` i [Bing Webmaster Tools](https://www.bing.com/webmasters/).
+- [x] Verifiera webbplatsen. Använd helst import från Google Search Console om kontot erbjuder det; annars DNS-verifiering.
+- [x] Skicka in sitemap: `https://elektrikerakut.nu/sitemap.xml`.
+- [x] Kontrollera att Bing hittar rätt antal publika URL:er och att tekniska URL:er inte behandlas som landningssidor.
 
 ## 2. Gör en första Bing-granskning
 
@@ -22,9 +22,9 @@ Mål: Elektrikerakut.nu ska kunna upptäckas, crawlas och följas i Bing, Copilo
 
 - [ ] Skapa en IndexNow-nyckel för `elektrikerakut.nu`.
 - [ ] Publicera verifieringsfilen enligt IndexNow-specifikationen på domänen.
-- [x] Bygg en säker serverfunktion som skickar nya, uppdaterade och borttagna URL:er till IndexNow.
+- [ ] Bygg en säker serverfunktion som skickar nya, uppdaterade och borttagna URL:er till IndexNow.
 - [ ] Koppla funktionen till publicering av nya Elguide-artiklar och ändringar i lokala eljourssidor.
-- [x] Logga varje skickad URL, datum, svarskod och eventuell felorsak i admin.
+- [ ] Logga varje skickad URL, datum, svarskod och eventuell felorsak i admin.
 - [ ] Kontrollera IndexNow-rapporten i Bing Webmaster Tools efter första publiceringen.
 
 ## 4. Utöka URL-kartan i admin

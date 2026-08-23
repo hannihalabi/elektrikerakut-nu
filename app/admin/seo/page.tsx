@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { requirePartnerAdmin } from "../../partner-admin-auth";
 import { serviceAreas } from "../../eljour/areas";
-import { guidePosts } from "../../guider/posts";
+import { getGuidePosts } from "../../guider/guide-content";
 import { SeoUrlMap, type SeoUrlItem } from "./seo-url-map";
 
 export const dynamic = "force-dynamic";
@@ -18,11 +18,6 @@ const coreUrls: SeoUrlItem[] = [
   { path: "/eljour", label: "Eljour – områdeshubb", group: "Kärnsidor", role: "SEO-hubb", impact: "Hög", inSitemap: true, discoverability: "Sitemap + internlänkar", description: "Samlar och länkar vidare till alla lokala eljourssidor.", priority: 0.9 },
   { path: "/trygghet", label: "Trygg matchning", group: "Kärnsidor", role: "Förtroendesida", impact: "Medel", inSitemap: true, discoverability: "Sitemap + internlänkar", description: "Förklarar partnergranskning, ansvar och hur kunden kan kontrollera elföretag.", priority: 0.6 },
   { path: "/bli-partner", label: "Bli partner", group: "Kärnsidor", role: "B2B-konvertering", impact: "Låg", inSitemap: true, discoverability: "Sitemap + internlänkar", description: "Riktar sig till elföretag och påverkar främst partneranskaffning.", priority: 0.5 },
-];
-
-const guideUrls: SeoUrlItem[] = [
-  { path: "/guider", label: "Elguiden", group: "Guider", role: "Innehållshubb", impact: "Medel", inSitemap: true, discoverability: "Sitemap + SERPS", description: "Samlad ingång till publicerade, sökorienterade elguider.", priority: 0.7 },
-  ...guidePosts.map((post) => ({ path: `/guider/${post.slug}`, label: post.title, group: "Guider" as const, role: "Sökdriven guide", impact: "Medel" as const, inSitemap: true, discoverability: "Sitemap + Elguiden", description: post.description, priority: 0.6 })),
 ];
 
 const legalUrls: SeoUrlItem[] = [
@@ -50,5 +45,10 @@ const localUrls: SeoUrlItem[] = serviceAreas.map((area) => ({
 
 export default async function SeoPage() {
   await requirePartnerAdmin();
-  return <SeoUrlMap items={[...coreUrls, ...guideUrls, ...localUrls, ...legalUrls, ...technicalUrls]} areas={serviceAreas} origin={origin} />;
+  const guidePosts = await getGuidePosts();
+  const dynamicGuideUrls: SeoUrlItem[] = [
+    { path: "/guider", label: "Elguiden", group: "Guider", role: "Innehållshubb", impact: "Medel", inSitemap: true, discoverability: "Sitemap + SERPS", description: "Samlad ingång till publicerade, sökorienterade elguider.", priority: 0.7 },
+    ...guidePosts.map((post) => ({ path: `/guider/${post.slug}`, label: post.title, group: "Guider" as const, role: "Sökdriven guide", impact: "Medel" as const, inSitemap: true, discoverability: "Sitemap + Elguiden", description: post.description, priority: 0.6 })),
+  ];
+  return <SeoUrlMap items={[...coreUrls, ...dynamicGuideUrls, ...localUrls, ...legalUrls, ...technicalUrls]} areas={serviceAreas} origin={origin} />;
 }

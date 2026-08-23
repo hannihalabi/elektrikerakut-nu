@@ -7,10 +7,10 @@
   },
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "next build --webpack",
     "start": "next start",
     "test": "npm run build && node --test tests/rendered-html.test.mjs",
-    "lint": "eslint . --ignore-pattern dist --ignore-pattern .next",
+    "lint": "eslint . --ignore-pattern dist --ignore-pattern .next --ignore-pattern .vercel",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "node --env-file-if-exists=.env.local ./node_modules/drizzle-kit/bin.cjs migrate"
   },

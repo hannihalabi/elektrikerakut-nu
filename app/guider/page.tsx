@@ -2,9 +2,11 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, BookOpen, ShieldCheck, Zap } from "lucide-react";
-import { guidePosts } from "./posts";
+import { getGuidePosts } from "./guide-content";
 import { GuideLibrary } from "./guide-library";
 import { servicePhotos } from "../site-photos";
+
+export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: "Elguiden | Råd vid strömavbrott, säkringar och elfel",
@@ -12,7 +14,8 @@ export const metadata: Metadata = {
   alternates: { canonical: "/guider" },
 };
 
-export default function GuidesPage() {
+export default async function GuidesPage() {
+  const guidePosts = await getGuidePosts();
   return <main className="guide-site">
     <header className="guide-header"><Link className="brand" href="/"><span className="brand-mark"><Zap size={18} /></span><span>Elektrikerakut<span>.nu</span></span></Link><Link className="guide-header-cta" href="/eljour">Behöver du hjälp nu? <ArrowRight size={16} /></Link></header>
     <section className="guide-hero">

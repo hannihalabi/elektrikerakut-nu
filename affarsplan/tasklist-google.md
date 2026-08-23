@@ -5,10 +5,10 @@ Mål: Elektrikerakut.nu ska vara tekniskt lätt för Google att förstå, ha tyd
 ## 1. Säkerställ Google Search Console
 
 - [x] Kontrollera att domänegendomen `sc-domain:elektrikerakut.nu` är verifierad och används som primär egendom.
-- [ ] Kontrollera att sitemap `https://elektrikerakut.nu/sitemap.xml` är inskickad och läses utan fel.
-- [ ] Kontrollera att alla viktiga publika URL:er finns i sitemap och att redirect-, noindex- och tekniska URL:er inte prioriteras där.
+- [x] Kontrollera att sitemap `https://elektrikerakut.nu/sitemap.xml` är inskickad och läses utan fel.
+- [x] Kontrollera att alla viktiga publika URL:er finns i sitemap och att redirect-, noindex- och tekniska URL:er inte prioriteras där.
 - [x] Kontrollera att Google kan läsa `https://elektrikerakut.nu/robots.txt` och att den pekar på sitemap.
-- [ ] Ge endast nödvändiga personer och system åtkomst till Search Console.
+- [x] Ge endast nödvändiga personer och system åtkomst till Search Console.
 
 ## 2. Arbeta med indexering i URL-kartan
 

@@ -43,7 +43,7 @@ const sortOptions: { id: SortOrder; label: string }[] = [
 function sortPosts(posts: GuidePost[], order: SortOrder) {
   const sorted = [...posts];
   if (order === "az") return sorted.sort((left, right) => left.title.localeCompare(right.title, "sv-SE"));
-  sorted.sort((left, right) => left.publishedAt.localeCompare(right.publishedAt));
+  sorted.sort((left, right) => new Date(left.publishedAt).getTime() - new Date(right.publishedAt).getTime());
   return order === "senaste" ? sorted.reverse() : sorted;
 }
 

@@ -3,15 +3,15 @@
 import { ArrowLeft, ArrowUpRight, BarChart3, BookOpen, ChevronLeft, ChevronRight, FileText, Network, PhoneCall, Search, ShieldCheck, Users, Zap } from "lucide-react";
 import Link from "next/link";
 import { useMemo, useState } from "react";
-import { guidePosts } from "../../guider/posts";
+import type { GuidePost } from "../../guider/posts";
 
-export function SerpsAdmin() {
+export function SerpsAdmin({ posts: guidePosts }: { posts: GuidePost[] }) {
   const [query, setQuery] = useState("");
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const posts = useMemo(() => {
     const normalized = query.trim().toLowerCase();
     return guidePosts.filter((post) => `${post.title} ${post.description} ${post.category}`.toLowerCase().includes(normalized));
-  }, [query]);
+  }, [guidePosts, query]);
   const categories = new Set(guidePosts.map((post) => post.category)).size;
 
   function toggleSidebar() {

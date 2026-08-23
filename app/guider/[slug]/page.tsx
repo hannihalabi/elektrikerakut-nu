@@ -3,17 +3,17 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft, ArrowRight, BookOpen, Clock3, ExternalLink, ShieldAlert, ShieldCheck, Zap } from "lucide-react";
-import { getGuidePost, guidePosts } from "../posts";
+import { getGuidePostBySlug, getGuidePosts } from "../guide-content";
 import { servicePhotoFor } from "../../site-photos";
 
 type PageProps = { params: Promise<{ slug: string }> };
 
-export function generateStaticParams() { return guidePosts.map(({ slug }) => ({ slug })); }
-export const dynamicParams = false;
+export const dynamic = "force-dynamic";
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
-  const post = getGuidePost((await params).slug);
+  const post = await getGuidePostBySlug((await params).slug);
   if (!post) return {};
+  const publishedTime = new Date(post.publishedAt).toISOString();
   return {
     title: `${post.title} | Elektrikerakut.nu`,
     description: post.description,
@@ -23,22 +23,25 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       description: post.description,
       url: `https://elektrikerakut.nu/guider/${post.slug}`,
       type: "article",
-      publishedTime: `${post.publishedAt}T00:00:00.000Z`,
+      publishedTime,
     },
   };
 }
 
 export default async function GuideArticlePage({ params }: PageProps) {
-  const post = getGuidePost((await params).slug);
+  const slug = (await params).slug;
+  const guidePosts = await getGuidePosts();
+  const post = guidePosts.find((item) => item.slug === slug);
   if (!post) notFound();
   const related = guidePosts.filter((item) => item.slug !== post.slug).slice(0, 3);
+  const publishedTime = new Date(post.publishedAt).toISOString();
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "Article",
     headline: post.title,
     description: post.description,
-    datePublished: `${post.publishedAt}T00:00:00.000Z`,
-    dateModified: `${post.publishedAt}T00:00:00.000Z`,
+    datePublished: publishedTime,
+    dateModified: publishedTime,
     author: { "@type": "Organization", name: "Elektrikerakut.nu" },
     publisher: { "@type": "Organization", name: "Elektrikerakut.nu", url: "https://elektrikerakut.nu" },
     mainEntityOfPage: { "@type": "WebPage", "@id": `https://elektrikerakut.nu/guider/${post.slug}` },
