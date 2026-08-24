@@ -6,6 +6,7 @@ import { safetyGuidePosts } from "./posts-2026-08-17-safety";
 import { batchGuidePosts } from "./posts-2026-08-18-batch";
 import { augustGuidePosts } from "./posts-2026-08-22";
 import { searchConsoleGuidePosts } from "./posts-2026-08-23-gsc";
+import { linkResourceGuidePosts } from "./posts-2026-08-24-link-resources";
 
 export type GuideSection = {
   heading: string;
@@ -1373,6 +1374,7 @@ export const guidePosts: GuidePost[] = [
   ...batchGuidePosts,
   ...augustGuidePosts,
   ...searchConsoleGuidePosts,
+  ...linkResourceGuidePosts,
 ];
 
 export function getGuidePost(slug: string) {
