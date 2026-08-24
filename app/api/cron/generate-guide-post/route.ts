@@ -19,12 +19,20 @@ export async function GET(request: Request) {
   const now = new Date();
   const bucket = Math.floor(now.getTime() / (5 * 60 * 1000));
   const templateIndex = bucket % autoGuideTemplates.length;
-  const post = createAutoGuidePost(now, templateIndex);
   const db = getDb();
 
-  const [existing] = await db.select({ id: guidePostsTable.id }).from(guidePostsTable).where(eq(guidePostsTable.slug, post.slug)).limit(1);
-  if (existing) {
-    return Response.json({ ok: true, created: false, slug: post.slug, message: "Inlägget finns redan." }, { headers: { "Cache-Control": "no-store" } });
+  let post = createAutoGuidePost(now, templateIndex);
+  for (let offset = 0; offset < autoGuideTemplates.length; offset += 1) {
+    const candidate = createAutoGuidePost(now, templateIndex + offset);
+    const [existing] = await db.select({ id: guidePostsTable.id }).from(guidePostsTable).where(eq(guidePostsTable.slug, candidate.slug)).limit(1);
+    if (!existing) {
+      post = candidate;
+      break;
+    }
+
+    if (offset === autoGuideTemplates.length - 1) {
+      return Response.json({ ok: true, created: false, slug: candidate.slug, message: "Alla automatiska inlägg finns redan." }, { headers: { "Cache-Control": "no-store" } });
+    }
   }
 
   const [created] = await db.insert(guidePostsTable).values({
