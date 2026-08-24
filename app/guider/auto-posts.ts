@@ -104,11 +104,10 @@ export const autoGuideTemplates: AutoGuideTemplate[] = [
 
 export function createAutoGuidePost(now: Date, templateIndex: number): GuidePost {
   const template = autoGuideTemplates[templateIndex % autoGuideTemplates.length];
-  const timestampKey = now.toISOString().replace(/[:.]/g, "").slice(0, 15);
   const updatedLabel = new Intl.DateTimeFormat("sv-SE", { day: "numeric", month: "long", year: "numeric", timeZone: "UTC" }).format(now);
   return {
     ...template,
-    slug: `auto-${timestampKey}-${template.slugBase}`,
+    slug: template.slugBase,
     publishedAt: now.toISOString(),
     updatedLabel: `Uppdaterad ${updatedLabel}`,
   };
