@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { ArrowRight, Check, CircleEllipsis, PlugZap, Power, ShieldCheck, TriangleAlert, Zap } from "lucide-react";
 import { type ElementType, type FormEvent, useEffect, useRef, useState } from "react";
+import { trackLeadFormConversion } from "../google-ads";
 
 type Issue = {
   id: string;
@@ -86,6 +87,7 @@ export default function LocalMatchForm({ areaName, postcodePrefix }: Props) {
         body: JSON.stringify({ eventType: "REQUEST_SUBMITTED", path: window.location.pathname }),
         keepalive: true,
       });
+      trackLeadFormConversion();
       setState("complete");
     } catch {
       setState("form");

@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
+import Script from "next/script";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { AnalyticsTracker } from "./analytics-tracker";
+import { GOOGLE_ADS_ID } from "./google-ads";
 import "leaflet/dist/leaflet.css";
 import "./globals.css";
 
@@ -32,7 +34,21 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="sv">
-      <body>{children}<Analytics /><SpeedInsights /><AnalyticsTracker /></body>
+      <body>
+        {children}
+        <Analytics />
+        <SpeedInsights />
+        <AnalyticsTracker />
+        <Script src={`https://www.googletagmanager.com/gtag/js?id=${GOOGLE_ADS_ID}`} strategy="afterInteractive" />
+        <Script id="google-ads-tag" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', '${GOOGLE_ADS_ID}');
+          `}
+        </Script>
+      </body>
     </html>
   );
 }

@@ -17,6 +17,7 @@ import {
   Zap,
 } from "lucide-react";
 import { type FormEvent, type ElementType, useEffect, useRef, useState } from "react";
+import { trackLeadFormConversion } from "./google-ads";
 
 type Issue = {
   id: string;
@@ -193,6 +194,7 @@ export default function Home() {
       .then(async (response) => {
         if (!response.ok) throw new Error("Förfrågan kunde inte sparas.");
         recordEvent("REQUEST_SUBMITTED");
+        trackLeadFormConversion();
         return await response.json() as { request?: { id: number } };
       });
 
