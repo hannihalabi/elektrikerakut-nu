@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowRight, Clock3, MapPin, PhoneCall, ShieldCheck, Zap } from "lucide-react";
+import { ArrowRight, BadgeCheck, Clock3, MapPin, PhoneCall, ShieldCheck, Zap } from "lucide-react";
 import { areaCoordinates } from "../area-coordinates";
 import { areaSlugs, getLocalAreaContent, getServiceArea, serviceAreas } from "../areas";
 import LocalMatchForm from "../local-match-form";
@@ -92,7 +92,7 @@ export default async function LocalServicePage({ params }: { params: Promise<{ s
         <h1>Eljour i {area.name}</h1>
         <p className="local-seo-lead">Akut elproblem i {area.name}? Beskriv vad som hänt, så kontrollerar vi om en registrerad partner kan ta emot en förfrågan i {area.municipality}.</p>
         <a className="local-seo-primary" href="#matchning">Beskriv ditt elproblem <ArrowRight size={19} /></a>
-        <div className="local-seo-trust"><span><ShieldCheck size={17} /> Registerkontrollerade företag</span><span><Clock3 size={17} /> Svar inom 2 minuter</span><span><MapPin size={17} /> {area.name} och närområde</span></div>
+        <div className="local-seo-trust"><span><ShieldCheck size={17} /> Registerkontrollerade företag</span><span><Clock3 size={17} /> Svar inom 2 minuter</span><span><MapPin size={17} /> {area.name} och närområde</span><span><BadgeCheck size={17} /> Ingen bindning</span></div>
         <figure className="local-hero-photo"><Image src={servicePhotoFor(area.slug)} alt="Elektriker i arbetskläder vid servicebil utanför en bostad" width={1448} height={1086} sizes="(max-width: 700px) calc(100vw - 76px), 820px" priority /></figure>
       </section>
       <div className="local-seo-form-note"><MapPin size={17} /><p>{content.formIntro}</p></div>

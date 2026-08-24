@@ -257,6 +257,7 @@ export default function Home() {
           <span><ShieldCheck size={18} /> Registerkontrollerade</span>
           <span><Clock3 size={18} /> Svar inom 2 minuter</span>
           <span><MapPin size={18} /> Stockholm med omnejd</span>
+          <span><BadgeCheck size={18} /> Ingen bindning</span>
         </div>
 
         <div className="match-card lean-match-card" id="matchning" ref={matchCardRef}>
