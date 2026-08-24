@@ -255,7 +255,7 @@ export default function Home() {
       <section className="lean-hero" id="top">
         <div className="trust-row lean-trust-row" aria-label="Fördelar">
           <span><ShieldCheck size={18} /> Registerkontrollerade</span>
-          <span><Clock3 size={18} /> Snabb återkoppling</span>
+          <span><Clock3 size={18} /> Svar inom 2 minuter</span>
           <span><MapPin size={18} /> Stockholm med omnejd</span>
         </div>
 
